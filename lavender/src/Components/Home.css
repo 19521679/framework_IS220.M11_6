@@ -1116,9 +1116,9 @@ body {
   }
   
   /*--------------------------------------------------------------
-  # Team
+  # exdevice
   --------------------------------------------------------------*/
-  .team .member {
+  .exdevice .member {
     margin-bottom: 20px;
     overflow: hidden;
     text-align: center;
@@ -1126,11 +1126,11 @@ body {
     background: #fff;
     box-shadow: 0px 2px 15px rgba(18, 66, 101, 0.08);
   }
-  .team .member .member-img {
+  .exdevice .member .member-img {
     position: relative;
     overflow: hidden;
   }
-  .team .member .social {
+  .exdevice .member .social {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -1144,42 +1144,42 @@ body {
     align-items: center;
     justify-content: center;
   }
-  .team .member .social a {
+  .exdevice .member .social a {
     transition: color 0.3s;
     color: #124265;
     margin: 0 10px;
     display: inline-block;
   }
-  .team .member .social a:hover {
+  .exdevice .member .social a:hover {
     color: #2487ce;
   }
-  .team .member .social i {
+  .exdevice .member .social i {
     font-size: 18px;
     margin: 0 2px;
     line-height: 0;
   }
-  .team .member .member-info {
+  .exdevice .member .member-info {
     padding: 25px 15px;
   }
-  .team .member .member-info h4 {
+  .exdevice .member .member-info h4 {
     font-weight: 700;
     margin-bottom: 5px;
     font-size: 18px;
     color: #124265;
   }
-  .team .member .member-info span {
+  .exdevice .member .member-info span {
     display: block;
     font-size: 13px;
     font-weight: 400;
     color: #aaaaaa;
   }
-  .team .member .member-info p {
+  .exdevice .member .member-info p {
     font-style: italic;
     font-size: 14px;
     line-height: 26px;
     color: #777777;
   }
-  .team .member:hover .social {
+  .exdevice .member:hover .social {
     opacity: 1;
   }
   

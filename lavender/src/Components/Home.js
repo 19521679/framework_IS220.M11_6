@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Home.css";
-import Carousel from 'react-bootstrap/Carousel'
+import Carousel from "react-bootstrap/Carousel";
 
 export default class Home extends Component {
   render() {
@@ -218,25 +218,14 @@ export default class Home extends Component {
               </div>
               <div className="row">
                 <div
-                  className="col-lg-4 col-md-6 d-flex align-items-stretch"
+                  className="col-lg-4 col-md-6 d-flex align-items-stretch "
                   data-aos="zoom-in"
                   data-aos-delay={100}
+                  onMouseOver={this.handleMouseOver}
                 >
-                  <div className="icon-box iconbox-blue">
+                  <div className="icon-box iconbox-blue product-item">
                     <div className="icon">
-                      <svg
-                        width={100}
-                        height={100}
-                        viewBox="0 0 600 600"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          stroke="none"
-                          strokeWidth={0}
-                          fill="#f5f5f5"
-                          d="M300,521.0016835830174C376.1290562159157,517.8887921683347,466.0731472004068,529.7835943286574,510.70327084640275,468.03025145048787C554.3714126377745,407.6079735673963,508.03601936045806,328.9844924480964,491.2728898941984,256.3432110539036C474.5976632858925,184.082847569629,479.9380746630129,96.60480741107993,416.23090153303,58.64404602377083C348.86323505073057,18.502131276798302,261.93793281208167,40.57373210992963,193.5410806939664,78.93577620505333C130.42746243093433,114.334589627462,98.30271207620316,179.96522072025542,76.75703585869454,249.04625023123273C51.97151888228291,328.5150500222984,13.704378332031375,421.85034740162234,66.52175969318436,486.19268352777647C119.04800174914682,550.1803526380478,217.28368757567262,524.383925680826,300,521.0016835830174"
-                        />
-                      </svg>
+                    <img src="https://www.w3schools.com/images/colorpicker.gif"></img>
                       <i className="bx bxl-dribbble" />
                     </div>
                     <h4>
@@ -244,8 +233,13 @@ export default class Home extends Component {
                     </h4>
                     <p>
                       Voluptatum deleniti atque corrupti quos dolores et quas
-                      molestias excepturi
+                      molestias excepturi asaasdasdasdasdasdasdasdasdasd
+                      asdasdasdasdasdasdas
+                      zxczxczxczxczxczxc
                     </p>
+                    <div className="product-info">   molestias excepturi asaasdasdasdasdasdasdasdasdasd
+                      asdasdasdasdasdasdas
+                      zxczxczxczxczxczxc</div>
                   </div>
                 </div>
                 <div
@@ -426,157 +420,24 @@ export default class Home extends Component {
             </div>
           </section>
           {/* End Cta Section */}
-
-          {/* ======= Frequently Asked Questions Section ======= */}
-          {/* <section id="faq" className="faq section-bg">
-            <div className="container" data-aos="fade-up">
-              <div className="section-title">
-                <h2>Frequently Asked Questions</h2>
-                <p>
-                  Magnam dolores commodi suscipit. Necessitatibus eius
-                  consequatur ex aliquid fuga eum quidem. Sit sint consectetur
-                  velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit
-                  suscipit alias ea. Quia fugiat sit in iste officiis commodi
-                  quidem hic quas.
-                </p>
-              </div>
-              <div className="faq-list">
+          <div className="menu-container">
+            <div className="visible-content">My menu</div>
+            <div className="invisible-content">
+              <div className="content-of-invisible-div">
                 <ul>
-                  <li data-aos="fade-up">
-                    <i className="bx bx-help-circle icon-help" />{" "}
-                    <a
-                      data-bs-toggle="collapse"
-                      className="collapse"
-                      data-bs-target="#faq-list-1"
-                    >
-                      Non consectetur a erat nam at lectus urna duis?{" "}
-                      <i className="bx bx-chevron-down icon-show" />
-                      <i className="bx bx-chevron-up icon-close" />
-                    </a>
-                    <div
-                      id="faq-list-1"
-                      className="collapse show"
-                      data-bs-parent=".faq-list"
-                    >
-                      <p>
-                        Feugiat pretium nibh ipsum consequat. Tempus iaculis
-                        urna id volutpat lacus laoreet non curabitur gravida.
-                        Venenatis lectus magna fringilla urna porttitor rhoncus
-                        dolor purus non.
-                      </p>
-                    </div>
-                  </li>
-                  <li data-aos="fade-up" data-aos-delay={100}>
-                    <i className="bx bx-help-circle icon-help" />{" "}
-                    <a
-                      data-bs-toggle="collapse"
-                      data-bs-target="#faq-list-2"
-                      className="collapsed"
-                    >
-                      Feugiat scelerisque varius morbi enim nunc?{" "}
-                      <i className="bx bx-chevron-down icon-show" />
-                      <i className="bx bx-chevron-up icon-close" />
-                    </a>
-                    <div
-                      id="faq-list-2"
-                      className="collapse"
-                      data-bs-parent=".faq-list"
-                    >
-                      <p>
-                        Dolor sit amet consectetur adipiscing elit pellentesque
-                        habitant morbi. Id interdum velit laoreet id donec
-                        ultrices. Fringilla phasellus faucibus scelerisque
-                        eleifend donec pretium. Est pellentesque elit
-                        ullamcorper dignissim. Mauris ultrices eros in cursus
-                        turpis massa tincidunt dui.
-                      </p>
-                    </div>
-                  </li>
-                  <li data-aos="fade-up" data-aos-delay={200}>
-                    <i className="bx bx-help-circle icon-help" />{" "}
-                    <a
-                      data-bs-toggle="collapse"
-                      data-bs-target="#faq-list-3"
-                      className="collapsed"
-                    >
-                      Dolor sit amet consectetur adipiscing elit?{" "}
-                      <i className="bx bx-chevron-down icon-show" />
-                      <i className="bx bx-chevron-up icon-close" />
-                    </a>
-                    <div
-                      id="faq-list-3"
-                      className="collapse"
-                      data-bs-parent=".faq-list"
-                    >
-                      <p>
-                        Eleifend mi in nulla posuere sollicitudin aliquam
-                        ultrices sagittis orci. Faucibus pulvinar elementum
-                        integer enim. Sem nulla pharetra diam sit amet nisl
-                        suscipit. Rutrum tellus pellentesque eu tincidunt.
-                        Lectus urna duis convallis convallis tellus. Urna
-                        molestie at elementum eu facilisis sed odio morbi quis
-                      </p>
-                    </div>
-                  </li>
-                  <li data-aos="fade-up" data-aos-delay={300}>
-                    <i className="bx bx-help-circle icon-help" />{" "}
-                    <a
-                      data-bs-toggle="collapse"
-                      data-bs-target="#faq-list-4"
-                      className="collapsed"
-                    >
-                      Tempus quam pellentesque nec nam aliquam sem et tortor
-                      consequat? <i className="bx bx-chevron-down icon-show" />
-                      <i className="bx bx-chevron-up icon-close" />
-                    </a>
-                    <div
-                      id="faq-list-4"
-                      className="collapse"
-                      data-bs-parent=".faq-list"
-                    >
-                      <p>
-                        Molestie a iaculis at erat pellentesque adipiscing
-                        commodo. Dignissim suspendisse in est ante in. Nunc vel
-                        risus commodo viverra maecenas accumsan. Sit amet nisl
-                        suscipit adipiscing bibendum est. Purus gravida quis
-                        blandit turpis cursus in.
-                      </p>
-                    </div>
-                  </li>
-                  <li data-aos="fade-up" data-aos-delay={400}>
-                    <i className="bx bx-help-circle icon-help" />{" "}
-                    <a
-                      data-bs-toggle="collapse"
-                      data-bs-target="#faq-list-5"
-                      className="collapsed"
-                    >
-                      Tortor vitae purus faucibus ornare. Varius vel pharetra
-                      vel turpis nunc eget lorem dolor?{" "}
-                      <i className="bx bx-chevron-down icon-show" />
-                      <i className="bx bx-chevron-up icon-close" />
-                    </a>
-                    <div
-                      id="faq-list-5"
-                      className="collapse"
-                      data-bs-parent=".faq-list"
-                    >
-                      <p>
-                        Laoreet sit amet cursus sit amet dictum sit amet justo.
-                        Mauris vitae ultricies leo integer malesuada nunc vel.
-                        Tincidunt eget nullam non nisi est sit amet. Turpis nunc
-                        eget lorem dolor sed. Ut venenatis tellus in metus
-                        vulputate eu scelerisque.
-                      </p>
-                    </div>
-                  </li>
+                  <li>My first item</li>
+                  <li>My second item</li>
+                  <li>My third item</li>
                 </ul>
               </div>
             </div>
-          </section> */}
-          {/* End Frequently Asked Questions Section */}
+          </div>
         </main>
         {/* End #main */}
       </div>
     );
   }
+  handleMouseOver = () => {
+    
+  };
 }

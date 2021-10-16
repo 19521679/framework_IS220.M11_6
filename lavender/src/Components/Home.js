@@ -204,7 +204,7 @@ export default class Home extends Component {
           {/* End Clients Section */}
 
           {/* ======= Services Section ======= */}
-          <section id="services" className="services section-bg">
+          <section id="highlight" className="highlight section-bg">
             <div className="container" data-aos="fade-up">
               <div className="section-title">
                 <h2>Sevices</h2>

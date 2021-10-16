@@ -1,11 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 export default class index extends Component {
-    render() {
-        return (
-            <section>
-                
-            </section>
-        )
+  state = { sapxep: "" };
+
+  componentDidMount() {
+      const {firm} =this.props;
+    if (firm != null) {
+      this.setState({ sapxep: this.props.firm });
     }
+  }
+
+  render() {
+    return (
+      <section>
+        Đây là trang điện thoại
+        {this.state.sapxep}
+      </section>
+    );
+  }
 }

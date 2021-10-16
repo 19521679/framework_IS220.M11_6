@@ -1,9 +1,12 @@
 import Home from "../../Components/Home.js";
 import NotFoundPage from "./NotFoundPage.js";
-import Mobiles from "../../Components/Mobiles.js";
-import Computers from "../../Components/Computers.js";
-import ExDevice from "../../Components/ExDevices.js";
-import Services from "../../Components/Services.js";
+import Mobiles from "../../Components/Mobiles/index.js";
+import Computers from "../../Components/Computers/index.js";
+import ExDevice from "../../Components/ExDevices/index.js";
+import Services from "../../Components/Services/index.js";
+import Cart from "../../Components/Cart";
+import LMember from "../../Components/LMember";
+
 const routes= [
   {
     path: '/',
@@ -29,6 +32,16 @@ const routes= [
     path: '/services',
     exact: false,
     main: ()=><Services></Services>
+  },
+  {
+    path: '/cart',
+    exact: false,
+    main: ()=><Cart></Cart>
+  },
+  {
+    path: '/lmember',
+    exact: false,
+    main: ()=><LMember></LMember>
   },
   // {
   //   path: '/product/add',

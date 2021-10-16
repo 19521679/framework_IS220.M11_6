@@ -104,14 +104,14 @@ export default class Header extends Component {
             <ul>
               {this.showMenu(menus)}
               <li>
-                <a className="getstarted scrollto" href="#">
+                <Link className="getstarted scrollto" to="/cart">
                   Giỏ hàng
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="getstarted scrollto" href="#">
+                <Link className="getstarted scrollto" to = "/lmember">
                   LMember
-                </a>
+                </Link>
               </li>
             </ul>
             <i className="bi bi-list mobile-nav-toggle" />

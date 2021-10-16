@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import "./Home.css";
 
-export default class ExDevices extends Component {
+export default class index extends Component {
     render() {
         return (
             <section id="exdevice" className="exdevice section-bg">

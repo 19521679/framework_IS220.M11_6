@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-export default class Services extends Component {
+export default class index extends Component {
     render() {
         return (
-            <div>
+            <section>
                 
-            </div>
+            </section>
         )
     }
 }

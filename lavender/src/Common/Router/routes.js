@@ -5,8 +5,9 @@ import Computers from "../../Components/Computers";
 import ExDevice from "../../Components/ExDevices";
 import Services from "../../Components/Services";
 import Cart from "../../Components/Cart";
-import LMember from "../../Components/LMember";
+import LMember from "../../Components/Accounts/LMember.js";
 import Login from "../../Components/Accounts/Login.js";
+import Register from "../../Components/Accounts/Register.js";
 
 const routes= [
   {
@@ -80,6 +81,12 @@ const routes= [
     exact: false,
     main: ()=><Login></Login>
   },
+  {
+    path: '/register',
+    exact: false,
+    main: ()=><Register></Register>
+  },
+  
   
   // {
   //   path: '/product/add',

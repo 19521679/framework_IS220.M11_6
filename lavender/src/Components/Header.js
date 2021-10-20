@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import "./Home.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as loginAct from "./redux/actions/loginAct";
+import PropTypes from "prop-types";
 
 const menus = [
   {
@@ -67,6 +71,7 @@ const menus = [
 ];
 
 var MenuLink = ({ lable, to, activeOnlyWhenExact, list }) => {
+  
   return (
     <Route
       path={to}
@@ -75,11 +80,11 @@ var MenuLink = ({ lable, to, activeOnlyWhenExact, list }) => {
         var active = match ? "active" : "";
 
         if (list.length != 0) {
-          return showItemDown(lable, to, activeOnlyWhenExact, list);
+          return showItemDown(lable, to, match, list);
         } else {
           return (
-            <li className={active}>
-              <Link className="nav-link scrollto" to={to}>
+            <li >
+              <Link className={active} to={to}>
                 {lable}
               </Link>
             </li>
@@ -90,11 +95,11 @@ var MenuLink = ({ lable, to, activeOnlyWhenExact, list }) => {
   );
 };
 
-var ItemLink = ({ lable, to, activeOnlyWhenExact, list }) => {
+var ItemLink = ({ lable, to, match, list }) => {
   return (
     <Route
       path={to}
-      exact={activeOnlyWhenExact}
+      // exact={activeOnlyWhenExact}
       children={({ match }) => {
         var active = match ? "active" : "";
 
@@ -102,8 +107,8 @@ var ItemLink = ({ lable, to, activeOnlyWhenExact, list }) => {
           return showItemRight(list);
         } else {
           return (
-            <li className={active}>
-              <Link className="nav-link scrollto" to={to}>
+            <li>
+              <Link className="nav-link scrollto" className={active} to={to}>
                 {lable}
               </Link>
             </li>
@@ -114,11 +119,12 @@ var ItemLink = ({ lable, to, activeOnlyWhenExact, list }) => {
   );
 };
 
-var showItemDown = (lable, to, activeOnlyWhenExact, list) => {
+var showItemDown = (lable, to, match, list) => {
   var result = null;
+  var active = match ? "active" : "";
   result = (
     <li className="dropdown">
-      <Link className="" to={to}>
+      <Link className={active} to={to} >
         <span>{lable}</span> <i className="bi bi-chevron-down" />
       </Link>
       <ul>
@@ -128,7 +134,7 @@ var showItemDown = (lable, to, activeOnlyWhenExact, list) => {
               key={key}
               lable={value.name}
               to={to + value.to}
-              activeOnlyWhenExact={value.exact}
+              match={match}
               list={value.list}
             ></ItemLink>
           );
@@ -139,11 +145,12 @@ var showItemDown = (lable, to, activeOnlyWhenExact, list) => {
   return result;
 };
 
-var showItemRight = (lable, to, activeOnlyWhenExact, list) => {
+var showItemRight = (lable, to, match, list) => {
   var result = null;
+  var active = match ? "active" : "";
   result = (
     <li className="dropdown">
-      <Link className="" to={to}>
+      <Link className={active} to={to}>
         <span>{lable}</span> <i className="bi bi-chevron-right" />
       </Link>
       <ul>
@@ -153,7 +160,7 @@ var showItemRight = (lable, to, activeOnlyWhenExact, list) => {
               key={key}
               lable={value.name}
               to={to + value.to}
-              activeOnlyWhenExact={value.exact}
+              match={match}
               list={value.list}
             ></ItemLink>
           );
@@ -180,8 +187,19 @@ var showMenu = (temps) => {
   return result;
 };
 
-export default class Header extends Component {
+class Header extends Component {
+  componentDidMount() {
+    if (localStorage.getItem("hasLogined")) {
+      const { loginActionCreators } = this.props;
+      const { postLoginReport } = loginActionCreators;
+      postLoginReport({
+        email: localStorage.getItem("email"),
+        password: localStorage.getItem("password"),
+      });
+    }
+  }
   render() {
+    const { hasLogined } = this.props;
     return (
       <header id="header" className="fixed-top">
         <div className="container d-flex align-items-center justify-content-between">
@@ -208,25 +226,47 @@ export default class Header extends Component {
                   <a>Giỏ hàng</a>
                 </Link>
               </li>
-              <li>
-                <Link className="getstarted scrollto" to="/lmember">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-person-circle"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    <path
-                      fill-rule="evenodd"
-                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-                    />
-                  </svg>
-                  <a>LMember</a>
-                </Link>
-              </li>
+              {hasLogined ? (
+                <li>
+                  <Link className="getstarted scrollto" to="/lmember">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-person-circle"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                      />
+                    </svg>
+                    <a>LMember</a>
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link className="getstarted scrollto" to="/login">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-person-circle"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                      />
+                    </svg>
+                    <a>Login</a>
+                  </Link>
+                </li>
+              )}
             </ul>
             <i className="bi bi-list mobile-nav-toggle" />
           </nav>
@@ -236,3 +276,27 @@ export default class Header extends Component {
     );
   }
 }
+
+Header.propTypes = {
+  loginActionCreators: PropTypes.shape({
+    postLoginReport: PropTypes.func,
+  }),
+  email: PropTypes.string,
+  password: PropTypes.string,
+  hasLogined: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    email: state.login.email,
+    password: state.login.password,
+    hasLogined: state.login.hasLogined,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginActionCreators: bindActionCreators(loginAct, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -13,9 +13,9 @@ namespace Back.Controllers
 
     public class RegisterController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<LoginController> _logger;
 
-        public RegisterController(ILogger<HomeController> logger)
+        public RegisterController(ILogger<LoginController> logger)
         {
             _logger = logger;
         }

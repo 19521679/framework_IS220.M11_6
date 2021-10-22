@@ -25,13 +25,13 @@ namespace Back
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            
+
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    }));
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
 
         }
 
@@ -83,7 +83,8 @@ namespace Back
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}").RequireCors("MyPolicy");
+                    pattern: "{controller=Home}/{action=Index}/{id?}")
+                    .RequireCors("MyPolicy");
             });
         }
     }

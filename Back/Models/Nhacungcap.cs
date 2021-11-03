@@ -4,22 +4,22 @@
 // Purpose: Definition of Class Nhacungcap
 
 using System;
-
+using System.Collections;
 public class Nhacungcap
 {
-   public string manhacungcap;
-   public string tennhacungcap;
-   public string email;
-   public string sodienthoai;
-   public string diachi;
+   private string manhacungcap;
+   private string tennhacungcap;
+   private string email;
+   private string sodienthoai;
+   private string diachi;
    
-   public System.Collections.Generic.List<Phieunhapsanpham> phieunhapsanpham;
+   public ICollection<Phieunhapsanpham> phieunhapsanpham;
    
    /// <summary>
    /// Property for collection of Phieunhapsanpham
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Phieunhapsanpham> Phieunhapsanpham
+   public ICollection<Phieunhapsanpham> Phieunhapsanpham
    {
       get
       {
@@ -37,7 +37,12 @@ public class Nhacungcap
          }
       }
    }
-   
+    public string Manhacungcap { get => manhacungcap; set => manhacungcap = value; }
+    public string Tennhacungcap { get => tennhacungcap; set => tennhacungcap = value; }
+    public string Email { get => email; set => email = value; }
+    public string Sodienthoai { get => sodienthoai; set => sodienthoai = value; }
+    public string Diachi { get => diachi; set => diachi = value; }
+
    /// <summary>
    /// Add a new Phieunhapsanpham in the collection
    /// </summary>
@@ -79,7 +84,7 @@ public class Nhacungcap
    {
       if (phieunhapsanpham != null)
       {
-         System.Collections.ArrayList tmpPhieunhapsanpham = new System.Collections.ArrayList();
+         ICollection tmpPhieunhapsanpham = new System.Collections.ArrayList();
          foreach (Phieunhapsanpham oldPhieunhapsanpham in phieunhapsanpham)
             tmpPhieunhapsanpham.Add(oldPhieunhapsanpham);
          phieunhapsanpham.Clear();

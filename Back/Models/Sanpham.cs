@@ -4,24 +4,24 @@
 // Purpose: Definition of Class Sanpham
 
 using System;
-
+using System.Collections;
 public class Sanpham
 {
-   public string masanpham;
-   public string tensanpham;
-   public int soluongton;
-   public string mota;
-   public string image;
-   public DateTime thoidiemramat;
-   public float dongia;
-   
-   public System.Collections.Generic.List<Phieunhapsanpham> phieunhapsanpham;
+    private string masanpham;
+    private string tensanpham;
+    private int soluongton;
+    private string mota;
+    private string image;
+    private DateTime thoidiemramat;
+    private float dongia;
+
+    public ICollection<Phieunhapsanpham> phieunhapsanpham;
    
    /// <summary>
    /// Property for collection of Phieunhapsanpham
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Phieunhapsanpham> Phieunhapsanpham
+   public ICollection<Phieunhapsanpham> Phieunhapsanpham
    {
       get
       {
@@ -81,7 +81,7 @@ public class Sanpham
    {
       if (phieunhapsanpham != null)
       {
-         System.Collections.ArrayList tmpPhieunhapsanpham = new System.Collections.ArrayList();
+            ICollection tmpPhieunhapsanpham = new System.Collections.ArrayList();
          foreach (Phieunhapsanpham oldPhieunhapsanpham in phieunhapsanpham)
             tmpPhieunhapsanpham.Add(oldPhieunhapsanpham);
          phieunhapsanpham.Clear();
@@ -90,13 +90,13 @@ public class Sanpham
          tmpPhieunhapsanpham.Clear();
       }
    }
-   public System.Collections.Generic.List<Chitietgiohang> chitietgiohang;
+   public ICollection<Chitietgiohang> chitietgiohang;
    
    /// <summary>
    /// Property for collection of Chitietgiohang
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Chitietgiohang> Chitietgiohang
+   public ICollection<Chitietgiohang> Chitietgiohang
    {
       get
       {
@@ -156,7 +156,7 @@ public class Sanpham
    {
       if (chitietgiohang != null)
       {
-         System.Collections.ArrayList tmpChitietgiohang = new System.Collections.ArrayList();
+            ICollection tmpChitietgiohang = new System.Collections.ArrayList();
          foreach (Chitietgiohang oldChitietgiohang in chitietgiohang)
             tmpChitietgiohang.Add(oldChitietgiohang);
          chitietgiohang.Clear();
@@ -165,13 +165,13 @@ public class Sanpham
          tmpChitietgiohang.Clear();
       }
    }
-   public System.Collections.Generic.List<Danhgia> danhgia;
+   public ICollection<Danhgia> danhgia;
    
    /// <summary>
    /// Property for collection of Danhgia
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Danhgia> Danhgia
+   public ICollection<Danhgia> Danhgia
    {
       get
       {
@@ -231,7 +231,7 @@ public class Sanpham
    {
       if (danhgia != null)
       {
-         System.Collections.ArrayList tmpDanhgia = new System.Collections.ArrayList();
+            ICollection tmpDanhgia = new System.Collections.ArrayList();
          foreach (Danhgia oldDanhgia in danhgia)
             tmpDanhgia.Add(oldDanhgia);
          danhgia.Clear();
@@ -240,13 +240,13 @@ public class Sanpham
          tmpDanhgia.Clear();
       }
    }
-   public System.Collections.Generic.List<Chitietsanpham> chitietsanpham;
+   public ICollection<Chitietsanpham> chitietsanpham;
    
    /// <summary>
    /// Property for collection of Chitietsanpham
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Chitietsanpham> Chitietsanpham
+   public ICollection<Chitietsanpham> Chitietsanpham
    {
       get
       {
@@ -306,7 +306,7 @@ public class Sanpham
    {
       if (chitietsanpham != null)
       {
-         System.Collections.ArrayList tmpChitietsanpham = new System.Collections.ArrayList();
+            ICollection tmpChitietsanpham = new System.Collections.ArrayList();
          foreach (Chitietsanpham oldChitietsanpham in chitietsanpham)
             tmpChitietsanpham.Add(oldChitietsanpham);
          chitietsanpham.Clear();
@@ -376,4 +376,11 @@ public class Sanpham
       }
    }
 
+    public string Masanpham { get => masanpham; set => masanpham = value; }
+    public string Tensanpham { get => tensanpham; set => tensanpham = value; }
+    public int Soluongton { get => soluongton; set => soluongton = value; }
+    public string Mota { get => mota; set => mota = value; }
+    public string Image { get => image; set => image = value; }
+    public DateTime Thoidiemramat { get => thoidiemramat; set => thoidiemramat = value; }
+    public float Dongia { get => dongia; set => dongia = value; }
 }

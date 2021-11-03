@@ -4,16 +4,16 @@
 // Purpose: Definition of Class Phieunhapsanpham
 
 using System;
-
+using System.Collections;
 public class Phieunhapsanpham
 {
-   public string maphieunhap;
-   public int soluongnhap;
-   public DateTime ngaynhap;
-   public float tiennhap;
-   public string ghichu;
-   
-   public Sanpham sanpham;
+    private string maphieunhap;
+    private int soluongnhap;
+    private DateTime ngaynhap;
+    private float tiennhap;
+    private string ghichu;
+
+    public Sanpham sanpham;
    
    /// <summary>
    /// Property for Sanpham
@@ -74,4 +74,9 @@ public class Phieunhapsanpham
       }
    }
 
+    public string Maphieunhap { get => maphieunhap; set => maphieunhap = value; }
+    public int Soluongnhap { get => soluongnhap; set => soluongnhap = value; }
+    public DateTime Ngaynhap { get => ngaynhap; set => ngaynhap = value; }
+    public float Tiennhap { get => tiennhap; set => tiennhap = value; }
+    public string Ghichu { get => ghichu; set => ghichu = value; }
 }

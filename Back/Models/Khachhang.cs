@@ -4,24 +4,24 @@
 // Purpose: Definition of Class Khachhang
 
 using System;
-
+using System.Collections;
 public class Khachhang
 {
-   public string makhachhang;
-   public string tenkhachhang;
-   public string email;
-   public string sodienthoai;
-   public string diachi;
-   public DateTime ngaysinh;
-   public string loaikhachhang;
-   
-   public System.Collections.Generic.List<Hoadon> hoadon;
+    private string makhachhang;
+    private string tenkhachhang;
+    private string email;
+    private string sodienthoai;
+    private string diachi;
+    private DateTime ngaysinh;
+    private string loaikhachhang;
+
+    public ICollection<Hoadon> hoadon;
    
    /// <summary>
    /// Property for collection of Hoadon
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Hoadon> Hoadon
+   public ICollection<Hoadon> Hoadon
    {
       get
       {
@@ -81,7 +81,7 @@ public class Khachhang
    {
       if (hoadon != null)
       {
-         System.Collections.ArrayList tmpHoadon = new System.Collections.ArrayList();
+         ICollection tmpHoadon = new System.Collections.ArrayList();
          foreach (Hoadon oldHoadon in hoadon)
             tmpHoadon.Add(oldHoadon);
          hoadon.Clear();
@@ -90,13 +90,13 @@ public class Khachhang
          tmpHoadon.Clear();
       }
    }
-   public System.Collections.Generic.List<Danhgia> danhgia;
+   public ICollection<Danhgia> danhgia;
    
    /// <summary>
    /// Property for collection of Danhgia
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Danhgia> Danhgia
+   public ICollection<Danhgia> Danhgia
    {
       get
       {
@@ -156,7 +156,7 @@ public class Khachhang
    {
       if (danhgia != null)
       {
-         System.Collections.ArrayList tmpDanhgia = new System.Collections.ArrayList();
+            ICollection tmpDanhgia = new System.Collections.ArrayList();
          foreach (Danhgia oldDanhgia in danhgia)
             tmpDanhgia.Add(oldDanhgia);
          danhgia.Clear();
@@ -165,13 +165,13 @@ public class Khachhang
          tmpDanhgia.Clear();
       }
    }
-   public System.Collections.Generic.List<Giohang> giohang;
+   public ICollection<Giohang> giohang;
    
    /// <summary>
    /// Property for collection of Giohang
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Giohang> Giohang
+   public ICollection<Giohang> Giohang
    {
       get
       {
@@ -231,7 +231,7 @@ public class Khachhang
    {
       if (giohang != null)
       {
-         System.Collections.ArrayList tmpGiohang = new System.Collections.ArrayList();
+            ICollection tmpGiohang = new System.Collections.ArrayList();
          foreach (Giohang oldGiohang in giohang)
             tmpGiohang.Add(oldGiohang);
          giohang.Clear();
@@ -240,13 +240,13 @@ public class Khachhang
          tmpGiohang.Clear();
       }
    }
-   public System.Collections.Generic.List<Taikhoankhachhang> taikhoankhachhang;
+   public ICollection<Taikhoankhachhang> taikhoankhachhang;
    
    /// <summary>
    /// Property for collection of Taikhoankhachhang
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Taikhoankhachhang> Taikhoankhachhang
+   public ICollection<Taikhoankhachhang> Taikhoankhachhang
    {
       get
       {
@@ -264,12 +264,20 @@ public class Khachhang
          }
       }
    }
-   
-   /// <summary>
-   /// Add a new Taikhoankhachhang in the collection
-   /// </summary>
-   /// <pdGenerated>Default Add</pdGenerated>
-   public void AddTaikhoankhachhang(Taikhoankhachhang newTaikhoankhachhang)
+
+    public string Makhachhang { get => makhachhang; set => makhachhang = value; }
+    public string Tenkhachhang { get => tenkhachhang; set => tenkhachhang = value; }
+    public string Email { get => email; set => email = value; }
+    public string Sodienthoai { get => sodienthoai; set => sodienthoai = value; }
+    public string Diachi { get => diachi; set => diachi = value; }
+    public DateTime Ngaysinh { get => ngaysinh; set => ngaysinh = value; }
+    public string Loaikhachhang { get => loaikhachhang; set => loaikhachhang = value; }
+
+    /// <summary>
+    /// Add a new Taikhoankhachhang in the collection
+    /// </summary>
+    /// <pdGenerated>Default Add</pdGenerated>
+    public void AddTaikhoankhachhang(Taikhoankhachhang newTaikhoankhachhang)
    {
       if (newTaikhoankhachhang == null)
          return;

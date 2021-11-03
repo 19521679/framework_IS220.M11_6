@@ -7,15 +7,15 @@ using System;
 using System.Collections;
 public class Nhanvien
 {
-   public string manhanvien;
-   public string tennhanvien;
-   public string email;
-   public string sodienthoai;
-   public string diachi;
-   public DateTime ngayvaolam;
-   public string cccd;
-   public DateTime ngaysinh;
-   public string chucvu;
+   private string manhanvien;
+   private string tennhanvien;
+   private string email;
+   private string sodienthoai;
+   private string diachi;
+   private DateTime ngayvaolam;
+   private string cccd;
+   private DateTime ngaysinh;
+   private string chucvu;
    
    public ICollection<Taikhoannhanvien> taikhoannhanvien;
    
@@ -23,7 +23,7 @@ public class Nhanvien
    /// Property for collection of Taikhoannhanvien
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Taikhoannhanvien> Taikhoannhanvien
+   public ICollection<Taikhoannhanvien> Taikhoannhanvien
    {
       get
       {
@@ -83,7 +83,7 @@ public class Nhanvien
    {
       if (taikhoannhanvien != null)
       {
-         System.Collections.ArrayList tmpTaikhoannhanvien = new System.Collections.ArrayList();
+         ICollection tmpTaikhoannhanvien = new System.Collections.ArrayList();
          foreach (Taikhoannhanvien oldTaikhoannhanvien in taikhoannhanvien)
             tmpTaikhoannhanvien.Add(oldTaikhoannhanvien);
          taikhoannhanvien.Clear();
@@ -92,13 +92,13 @@ public class Nhanvien
          tmpTaikhoannhanvien.Clear();
       }
    }
-   public System.Collections.Generic.List<Hoadon> hoadon;
+   public ICollection<Hoadon> hoadon;
    
    /// <summary>
    /// Property for collection of Hoadon
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Hoadon> Hoadon
+   public ICollection<Hoadon> Hoadon
    {
       get
       {
@@ -117,6 +117,18 @@ public class Nhanvien
       }
    }
    
+    public string Manhanvien { get => manhanvien; set => manhanvien = value; }
+    public string Tennhanvien { get => tennhanvien; set => tennhanvien = value; }
+    public string Email { get => email; set => email = value; }
+    public string Sodienthoai { get => sodienthoai; set => sodienthoai = value; }
+    public string Diachi { get => diachi; set => diachi = value; }
+    public DateTime Ngayvaolam { get => ngayvaolam; set => ngayvaolam = value; }
+    public string Cccd { get => cccd; set => cccd = value; }
+    public DateTime Ngaysinh { get => ngaysinh; set => ngaysinh = value; }
+    public string Chucvu { get => chucvu; set => chucvu = value; }
+
+
+
    /// <summary>
    /// Add a new Hoadon in the collection
    /// </summary>
@@ -158,7 +170,7 @@ public class Nhanvien
    {
       if (hoadon != null)
       {
-         System.Collections.ArrayList tmpHoadon = new System.Collections.ArrayList();
+         ICollection tmpHoadon = new System.Collections.ArrayList();
          foreach (Hoadon oldHoadon in hoadon)
             tmpHoadon.Add(oldHoadon);
          hoadon.Clear();

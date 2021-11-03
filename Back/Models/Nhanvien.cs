@@ -23,12 +23,12 @@ public class Nhanvien
    /// Property for collection of Taikhoannhanvien
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Taikhoannhanvien> Taikhoannhanvien
+   public ICollection<Taikhoannhanvien> Taikhoannhanvien
    {
       get
       {
          if (taikhoannhanvien == null)
-            taikhoannhanvien = new ICollection<Taikhoannhanvien>();
+            taikhoannhanvien = new System.Collections.Generic.List<Taikhoannhanvien>();
          return taikhoannhanvien;
       }
       set
@@ -83,7 +83,7 @@ public class Nhanvien
    {
       if (taikhoannhanvien != null)
       {
-         System.Collections.ArrayList tmpTaikhoannhanvien = new System.Collections.ArrayList();
+         ICollection tmpTaikhoannhanvien = new System.Collections.ArrayList();
          foreach (Taikhoannhanvien oldTaikhoannhanvien in taikhoannhanvien)
             tmpTaikhoannhanvien.Add(oldTaikhoannhanvien);
          taikhoannhanvien.Clear();
@@ -92,13 +92,13 @@ public class Nhanvien
          tmpTaikhoannhanvien.Clear();
       }
    }
-   public System.Collections.Generic.List<Hoadon> hoadon;
+   public ICollection<Hoadon> hoadon;
    
    /// <summary>
    /// Property for collection of Hoadon
    /// </summary>
    /// <pdGenerated>Default opposite class collection property</pdGenerated>
-   public System.Collections.Generic.List<Hoadon> Hoadon
+   public ICollection<Hoadon> Hoadon
    {
       get
       {
@@ -158,7 +158,7 @@ public class Nhanvien
    {
       if (hoadon != null)
       {
-         System.Collections.ArrayList tmpHoadon = new System.Collections.ArrayList();
+         ICollection tmpHoadon = new System.Collections.ArrayList();
          foreach (Hoadon oldHoadon in hoadon)
             tmpHoadon.Add(oldHoadon);
          hoadon.Clear();

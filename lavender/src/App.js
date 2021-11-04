@@ -5,8 +5,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  Redirect,
 } from "react-router-dom";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
@@ -41,9 +39,7 @@ class App extends React.Component {
             key={index}
             path={value.path}
             exact={value.exact}
-            render={() => {
-              return value.main();
-            }}
+            component={value.main}
           ></Route>
         );
       });

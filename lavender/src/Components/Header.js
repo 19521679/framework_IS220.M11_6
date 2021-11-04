@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Home.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as loginAct from "./redux/actions/loginAct";
@@ -15,7 +15,7 @@ const menus = [
   },
   {
     name: "Điện thoại",
-    to: "/mobiles",
+    to: "/mobile",
     exact: true,
     list: [
       {
@@ -52,19 +52,19 @@ const menus = [
   },
   {
     name: "Máy tính",
-    to: "/computers",
+    to: "/computer",
     exact: false,
     list: [],
   },
   {
     name: "Phụ kiện",
-    to: "/exdevices",
+    to: "/exdevice",
     exact: false,
     list: [],
   },
   {
     name: "Dịch vụ",
-    to: "/services",
+    to: "/service",
     exact: false,
     list: [],
   },

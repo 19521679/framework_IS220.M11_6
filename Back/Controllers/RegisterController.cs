@@ -22,8 +22,7 @@ namespace Back.Controllers
 
         [HttpPost]
         public IActionResult Register([FromForm]RegisterForm registerForm)
-        {
-            
+        { 
 
             Console.WriteLine("Form: Register" +registerForm.ToString() );
             return StatusCode(200);

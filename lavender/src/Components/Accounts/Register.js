@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./Register.css";
-import * as registerApi from "../apis/register.js";
 import * as registerAct from "../redux/actions/registerAct";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -18,8 +17,7 @@ class Register extends Component {
   };
   render() {
     return (
-      <section className="register">
-        <div className="container">
+        <section className="container register">
           {/* <form onSubmit={this.handleSubmit}> */}
           <div className="row">
             <div className="col-md-3 register-left">
@@ -49,10 +47,10 @@ class Register extends Component {
                     className="nav-link active"
                     id="home-tab"
                     data-toggle="tab"
-                    href="#home"
                     role="tab"
                     aria-controls="home"
                     aria-selected="true"
+                    href="/#"
                   >
                     Employee
                   </a>
@@ -62,10 +60,10 @@ class Register extends Component {
                     className="nav-link"
                     id="profile-tab"
                     data-toggle="tab"
-                    href="#profile"
                     role="tab"
                     aria-controls="profile"
                     aria-selected="false"
+                    href="/#"
                   >
                     Hirer
                   </a>
@@ -151,9 +149,9 @@ class Register extends Component {
                             }
                           }}
                         />
-                        <label className="form-check-label" htmlFor="confirm">
+                        <label className="form-check-label" htmlFor="confirm" href="/#">
                           I agree all statements in{" "}
-                          <a href="#!">Terms of service</a>
+                          <a href="/#">Terms of service</a>
                         </label>
                       </div>
                     </form>
@@ -186,7 +184,6 @@ class Register extends Component {
             </div>
           </div>
           {/* </form> */}
-        </div>
       </section>
     );
   }

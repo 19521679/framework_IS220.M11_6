@@ -3,6 +3,9 @@ import "./Home.css";
 import Carousel from "react-bootstrap/Carousel";
 
 export default class Home extends Component {
+  click =()=>{
+    console.log("homeclick");
+  }
   render() {
     return (
       <div>
@@ -48,38 +51,9 @@ export default class Home extends Component {
             </Carousel.Item>
           </Carousel>
         </section>
+        
         {/* End Hero */}
         <main id="main">
-          {/* ======= About Section ======= */}
-          <section id="about" className="about">
-            {/* <div className="container" data-aos="fade-up">
-                  <div className="section-title">
-                    <h2>About Us</h2>
-                    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. </p>
-                  </div>
-                  <div className="row content">
-                    <div className="col-lg-6">
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
-                      <ul>
-                        <li><i className="ri-check-double-line" /> Ullamco laboris nisi ut aliquip ex ea commodo consequat</li>
-                        <li><i className="ri-check-double-line" /> Duis aute irure dolor in reprehenderit in voluptate velit</li>
-                        <li><i className="ri-check-double-line" /> Ullamco laboris nisi ut aliquip ex ea commodo consequat</li>
-                      </ul>
-                    </div>
-                    <div className="col-lg-6 pt-4 pt-lg-0">
-                      <p>
-                        Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
-                      </p>
-                      <a href="#" className="btn-learn-more">Learn More</a>
-                    </div>
-                  </div>
-                </div> */}
-          </section>
           {/* End About Section */}
           {/* ======= Counts Section ======= */}
           <section id="counts" className="counts section-bg">
@@ -229,7 +203,7 @@ export default class Home extends Component {
                       <i className="bx bxl-dribbble" />
                     </div>
                     <h4>
-                      <a href>Lorem Ipsum</a>
+                      <a >Lorem Ipsum</a>
                     </h4>
                     <p>
                       Voluptatum deleniti atque corrupti quos dolores et quas
@@ -265,7 +239,7 @@ export default class Home extends Component {
                       <i className="bx bx-file" />
                     </div>
                     <h4>
-                      <a href>Sed Perspiciatis</a>
+                      <a >Sed Perspiciatis</a>
                     </h4>
                     <p>
                       Duis aute irure dolor in reprehenderit in voluptate velit
@@ -296,7 +270,7 @@ export default class Home extends Component {
                       <i className="bx bx-tachometer" />
                     </div>
                     <h4>
-                      <a href>Magni Dolores</a>
+                      <a >Magni Dolores</a>
                     </h4>
                     <p>
                       Excepteur sint occaecat cupidatat non proident, sunt in
@@ -327,7 +301,7 @@ export default class Home extends Component {
                       <i className="bx bx-layer" />
                     </div>
                     <h4>
-                      <a href>Nemo Enim</a>
+                      <a>Nemo Enim</a>
                     </h4>
                     <p>
                       At vero eos et accusamus et iusto odio dignissimos ducimus
@@ -358,7 +332,7 @@ export default class Home extends Component {
                       <i className="bx bx-slideshow" />
                     </div>
                     <h4>
-                      <a href>Dele Cardo</a>
+                      <a >Dele Cardo</a>
                     </h4>
                     <p>
                       Quis consequatur saepe eligendi voluptatem consequatur
@@ -389,7 +363,7 @@ export default class Home extends Component {
                       <i className="bx bx-arch" />
                     </div>
                     <h4>
-                      <a href>Divera Don</a>
+                      <a >Divera Don</a>
                     </h4>
                     <p>
                       Modi nostrum vel laborum. Porro fugit error sit minus
@@ -413,7 +387,7 @@ export default class Home extends Component {
                   occaecat cupidatat non proident, sunt in culpa qui officia
                   deserunt mollit anim id est laborum.
                 </p>
-                <a className="cta-btn" href="#">
+                <a className="cta-btn" >
                   Call To Action
                 </a>
               </div>

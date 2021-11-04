@@ -480,12 +480,8 @@ h6 {
   --------------------------------------------------------------*/
 section {
   padding: 80px 0;
-  overflow: hidden;
 }
 
-.section-bg {
-  background-color: #f8fbfe;
-}
 
 .section-title {
   text-align: center;
@@ -804,113 +800,6 @@ section {
 }
 .testimonials .swiper-pagination .swiper-pagination-bullet-active {
   background-color: #2487ce;
-}
-
-/*--------------------------------------------------------------
-  # Services
-  --------------------------------------------------------------*/
-.highlight .icon-box {
-  text-align: center;
-  padding: 70px 20px 80px 20px;
-  transition: all ease-in-out 0.3s;
-  background: #fff;
-  box-shadow: 0px 5px 90px 0px #fcfcfc0d;
-}
-.highlight .icon-box .icon {
-  margin: 0 auto;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: ease-in-out 0.3s;
-  position: relative;
-}
-.highlight .icon-box .icon i {
-  font-size: 36px;
-  transition: 0.5s;
-  position: relative;
-}
-.highlight .icon-box .icon svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.highlight .icon-box .icon svg path {
-  transition: 0.5s;
-  fill: #f5f5f5;
-}
-.highlight .icon-box h4 {
-  font-weight: 600;
-  margin: 10px 0 15px 0;
-  font-size: 22px;
-}
-.highlight .icon-box h4 a {
-  color: #124265;
-  transition: ease-in-out 0.3s;
-}
-.highlight .icon-box p {
-  line-height: 24px;
-  font-size: 14px;
-  margin-bottom: 0;
-}
-.highlight .icon-box:hover {
-  border-color: #fff;
-  box-shadow: 0px 0 35px 0 #857ed1bd;
-}
-.highlight .iconbox-blue i {
-  color: #47aeff;
-}
-.highlight .iconbox-blue:hover .icon i {
-  color: #fff;
-}
-.highlight .iconbox-blue:hover .icon path {
-  fill: #47aeff;
-}
-.highlight .iconbox-orange i {
-  color: #ffa76e;
-}
-.highlight .iconbox-orange:hover .icon i {
-  color: #fff;
-}
-.highlight .iconbox-orange:hover .icon path {
-  fill: #ffa76e;
-}
-.highlight .iconbox-pink i {
-  color: #e80368;
-}
-.highlight .iconbox-pink:hover .icon i {
-  color: #fff;
-}
-.highlight .iconbox-pink:hover .icon path {
-  fill: #e80368;
-}
-.highlight .iconbox-yellow i {
-  color: #ffbb2c;
-}
-.highlight .iconbox-yellow:hover .icon i {
-  color: #fff;
-}
-.highlight .iconbox-yellow:hover .icon path {
-  fill: #ffbb2c;
-}
-.highlight .iconbox-red i {
-  color: #ff5828;
-}
-.highlight .iconbox-red:hover .icon i {
-  color: #fff;
-}
-.highlight .iconbox-red:hover .icon path {
-  fill: #ff5828;
-}
-.highlight .iconbox-teal i {
-  color: #11dbcf;
-}
-.highlight .iconbox-teal:hover .icon i {
-  color: #fff;
-}
-.highlight .iconbox-teal:hover .icon path {
-  fill: #11dbcf;
 }
 
 /*--------------------------------------------------------------
@@ -1706,46 +1595,3 @@ section {
 .content-of-invisible-div {
   background-color: blue;
 }
-
-/* expand item */
-
-.product-item {
-  height: 350px;
-  padding-bottom: -500px;
-  margin-bottom: -500px;
-}
-
-.product-item:hover  {
-  height:720px; /* chỉnh mục này */
-  position: relative;
-  padding-bottom: -300px;
-  margin-bottom: -500px; /* chỉnh bằng mục này */
-  transition: 1s ease;
-  /* transition-property: opacity;
-  -o-object-fit: cover;
-  object-fit: cover; */
-  
-}
-.product-item .product-info
-{
-  padding-top: 10px;
-  visibility: hidden;
-  height:0px;
-
-}
-
-.product-item:hover .product-info
-{
-  visibility: visible;
-  height:100px;
-  transition: 5s;
-}
-
-.product-item:hover img{
-  
-  transition-duration: 0.5s;
-  transition-timing-function: linear;
- /* transition-delay: 1s;  */
-  transform: translateY(-7px);
-}
-

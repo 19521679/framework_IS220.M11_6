@@ -1,14 +1,14 @@
 import Home from "../../Components/Home.js";
 import NotFoundPage from "./NotFoundPage.js";
-import Mobiles from "../../Components/Mobiles";
-import Computers from "../../Components/Computers";
-import ExDevice from "../../Components/ExDevices";
-import Services from "../../Components/Services";
+import Mobile from "../../Components/Mobile";
+import Computer from "../../Components/Computer";
+import ExDevice from "../../Components/ExDevice";
+import Service from "../../Components/Service";
 import Cart from "../../Components/Cart";
 import LMember from "../../Components/Accounts/LMember.js";
 import Login from "../../Components/Accounts/Login.js";
 import Register from "../../Components/Accounts/Register.js";
-
+import Product from "../../Components/Product";
 const routes= [
   {
     path: '/',
@@ -16,55 +16,55 @@ const routes= [
     main: ()=> <Home></Home>
   },
   // {
-  //   path: '/mobiles/:firm',
+  //   path: '/mobile/:firm',
   //   exact: true,
-  //   main: ({match})=><Mobiles match={match}></Mobiles>
+  //   main: ({match})=><Mobile match={match}></Mobile>
   // },
   {
-    path: '/mobiles/iphone',
+    path: '/mobile/iphone',
     exact: true,
-    main: ()=><Mobiles firm="iphone"></Mobiles>
+    main: ()=><Mobile firm="iphone"></Mobile>
   },
   {
-    path: '/mobiles/samsung',
+    path: '/mobile/samsung',
     exact: true,
-    main: ()=><Mobiles firm="samsung"></Mobiles>
+    main: ()=><Mobile firm="samsung"></Mobile>
   },
   {
-    path: '/mobiles/oppo',
+    path: '/mobile/oppo',
     exact: true,
-    main: ()=><Mobiles firm = "oppo"></Mobiles>
+    main: ()=><Mobile firm = "oppo"></Mobile>
   },
   {
-    path: '/mobiles/vivo',
+    path: '/mobile/vivo',
     exact: true,
-    main: ()=><Mobiles firm= "vivo"></Mobiles>
+    main: ()=><Mobile firm= "vivo"></Mobile>
   },
   {
-    path: '/mobiles/xiaomi',
+    path: '/mobile/xiaomi',
     exact: true,
-    main: ()=><Mobiles firm= "xiaomi"></Mobiles>
+    main: ()=><Mobile firm= "xiaomi"></Mobile>
   },
   {
-    path: '/mobiles',
+    path: '/mobile',
     exact: true,
-    main: ()=><Mobiles></Mobiles>
+    main: ()=><Mobile></Mobile>
   },
   
   {
-    path: '/computers',
+    path: '/computer',
     exact: false,
-    main: ()=><Computers></Computers>
+    main: ()=><Computer></Computer>
   },
   {
-    path: '/exdevices',
+    path: '/exdevice',
     exact: false,
     main: ()=><ExDevice></ExDevice>
   },
   {
-    path: '/services',
+    path: '/service',
     exact: false,
-    main: ()=><Services></Services>
+    main: ()=><Service></Service>
   },
   {
     path: '/cart',
@@ -85,6 +85,11 @@ const routes= [
     path: '/register',
     exact: false,
     main: ()=><Register></Register>
+  },
+  {
+    path: '/mobile/:productname/product',
+    exact: false,
+    main: ({match})=><Product match={match}></Product>
   },
   
   

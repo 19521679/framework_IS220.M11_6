@@ -80,9 +80,6 @@ export default class Product extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-4">
-                <span className="intended__final-prices">650.000đ</span>
-              </div>
               <div className="col-5">
                 <span
                   className="intended__delete"
@@ -98,6 +95,7 @@ export default class Product extends Component {
             </div>
           </div>
         </div>
+        <hr></hr>
       </div>
     );
   }

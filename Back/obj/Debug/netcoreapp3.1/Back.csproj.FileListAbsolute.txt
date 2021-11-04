@@ -85,7 +85,6 @@
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/obj/Debug/netcoreapp3.1/Back.dll
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/obj/Debug/netcoreapp3.1/Back.pdb
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/obj/Debug/netcoreapp3.1/Back.genruntimeconfig.cache
-/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/bin/Debug/netcoreapp3.1/Back.StaticWebAssets.xml
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/bin/Debug/netcoreapp3.1/Back
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/obj/Debug/netcoreapp3.1/Back.csproj.AssemblyReference.cache
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/obj/Debug/netcoreapp3.1/Back.GeneratedMSBuildEditorConfig.editorconfig

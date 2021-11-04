@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Trademark from "../Trademark";
 import "./style.css";
 import Carousel from "react-bootstrap/Carousel";
+import ProductItem from "../Product/ProductItem.js"
 
 export default class index extends Component {
   state = { sapxep: "" };
@@ -168,32 +169,7 @@ export default class index extends Component {
               <div className="container list-item " data-aos="fade-up">
                 <div className="row row-item">
                  
-                  <div
-                    className="col-lg-3 col-md-4 d-flex align-items-stretch col-lg-2 "
-                    data-aos="zoom-in"
-                    data-aos-delay={100}
-                    
-                  >
-                    <div className="icon-box iconbox-blue">
-                      <div className="icon">
-                        <img src="https://www.w3schools.com/images/colorpicker.gif"></img>
-                        <i className="bx bxl-dribbble" />
-                      </div>
-                      <h4>
-                        <a>Lorem Ipsum</a>
-                      </h4>
-                      <p>
-                        Voluptatum deleniti atque corrupti quos dolores et quas
-                        molestias excepturi asaasdasdasdasdasdasdasdasdasd
-                        asdasdasdasdasdasdas zxczxczxczxczxczxc
-                      </p>
-                      <div className="product-info">
-                        {" "}
-                        molestias excepturi asaasdasdasdasdasdasdasdasdasd
-                        asdasdasdasdasdasdas zxczxczxczxczxczxc
-                      </div>
-                    </div>
-                  </div>
+                  <ProductItem></ProductItem>
                   <div
                     className="col-lg-3 col-md-4 d-flex align-items-stretch col-lg-2 "
                     data-aos="zoom-in"

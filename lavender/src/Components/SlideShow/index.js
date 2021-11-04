@@ -52,11 +52,9 @@ export default class index extends Component {
                     : "product-img fade hidden"
                 }
               >
-                <div className="numbertext">
-                  {i}/{total}
-                </div>
-                <img className="main-img " src={myImage(i.toString())} />
-
+              
+                <img className="main-img box-shadow pink-shadow" src={myImage(i.toString())} />
+                
                 <a className="prev" onClick={this.preSlides}>
                   ❮
                 </a>

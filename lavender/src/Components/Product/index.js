@@ -82,28 +82,28 @@ export default class index extends Component {
                   <div className="list-linked">
                     <a
                       href="https://cellphones.com.vn/iphone-13-pro-max-1tb.html"
-                      className="item-linked linked-1 "
+                      className="item-linked linked-1 box-shadow"
                     >
                       <strong>1TB</strong>
                       <span>47.500.000&nbsp;₫</span>
                     </a>
                     <a
                       href="https://cellphones.com.vn/iphone-13-pro-max-512gb.html"
-                      className="item-linked linked-2 "
+                      className="item-linked linked-2 box-shadow"
                     >
                       <strong>512GB</strong>
                       <span>42.490.000&nbsp;₫</span>
                     </a>
                     <a
                       href="https://cellphones.com.vn/iphone-13-pro-max-256gb.html"
-                      className="item-linked linked-3 active"
+                      className="item-linked linked-3 active box-shadow"
                     >
                       <strong>256GB</strong>
                       <span>36.990.000&nbsp;₫</span>
                     </a>
                     <a
                       href="https://cellphones.com.vn/iphone-13-pro-max.html"
-                      className="item-linked linked-4 "
+                      className="item-linked linked-4 box-shadow"
                     >
                       <strong>128GB</strong>
                       <span>33.990.000&nbsp;₫</span>
@@ -121,7 +121,7 @@ export default class index extends Component {
                     <select
                       name="super_attribute[80]"
                       id="attribute80"
-                      className="required-entry super-attribute-select no-display swatch-select"
+                      className="required-entry super-attribute-select no-display swatch-select box-shadow"
                     >
                       <option value>Choose an Option...</option>
                       <option value={161} price={36990000} data-label="bạc">

@@ -2,6 +2,11 @@
   margin-top: 20px;
 }
 
+.product-item{
+    width: 279px !important;
+    height: 305px !important
+}
+
 .recommend-item {
   height: 34px;
   width: 300px;

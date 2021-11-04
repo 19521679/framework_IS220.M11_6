@@ -5,7 +5,7 @@ export default class ProductItem extends Component {
   render() {
     return (
       <div
-        className="col-lg-3 col-md-4 d-flex align-items-stretch col-lg-2 "
+        className="col-lg-3 col-md-4 d-flex align-items-stretch col-lg-2 product-item"
         data-aos="zoom-in"
         data-aos-delay={100}
       >

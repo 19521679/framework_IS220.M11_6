@@ -96,3 +96,7 @@
 .row-item {
   margin-top: 1px;
 }
+
+.carousel-item{
+  width: 100%;
+}

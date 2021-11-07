@@ -7,7 +7,7 @@ export const postRegister = () => {
   };
 };
 
-export const postRegisterSucces = (data) => {
+export const postRegisterSuccess = (data) => {
   console.log("Dang ky thanh cong");
   return {
     type: registerConst.POST_REGISTER_SUCCESS,
@@ -32,7 +32,7 @@ export const postRegisterReport = (res) => {
     registerApi
       .register(res)
       .then((res) => {
-        if (res.status===200) dispatch(postRegisterSucces(res));
+        if (res.status===200) dispatch(postRegisterSuccess(res));
         else dispatch(postRegisterFailed(res));
       })
       .catch((error) => {

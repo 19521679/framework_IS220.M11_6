@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 #nullable disable
 
@@ -11,11 +13,15 @@ namespace Back.Models
         {
             Sanphams = new HashSet<Sanpham>();
         }
-
+        [Key]
         public string Mathuonghieu { get; set; }
         public string Tenthuonghieu { get; set; }
         public string Xuatxu { get; set; }
 
         public  ICollection<Sanpham> Sanphams { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

@@ -1,36 +1,18 @@
 import React, { Component } from "react";
 import "./style.css";
-import _ from "lodash";
+// import _ from "lodash";
+import * as imageApi from "../apis/image";
 
-function importAll(r) {
-  return r.keys().map(r);
-}
-
-const images = importAll(
-  require.context("../../Asset/apple/iphone13", false, /\.(png|jpe?g|svg)$/)
-);
-
-const myImage = (name) => {
-  let img = null;
-  images.map((data) => {
-    if (data.default.includes(name)) img = data.default;
-    console.log("anhso:" + data.default);
-  });
-
-  return img;
-};
-
-const total = 6;
 export default class index extends Component {
   state = { slideIndex: 0 };
   nextSlides = () => {
     var n = this.state.slideIndex + 1;
-    if (n == total) n = 0;
+    if (n === this.props.sohinhanh) n = 0;
     this.setState({ slideIndex: n });
   };
   preSlides = () => {
     var n = this.state.slideIndex - 1;
-    if (n == -1) n = total - 1;
+    if (n === -1) n = this.props.sohinhanh - 1;
     this.setState({ slideIndex: n });
   };
   click = (n) => {
@@ -40,10 +22,8 @@ export default class index extends Component {
     return (
       <div className="box">
         {function () {
-          console.log("index=" + this.state.slideIndex);
-
           var result = [];
-          for (var i = 0; i < total; i++) {
+          for (var i = 0; i < this.props.sohinhanh; i++) {
             result.push(
               <div
                 className={
@@ -53,12 +33,12 @@ export default class index extends Component {
                 }
               >
               
-                <img className="main-img box-shadow pink-shadow" src={myImage(i.toString())} />
+                <img className="main-img box-shadow pink-shadow" alt="" src={imageApi.image(this.props.product.image, i)} />
                 
-                <a className="prev" onClick={this.preSlides}>
+                <a   className="prev" onClick={this.preSlides}>
                   ❮
                 </a>
-                <a className="next" onClick={this.nextSlides}>
+                <a   className="next" onClick={this.nextSlides}>
                   ❯
                 </a>
               </div>
@@ -68,16 +48,16 @@ export default class index extends Component {
         }.bind(this)()}
 
         {/* Image text */}
-        <div className="caption-box">
-          <p id="caption" />
+        <div className="caption-box" alt="">
+          <p id="caption" alt=""/>
         </div>
         {/* The dots/circles */}
         <div style={{ textAlign: "center" }}>
           {function () {
             // body
             var result = [];
-            for (var i = 0; i < total; i++) {
-              if (i == this.state.slideIndex) {
+            for (var i = 0; i < this.props.sohinhanh; i++) {
+              if (i === this.state.slideIndex) {
                 result.push(<span className="dot dotactive" />);
               } else result.push(<span className="dot" />);
             }
@@ -89,13 +69,13 @@ export default class index extends Component {
         <div className="row">
           {function () {
             var result = [];
-            for (var i = 0; i < total; i++) {
-              if (i == this.state.slideIndex) {
+            for (var i = 0; i < this.props.sohinhanh; i++) {
+              if (i === this.state.slideIndex) {
                 result.push(
                   <div className="mini-image">
                     <img
                       className="image-format mini-active"
-                      src={myImage(i.toString())}
+                      src={imageApi.image(this.props.product.image, i)}
                       style={{ width: "100%" }}
                       alt=""
                     />
@@ -106,7 +86,7 @@ export default class index extends Component {
                   <div className="mini-image">
                     <img
                       className="image-format demo cursor mini-inactive"
-                      src={myImage(i.toString())}
+                      src={imageApi.image(this.props.product.image, i)}
                       style={{ width: "100%" }}
                       alt=""
                       onClick={this.click.bind(this, i)}

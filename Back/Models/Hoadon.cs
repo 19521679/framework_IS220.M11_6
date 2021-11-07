@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 #nullable disable
 
@@ -12,7 +14,7 @@ namespace Back.Models
             Chitiethoadons = new HashSet<Chitiethoadon>();
             Vanchuyens = new HashSet<Vanchuyen>();
         }
-
+        [Key]
         public string Sohoadon { get; set; }
         public string Makhachhang { get; set; }
         public string Makhuyenmai { get; set; }
@@ -25,5 +27,9 @@ namespace Back.Models
         public Nhanvien ManhanvienNavigation { get; set; }
         public ICollection<Chitiethoadon> Chitiethoadons { get; set; }
         public ICollection<Vanchuyen> Vanchuyens { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

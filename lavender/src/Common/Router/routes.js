@@ -15,36 +15,36 @@ const routes= [
     exact: true,
     main: ()=> <Home></Home>
   },
+  {
+    path: '/:loai/:hang/:dong/:sanpham',
+    exact: false,
+    main: ({match})=><Product match={match}></Product>
+  },
   // {
-  //   path: '/mobile/:firm',
+  //   path: '/mobile/iphone',
   //   exact: true,
-  //   main: ({match})=><Mobile match={match}></Mobile>
+  //   main: ()=><Mobile firm="iphone"></Mobile>
   // },
-  {
-    path: '/mobile/iphone',
-    exact: true,
-    main: ()=><Mobile firm="iphone"></Mobile>
-  },
-  {
-    path: '/mobile/samsung',
-    exact: true,
-    main: ()=><Mobile firm="samsung"></Mobile>
-  },
-  {
-    path: '/mobile/oppo',
-    exact: true,
-    main: ()=><Mobile firm = "oppo"></Mobile>
-  },
-  {
-    path: '/mobile/vivo',
-    exact: true,
-    main: ()=><Mobile firm= "vivo"></Mobile>
-  },
-  {
-    path: '/mobile/xiaomi',
-    exact: true,
-    main: ()=><Mobile firm= "xiaomi"></Mobile>
-  },
+  // {
+  //   path: '/mobile/samsung',
+  //   exact: true,
+  //   main: ()=><Mobile firm="samsung"></Mobile>
+  // },
+  // {
+  //   path: '/mobile/oppo',
+  //   exact: true,
+  //   main: ()=><Mobile firm = "oppo"></Mobile>
+  // },
+  // {
+  //   path: '/mobile/vivo',
+  //   exact: true,
+  //   main: ()=><Mobile firm= "vivo"></Mobile>
+  // },
+  // {
+  //   path: '/mobile/xiaomi',
+  //   exact: true,
+  //   main: ()=><Mobile firm= "xiaomi"></Mobile>
+  // },
   {
     path: '/mobile',
     exact: true,

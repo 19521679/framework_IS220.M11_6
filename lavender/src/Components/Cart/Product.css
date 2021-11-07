@@ -16,26 +16,6 @@
   align-items: center;
   margin: 0px -15px;
 }
-.dioUnE .col-1 {
-  width: 398px;
-  padding: 0px 15px;
-}
-.dioUnE .col-2 {
-  width: 190px;
-  padding: 0px 15px;
-}
-.dioUnE .col-3 {
-  width: 130px;
-  padding: 0px 15px;
-}
-.dioUnE .col-4 {
-  width: 120px;
-  padding: 0px 15px;
-}
-.dioUnE .col-5 {
-  width: 50px;
-  text-align: right;
-}
 
 .glclPp .intended__images {
   display: flex;

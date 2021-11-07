@@ -2,11 +2,29 @@ import React, { Component } from "react";
 import "./Home.css";
 import Carousel from "react-bootstrap/Carousel";
 import ProductItem from "./Product/ProductItem.js";
+import * as mobileApi from "./apis/mobile";
 
 export default class Home extends Component {
-  click = () => {
-    console.log("homeclick");
-  };
+  state = { data: [] };
+
+  renderList() {
+    var result = [];
+    for (var i = 0; i < this.state.data.length; i++) {
+      result.push(<ProductItem product={this.state.data[i]}></ProductItem>);
+    }
+    return result;
+  }
+
+  componentDidMount() {
+    mobileApi
+      .mobile()
+      .then((success) => {
+        this.setState({ data: success.data.$values });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   render() {
     return (
       <section className="container">
@@ -73,7 +91,6 @@ export default class Home extends Component {
         <div className="row">
           <div className="box-title">
             <a
-              href="https://cellphones.com.vn/mobile.html"
               className="box-title__title"
             >
               <h2>Điện thoại nổi bật nhất</h2>
@@ -82,48 +99,40 @@ export default class Home extends Component {
               <div className="list-related-tag">
                 <a
                   className="btn btn-default btn-sm"
-                  href="https://cellphones.com.vn/mobile/apple.html"
                 >
                   Apple
                 </a>
                 <a
                   className="btn btn-default btn-sm"
-                  href="https://cellphones.com.vn/mobile/samsung.html"
                 >
                   Samsung
                 </a>
                 <a
                   className="btn btn-default btn-sm"
-                  href="https://cellphones.com.vn/mobile/xiaomi.html"
                 >
                   Xiaomi
                 </a>
                 <a
                   className="btn btn-default btn-sm"
-                  href="https://cellphones.com.vn/mobile/oppo.html"
                 >
                   OPPO
                 </a>
                 <a
                   className="btn btn-default btn-sm"
-                  href="https://cellphones.com.vn/mobile/realme.html"
                 >
                   Realme
                 </a>
                 <a
                   className="btn btn-default btn-sm"
-                  href="https://cellphones.com.vn/mobile/nokia.html"
                 >
                   Nokia
                 </a>
                 <a
                   className="btn btn-default btn-sm"
-                  href="https://cellphones.com.vn/mobile/vivo.html"
                 >
                   Vivo
                 </a>{" "}
                 <a
-                  href="https://cellphones.com.vn/mobile.html"
                   className="item-related-tag"
                 >
                   Xem tất cả
@@ -137,25 +146,13 @@ export default class Home extends Component {
 
         <div id="highlight" className="highlight section-bg">
           <div className="container list-item " data-aos="fade-up">
-            <div className="row row-item">
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-            </div>
-            <div className="row row-item">
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-            </div>
+            <div className="row row-item">{this.renderList()}</div>
           </div>
         </div>
 
         {/* Laptop nổi bật */}
         <div className="box-title">
           <a
-            href="https://cellphones.com.vn/laptop.html"
             className="box-title__title"
           >
             <h2>Laptop</h2>
@@ -164,42 +161,35 @@ export default class Home extends Component {
             <div className="list-related-tag">
               <a
                 className="btn btn-default btn-sm"
-                href="https://cellphones.com.vn/laptop/mac.html"
               >
                 Mac
               </a>
               <a
                 className="btn btn-default btn-sm"
-                href="https://cellphones.com.vn/laptop/asus.html"
               >
                 ASUS
               </a>
               <a
                 className="btn btn-default btn-sm"
-                href="https://cellphones.com.vn/laptop/hp.html"
               >
                 HP
               </a>
               <a
                 className="btn btn-default btn-sm"
-                href="https://cellphones.com.vn/laptop/surface.html"
               >
                 Microsoft Surface
               </a>
               <a
                 className="btn btn-default btn-sm"
-                href="https://cellphones.com.vn/laptop/msi.html"
               >
                 MSI
               </a>
               <a
                 className="btn btn-default btn-sm"
-                href="https://cellphones.com.vn/laptop/dell.html"
               >
                 Dell
               </a>{" "}
               <a
-                href="https://cellphones.com.vn/laptop.html"
                 className="item-related-tag"
               >
                 Xem tất cả
@@ -209,22 +199,161 @@ export default class Home extends Component {
         </div>
         {/* list-item */}
 
-        <div id="highlight" className="highlight section-bg">
-          <div className="container list-item " data-aos="fade-up">
+        <div className="highlight section-bg laptopnoibat">
+          <div className="container list-item2 " data-aos="fade-up">
             <div className="row row-item">
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-            </div>
-            <div className="row row-item">
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
-              <ProductItem></ProductItem>
             </div>
           </div>
         </div>
+
+        {/* Các thương hiệu */}
+        <a
+          id="widget_gearvn_brands"
+          style={{ display: "block", marginTop: "20px" }}
+        >
+          <div className="brands">
+            <div className="brand-header">
+              <h3>Thương hiệu sản phẩm</h3>
+              <a>Xem tất cả</a>
+            </div>
+            <div className="brand-body">
+              <div className="brand-items">
+                <div className="brch-row">
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/Intel-1.png"
+                        alt="Intel"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/09/logo_281x151-04.jpg"
+                        alt="Nvidia"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/amd.png"
+                        alt="AMDA"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/asus.png"
+                        alt="Asus"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/gigabyte.png"
+                        alt="Gigabyte"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/msi.png"
+                        alt="MSI"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/acer.png"
+                        alt="Acer"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/logitech.png"
+                        alt="Logitech"
+                      />
+                    </a>
+                  </div>
+                </div>
+                <div className="brch-row">
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/hYY5dAy9-1-1.png"
+                        alt="Apple"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/lg.png"
+                        alt="LG"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/samsung.png"
+                        alt="SAMSUNG"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/Kington.png"
+                        alt="Kington"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/Corsair-1.png"
+                        alt="Corsair"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/razer.png"
+                        alt="RAZER"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a>
+                      <img
+                        src="https://gstatic.gearvn.com/2021/08/Hyper.png"
+                        alt="Hyperx"
+                      />
+                    </a>
+                  </div>
+                  <div className="brand-item">
+                    <a href="/mua?filter_manufacturer=lenovo">
+                      <img
+                        src="https://gstatic.gearvn.com/2021/10/LenovoLogo-282x152-02.png"
+                        alt="Lenovo"
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
       </section>
     );
   }

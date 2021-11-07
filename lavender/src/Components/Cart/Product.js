@@ -21,10 +21,10 @@ export default class Product extends Component {
                     </label>
                   </div>
                   <a
+                  
                     className="intended__img"
                     data-view-id="cart_main_product"
                     data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
-                    href="/product-p135347804.html?spid=135347810"
                   >
                     <img
                       src="https://salt.tikicdn.com/cache/200x200/ts/product/95/e5/d5/c4444082f995a4782befa12a71b6f721.jpeg"
@@ -35,9 +35,9 @@ export default class Product extends Component {
                     <a
                       className="intended__name"
                       target="_blank"
+                      
                       data-view-id="cart_main_product"
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
-                      href="/product-p135347804.html?spid=135347810"
                     >
                       <img
                         src="https://salt.tikicdn.com/ts/upload/2a/47/46/0e038f5927f3af308b4500e5b243bcf6.png"

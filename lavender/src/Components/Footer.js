@@ -27,19 +27,19 @@ export default class Footer extends Component {
                     <ul>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Trang chủ</a>
+                        <a >Trang chủ</a>
                       </li>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Dịch vụ</a>
+                        <a >Dịch vụ</a>
                       </li>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Terms of service</a>
+                        <a >Terms of service</a>
                       </li>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Privacy policy</a>
+                        <a >Privacy policy</a>
                       </li>
                     </ul>
                   </div>
@@ -48,23 +48,23 @@ export default class Footer extends Component {
                     <ul>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Web Design</a>
+                        <a >Web Design</a>
                       </li>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Web Development</a>
+                        <a >Web Development</a>
                       </li>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Product Management</a>
+                        <a  >Product Management</a>
                       </li>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Marketing</a>
+                        <a >Marketing</a>
                       </li>
                       <li>
                         <i className="bx bx-chevron-right" />{" "}
-                        <a href="#">Graphic Design</a>
+                        <a >Graphic Design</a>
                       </li>
                     </ul>
                   </div>
@@ -74,7 +74,7 @@ export default class Footer extends Component {
                       Tamen quem nulla quae legam multos aute sint culpa legam
                       noster magna
                     </p>
-                    <form action method="post">
+                    <form>
                       <input type="email" name="email" />
                       <input type="submit" defaultValue="Subscribe" />
                     </form>
@@ -97,25 +97,25 @@ export default class Footer extends Component {
                   {/* Licensing information: https://bootstrapmade.com/license/ */}
                   {/* Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/onepage-multipurpose-bootstrap-template/ */}
                   Designed by{" "}
-                  <a href="https://bootstrapmade.com/">
+                  <a >
                     4 Anh em nhà Khờ, Vờ, Phờ
                   </a>
                 </div>
               </div>
               <div className="social-links text-center text-md-right pt-3 pt-md-0">
-                <a href="#" className="twitter">
+                <a >
                   <i className="bx bxl-twitter" />
                 </a>
-                <a href="#" className="facebook">
+                <a >
                   <i className="bx bxl-facebook" />
                 </a>
-                <a href="#" className="instagram">
+                <a >
                   <i className="bx bxl-instagram" />
                 </a>
-                <a href="#" className="google-plus">
+                <a >
                   <i className="bx bxl-skype" />
                 </a>
-                <a href="#" className="linkedin">
+                <a >
                   <i className="bx bxl-linkedin" />
                 </a>
               </div>

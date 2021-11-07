@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 #nullable disable
 
 namespace Back.Models
@@ -11,7 +12,7 @@ namespace Back.Models
         {
             Hoadons = new HashSet<Hoadon>();
         }
-
+        [Key]
         public string Makhuyenmai { get; set; }
         public string Tenkhuyenmai { get; set; }
         public double? Tilekhuyenmai { get; set; }
@@ -20,5 +21,9 @@ namespace Back.Models
         public string Dieukien { get; set; }
 
         public ICollection<Hoadon> Hoadons { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

@@ -21,7 +21,7 @@ class App extends React.Component {
         <Router>
           <div>
             <Header></Header>
-            <div className="">{this.showContentMenus(routes)}</div>
+            <div>{this.showContentMenus(routes)}</div>
             <Footer></Footer>
           </div>
         </Router>
@@ -33,10 +33,10 @@ class App extends React.Component {
     console.log(routes.length);
     var result = null;
     if (routes.length) {
-      result = routes.map((value, index) => {
+      result = routes.map((value, key) => {
         return (
           <Route
-            key={index}
+            key={key}
             path={value.path}
             exact={value.exact}
             component={value.main}

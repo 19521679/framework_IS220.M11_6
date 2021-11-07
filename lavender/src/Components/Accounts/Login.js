@@ -28,7 +28,7 @@ class Login extends Component {
                 <img
                   src="https://mdbootstrap.com/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
                   className="img-fluid"
-                  alt="Phone image"
+                  alt="Phone"
                 ></img>
               </div>
               <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
@@ -69,7 +69,7 @@ class Login extends Component {
                       Remember me{" "}
                     </label>
                   </div>
-                  <a>Forgot password?</a>
+                  <a >Forgot password?</a>
                 </div>
                 {/* Submit button */}
                 <button

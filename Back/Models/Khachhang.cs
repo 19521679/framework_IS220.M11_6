@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 #nullable disable
 
 namespace Back.Models
@@ -9,12 +10,8 @@ namespace Back.Models
     {
         public Khachhang()
         {
-            Danhgia = new HashSet<Danhgia>();
-            Giohangs = new HashSet<Giohang>();
-            Hoadons = new HashSet<Hoadon>();
-            Taikhoankhachhangs = new HashSet<Taikhoankhachhang>();
         }
-
+        [Key]
         public string Makhachhang { get; set; }
         public string Tenkhachhang { get; set; }
         public string Email { get; set; }
@@ -27,5 +24,9 @@ namespace Back.Models
         public ICollection<Giohang> Giohangs { get; set; }
         public ICollection<Hoadon> Hoadons { get; set; }
         public ICollection<Taikhoankhachhang> Taikhoankhachhangs { get; set; }
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

@@ -1,10 +1,52 @@
 import React, { Component } from "react";
 import "./style.css";
 import SlideShow from "../SlideShow";
+import * as mobileApi from "../apis/mobile";
 
-export default class index extends Component {
-  click = () => {
-    console.log("mobileclick");
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import * as cartAct from "../redux/actions/cartAct";
+import PropTypes from "prop-types";
+import { indexOf } from "lodash";
+import { withRouter } from "react-router-dom";
+
+class index extends Component {
+  state = { product: {}, sohinhanh: 0 };
+
+  componentDidMount() {
+    var { loai } = this.props.match.params;
+    var { hang } = this.props.match.params;
+    var { dong } = this.props.match.params;
+    var { sanpham } = this.props.match.params;
+    var query = `/${loai}/${hang}/${dong}/${sanpham}`;
+    mobileApi
+      .mobileInfo(query)
+      .then((success) => {
+        if (success.status == 200) {
+          this.setState({
+            product: success.data.value.$values[0],
+            sohinhanh: success.data.serializerSettings.sohinhanh - 1,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("error" + error);
+      });
+  }
+  addToCart = () => {
+    let email = localStorage.getItem("email");
+    let password = localStorage.getItem("password");
+    let { product } = this.state;
+    let { cartActionCreators } = this.props;
+
+    cartActionCreators.addToCartReport(
+      {
+        email: email,
+        password: password,
+        product: product,
+      },
+      this.props.history
+    );
   };
   render() {
     return (
@@ -13,7 +55,7 @@ export default class index extends Component {
           <div className="detail-product__box-name">
             <div className="cps-container">
               <div className="box-name__box-product-name">
-                <h1>iPhone 13 Pro Max | Chính hãng VN/A </h1>
+                <h1>{this.state.product.tensanpham} </h1>
               </div>
               <div className="box-name__box-raiting">
                 <i className="fas fa-star checked" />
@@ -26,14 +68,10 @@ export default class index extends Component {
               <div className="box-info__box-social ">
                 <div
                   className="fb-like fb_iframe_widget"
-                  data-href="https://cellphones.com.vn/iphone-13-pro-max.html"
                   data-layout="button_count"
-                  data-action="like"
                   data-show-faces="false"
                   data-share="true"
-                  fb-xfbml-state="rendered"
-                  fb-iframe-plugin-query="action=like&app_id=112980886043945&container_width=0&href=https%3A%2F%2Fcellphones.com.vn%2Fiphone-13-pro-max.html&layout=button_count&locale=vi_VN&sdk=joey&share=true&show_faces=false"
-                >
+                  fb-xfbml-state="rendered"                >
                   <span
                     style={{
                       verticalAlign: "bottom",
@@ -52,9 +90,6 @@ export default class index extends Component {
                       allowFullScreen="true"
                       scrolling="no"
                       allow="encrypted-media"
-                      src={
-                        "https://www.facebook.com/v2.5/plugins/like.php?action=like&app_id=112980886043945&channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df2b66aa4f998cd%26domain%3Dcellphones.com.vn%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fcellphones.com.vn%252Ff3850371964bd8%26relation%3Dparent.parent&container_width=0&href=https%3A%2F%2Fcellphones.com.vn%2Fiphone-13-pro-max.html&layout=button_count&locale=vi_VN&sdk=joey&share=true&show_faces=false"
-                      }
                       style={{
                         border: "none",
                         visibility: "visible",
@@ -72,37 +107,36 @@ export default class index extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <SlideShow></SlideShow>
+                <SlideShow
+                  product={this.state.product}
+                  sohinhanh={this.state.sohinhanh}
+                ></SlideShow>
               </div>
               <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <div id="price" className="price mt-5">
-                  36.490.000₫
+                  {this.state.product.dongia}₫
                 </div>
                 <div className="box-linked">
                   <div className="list-linked">
-                    <a
-                      href="https://cellphones.com.vn/iphone-13-pro-max-1tb.html"
+                    <a 
                       className="item-linked linked-1 box-shadow"
                     >
                       <strong>1TB</strong>
                       <span>47.500.000&nbsp;₫</span>
                     </a>
-                    <a
-                      href="https://cellphones.com.vn/iphone-13-pro-max-512gb.html"
+                    <a 
                       className="item-linked linked-2 box-shadow"
                     >
                       <strong>512GB</strong>
                       <span>42.490.000&nbsp;₫</span>
                     </a>
-                    <a
-                      href="https://cellphones.com.vn/iphone-13-pro-max-256gb.html"
+                    <a 
                       className="item-linked linked-3 active box-shadow"
                     >
                       <strong>256GB</strong>
                       <span>36.990.000&nbsp;₫</span>
                     </a>
-                    <a
-                      href="https://cellphones.com.vn/iphone-13-pro-max.html"
+                    <a 
                       className="item-linked linked-4 box-shadow"
                     >
                       <strong>128GB</strong>
@@ -144,8 +178,7 @@ export default class index extends Component {
                         data-id={36558}
                         data-stock={1}
                       >
-                        <a
-                          href="javascript:void(0)"
+                        <a 
                           name="b-c"
                           id="swatch161"
                           className="swatch-link swatch-link-80"
@@ -171,8 +204,7 @@ export default class index extends Component {
                         data-id={36560}
                         data-stock={1}
                       >
-                        <a
-                          href="javascript:void(0)"
+                        <a 
                           name="v-ng"
                           id="swatch157"
                           className="swatch-link swatch-link-80"
@@ -198,8 +230,7 @@ export default class index extends Component {
                         data-id={36559}
                         data-stock={1}
                       >
-                        <a
-                          href="javascript:void(0)"
+                        <a 
                           name="x-m"
                           id="swatch160"
                           className="swatch-link swatch-link-80"
@@ -220,8 +251,7 @@ export default class index extends Component {
                         </a>
                       </li>
                       <li id="option1075" className="item-color disable">
-                        <a
-                          href="javascript:void(0)"
+                        <a 
                           name="xanh"
                           id="swatch1075"
                           className="swatch-link swatch-link-80"
@@ -267,7 +297,7 @@ export default class index extends Component {
                   <div className="box-content">
                     <ul className="list-promotions">
                       <li className="item-promotion general-promotion">
-                        <a href="https://cellphones.com.vn/danh-sach-khuyen-mai#gift">
+                        <a > 
                           Giảm 1 triệu khi thanh toán qua ví Moca, thẻ tín dụng
                           ACB, BIDV, Sacombank, mPOS, Shinhan, Standard Charter
                           (số lượng có hạn)&nbsp;
@@ -275,7 +305,7 @@ export default class index extends Component {
                         </a>
                       </li>
                       <li className="item-promotion general-promotion">
-                        <a href="https://cellphones.com.vn/thu-cu-doi-moi">
+                        <a >
                           Thu cũ lên đời - Trợ giá 1 triệu&nbsp;
                           <span className="color-red">(xem chi tiết)</span>
                         </a>
@@ -283,7 +313,7 @@ export default class index extends Component {
                     </ul>
                     <div className="cps-additional-note">
                       <p>
-                        <a data-toggle="modal" data-target="#myModal">
+                        <a  data-toggle="modal" data-target="#myModal">
                           <strong className="color-red">
                             <img
                               src="/media/icon/icon_fire.png"
@@ -334,20 +364,22 @@ export default class index extends Component {
                 </div>
 
                 <div className="box-action-button">
-                  <a className="action-button button-red" onclick="addToCart()">
+                  <a
+                    className="action-button button-red"
+                    onClick={this.addToCart}
+                  >
                     <strong>MUA NGAY</strong>
                     <span>(Giao tận nơi hoặc lấy tại cửa hàng)</span>
                   </a>
                   <div className="group-button ">
-                    <a
-                      href="/tragop?p=iphone-13-pro-max-256gb&m=company"
+                    <a 
                       className="action-button button-blue"
                       style={{}}
                     >
                       <strong>TRẢ GÓP 0%</strong>
                       <span>(Xét duyệt qua điện thoại)</span>
                     </a>
-                    <a className="action-button button-blue" onclick="tragop()">
+                    <a  className="action-button button-blue">
                       <strong>TRẢ GÓP QUA THẺ</strong>
                       <span>(Visa, Master Card, JCB)</span>
                     </a>
@@ -361,3 +393,23 @@ export default class index extends Component {
     );
   }
 }
+index.propTypes = {
+  cartActionCreators: PropTypes.shape({
+    addToCartReport: PropTypes.func,
+  }),
+  email: PropTypes.string,
+  password: PropTypes.string,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    password: state.login.password,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    cartActionCreators: bindActionCreators(cartAct, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index));

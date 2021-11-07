@@ -13,9 +13,11 @@ const reducer = (state = initialState, action) => {
     }
     case loginConst.POST_LOGIN_SUCCESS: {
       const { data } = action.payload.data;
+      const username=  data.username;
+      const password =  data.password;
       localStorage.setItem("hasLogined", true);
-      localStorage.setItem("email", data.email);
-      localStorage.setItem("password", data.password);
+      localStorage.setItem("email", username);
+      localStorage.setItem("password", password);
       myToast.toastSucces("Đăng nhập thành công");
       return {
         ...state,

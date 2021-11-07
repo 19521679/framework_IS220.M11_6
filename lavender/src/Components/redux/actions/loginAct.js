@@ -7,8 +7,7 @@ export const postLogin = () => {
   };
 };
 
-export const postLoginSucces = (data) => {
-  console.log("Dang nhap thanh cong");
+export const postLoginSuccess = (data) => {
   return {
     type: loginConst.POST_LOGIN_SUCCESS,
     payload: {
@@ -18,7 +17,6 @@ export const postLoginSucces = (data) => {
 };
 
 export const postLoginFailed = (error) => {
-  console.log("Dang nhap khong thanh cong");
   return {
     type: loginConst.POST_LOGIN_FAILED,
     payload: {
@@ -27,12 +25,12 @@ export const postLoginFailed = (error) => {
   };
 };
 
-export const postLoginReport = (res) => {
+export const postLoginReport = (req) => {
   return (dispatch) => {
     loginApi
-      .login(res)
+      .login(req)
       .then((res) => {
-        if (res.status===200) dispatch(postLoginSucces(res));
+        if (res.status===200) dispatch(postLoginSuccess(res));
         else dispatch(postLoginFailed(res));
       })
       .catch((error) => {

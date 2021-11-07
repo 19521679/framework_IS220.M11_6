@@ -6,27 +6,43 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Back.Models.Account;
-using System.Web.Http.Cors;
+using Back.Models;
+using Newtonsoft.Json;
 
 namespace Back.Controllers
 {
     // [EnableCors(origins: "*", headers: "accept,content-type,origin,x-my-header", methods: "*")]
-    [Route("login")]
-    [ApiController]
 
+    [ApiController]
     public class LoginController : Controller
     {
         private readonly ILogger<LoginController> _logger;
-
-        public LoginController(ILogger<LoginController> logger)
+        lavenderContext lavenderContext;
+        public LoginController(ILogger<LoginController> logger, lavenderContext lavenderContext)
         {
             _logger = logger;
+            this.lavenderContext = lavenderContext;
         }
 
-        public IActionResult Login(LoginForm loginForm)
+        [Route("login")]
+        public IActionResult LoginKhachhang(LoginForm loginForm)
         {
             Console.WriteLine("Form: Login" + loginForm.ToString());
-            return StatusCode(200, loginForm);
+            var taikhoan = (from t in lavenderContext.Taikhoankhachhang
+                            where t.Username.Equals(loginForm.email)
+                            && t.Password.Equals(loginForm.password)
+                            select t).FirstOrDefault();
+            if (taikhoan == null) return StatusCode(401);
+            else
+            {
+                //var e = lavenderContext.Entry(taikhoan);
+                //e.Reference(t => t.MakhachhangNavigation).Load();
+                var khachhang = (from k in lavenderContext.Khachhang
+                                 where k.Makhachhang.Equals(taikhoan.Makhachhang)
+                                 select k).FirstOrDefault();
+                Console.WriteLine("taikhoan:" + taikhoan.ToString());
+                return StatusCode(200, taikhoan);
+            }
             //return NoContent();
         }
 

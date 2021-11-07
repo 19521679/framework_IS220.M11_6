@@ -16,10 +16,10 @@ const myImage = (name) => {
   let img = null;
   images.map((data) => {
     if (data.default.includes(name)) img = data.default;
+    return data.default;
   });
   return img;
 };
-//<img src={images['doggy.png']} />
 
 export default class index extends Component {
   mapTrademark = (type, mobiletrademark, laptoptrademark) => {
@@ -48,7 +48,6 @@ export default class index extends Component {
           </Link>
         );
       });
-      console.log("Loading: "+result);
     }
     return <Route>{result}</Route>;
   };

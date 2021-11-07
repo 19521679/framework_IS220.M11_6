@@ -9,6 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Routing.Constraints;
+using Back.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Back
 {
@@ -35,42 +41,24 @@ namespace Back
                     .AllowAnyHeader();
             }));
 
-            // services.AddDbContext<AppDbContext>(options =>
-            // {
-            //     string connectstring = Configuration.GetConnectionString("MyBlogContext");
-            //     options.UseSqlServer(connectstring);
-            // });
-            // // Đăng ký các dịch vụ của Identity
-            // services.AddIdentity<AppUser, IdentityRole>()
-            //     .AddEntityFrameworkStores<AppDbContext>()
-            //     .AddDefaultTokenProviders();
-
-            // // Truy cập IdentityOptions
-            // services.Configure<IdentityOptions>(options =>
-            // {
-            //     // Thiết lập về Password
-            //     options.Password.RequireDigit = false; // Không bắt phải có số
-            //     options.Password.RequireLowercase = false; // Không bắt phải có chữ thường
-            //     options.Password.RequireNonAlphanumeric = false; // Không bắt ký tự đặc biệt
-            //     options.Password.RequireUppercase = false; // Không bắt buộc chữ in
-            //     options.Password.RequiredLength = 3; // Số ký tự tối thiểu của password
-            //     options.Password.RequiredUniqueChars = 1; // Số ký tự riêng biệt
-
-            //     // Cấu hình Lockout - khóa user
-            //     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Khóa 5 phút
-            //     options.Lockout.MaxFailedAccessAttempts = 5; // Thất bại 5 lầ thì khóa
-            //     options.Lockout.AllowedForNewUsers = true;
-
-            //     // Cấu hình về User.
-            //     options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
-            //         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-            //     options.User.RequireUniqueEmail = true; // Email là duy nhất
-
-            //     // Cấu hình đăng nhập.
-            //     options.SignIn.RequireConfirmedEmail = true; // Cấu hình xác thực địa chỉ email (email phải tồn tại)
-            //     options.SignIn.RequireConfirmedPhoneNumber = false; // Xác thực số điện thoại
-
-            // });
+            services.AddDbContext<lavenderContext>(options =>
+            {
+                string connectstring = Configuration.GetConnectionString("AppMvcConnectionString");
+                options.UseMySQL(connectstring);
+            });
+            //services.AddMvc().AddJsonOptions(o =>
+            //{
+            //    o.JsonSerializerOptions.PropertyNamingPolicy = null;
+            //    o.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            //});
+            services.AddControllers(options =>
+            {
+                options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
+                options.OutputFormatters.Add(new SystemTextJsonOutputFormatter(new JsonSerializerOptions(JsonSerializerDefaults.Web)
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                }));
+            });
 
             // Cấu hình Cookie
             services.ConfigureApplicationCookie(options =>
@@ -81,17 +69,18 @@ namespace Back
                 options.LogoutPath = $"/logout/";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";   // Trang khi User bị cấm truy cập
             });
-    //         services.Configure<SecurityStampValidatorOptions>(options =>
-    //         {
-    // // Trên 5 giây truy cập lại sẽ nạp lại thông tin User (Role)
-    // // SecurityStamp trong bảng User đổi -> nạp lại thông tinn Security
-    // options.ValidationInterval = TimeSpan.FromSeconds(5);
-    //         });
+            //         services.Configure<SecurityStampValidatorOptions>(options =>
+            //         {
+            // // Trên 5 giây truy cập lại sẽ nạp lại thông tin User (Role)
+            // // SecurityStamp trong bảng User đổi -> nạp lại thông tinn Security
+            // options.ValidationInterval = TimeSpan.FromSeconds(5);
+            //         });
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ICorsService corsService, ICorsPolicyProvider corsPolicyProvider)
         {
             if (env.IsDevelopment())
             {
@@ -104,7 +93,20 @@ namespace Back
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ServeUnknownFileTypes = true,
+                OnPrepareResponse = (ctx) =>
+                {
+                    var policy = corsPolicyProvider.GetPolicyAsync(ctx.Context, "MyPolicy")
+                        .ConfigureAwait(false)
+                        .GetAwaiter().GetResult();
+
+                    var corsResult = corsService.EvaluatePolicy(ctx.Context, policy);
+
+                    corsService.ApplyResult(corsResult, ctx.Context.Response);
+                }
+            });
             // app.UseCors("MyPolicy");
             // app.UseCors(builder => builder
             //     .AllowAnyOrigin()

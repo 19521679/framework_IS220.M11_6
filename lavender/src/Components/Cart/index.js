@@ -34,7 +34,7 @@ export default class index extends Component {
                         </div>
                       </div>
                     </div>
-                    <div className="productsV2-content">
+                    <div className="productsV2-content pink-shadow">
                       <div>
                         <div
                           className="infinite-scroll-component "
@@ -110,7 +110,7 @@ export default class index extends Component {
                           data-view-id="platform_coupon.cart_coupon_view.all"
                           className="show-more"
                         >
-                          <img src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_icon.svg" />
+                          <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_icon.svg" />
                           <span>Chọn hoặc nhập Khuyến mãi </span>
                         </div>
                       </div>

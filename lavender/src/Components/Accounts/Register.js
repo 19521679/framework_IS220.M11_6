@@ -50,7 +50,7 @@ class Register extends Component {
                     role="tab"
                     aria-controls="home"
                     aria-selected="true"
-                    href="/#"
+                    
                   >
                     Employee
                   </a>
@@ -61,9 +61,9 @@ class Register extends Component {
                     id="profile-tab"
                     data-toggle="tab"
                     role="tab"
+                    
                     aria-controls="profile"
                     aria-selected="false"
-                    href="/#"
                   >
                     Hirer
                   </a>
@@ -149,9 +149,9 @@ class Register extends Component {
                             }
                           }}
                         />
-                        <label className="form-check-label" htmlFor="confirm" href="/#">
+                        <label className="form-check-label" htmlFor="confirm">
                           I agree all statements in{" "}
-                          <a href="/#">Terms of service</a>
+                          <a >Terms of service</a>
                         </label>
                       </div>
                     </form>

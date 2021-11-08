@@ -19,6 +19,7 @@ namespace Back.Models
         public string Sodienthoai { get; set; }
         public string Diachi { get; set; }
 
+        [JsonIgnore]
         public ICollection<Phieunhapsanpham> Phieunhapsanphams { get; set; }
         public override string ToString()
         {

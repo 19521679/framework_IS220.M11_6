@@ -7,7 +7,6 @@ const initialState = {
 const reducer = (state = initialState, action, history) => {
   switch (action.type) {
     case cartConst.ADD_TO_LOGIN: {
-
       history.push("/login");
       return { ...state };
     }
@@ -19,14 +18,27 @@ const reducer = (state = initialState, action, history) => {
       const product = data.product;
       myToast.toastSucces("Thêm vào giỏ hàng thành công");
       return {
-        
-        cart: {...state, product},
+        cart: { ...state, product }
       };
     }
     case cartConst.ADD_TO_CART_FAILED: {
       myToast.toastError("Thêm vào giỏ hàng thất bại");
       return { ...state };
-      
+    }
+
+    case cartConst.LOAD_CART: {
+      return { ...state };
+    }
+    case cartConst.LOAD_CART_SUCCESS: {
+      const { data } = action.payload;
+      let cart=  data.value.$values ;
+      return {
+        cart: { ...state, cart},
+      };
+    }
+    case cartConst.LOAD_CART_FAILED: {
+      myToast.toastError("Tải giỏ hàng thất bại");
+      return { ...state };
     }
     default:
       return state;

@@ -1,47 +1,45 @@
 ﻿<Properties StartupConfiguration="{95503883-8AF5-4A26-8F54-C10426599DFA}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/MobileController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/CartController.cs">
     <Files>
-      <File FileName="Controllers/MobileController.cs" Line="34" Column="1" />
-      <File FileName="Controllers/LoginController.cs" Line="34" Column="56" />
-      <File FileName="Controllers/ProductController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/ProductController (copy).cs" Line="48" Column="23" />
-      <File FileName="Models/Taikhoankhachhang.cs" Line="24" Column="1" />
+      <File FileName="Controllers/MobileController.cs" Line="38" Column="6" />
+      <File FileName="Controllers/LoginController.cs" Line="41" Column="61" />
+      <File FileName="Controllers/ProductController.cs" Line="57" Column="28" />
+      <File FileName="Models/Taikhoankhachhang.cs" Line="20" Column="1" />
       <File FileName="Models/Phieunhapsanpham.cs" Line="25" Column="26" />
-      <File FileName="Models/Baohanh.cs" Line="21" Column="9" />
-      <File FileName="Models/Chitietgiohang.cs" Line="20" Column="25" />
+      <File FileName="Models/Baohanh.cs" Line="15" Column="9" />
+      <File FileName="Models/Chitietgiohang.cs" Line="18" Column="40" />
       <File FileName="Models/Chitiethoadon.cs" Line="22" Column="26" />
-      <File FileName="Models/Chitietsanpham.cs" Line="29" Column="29" />
+      <File FileName="Models/Chitietsanpham.cs" Line="29" Column="42" />
       <File FileName="Models/Danhgia.cs" Line="25" Column="23" />
       <File FileName="Models/Giohang.cs" Line="18" Column="10" />
-      <File FileName="Models/Hoadon.cs" Line="32" Column="24" />
-      <File FileName="Models/Khachhang.cs" Line="29" Column="26" />
-      <File FileName="Models/Khuyenmai.cs" Line="26" Column="22" />
+      <File FileName="Models/Hoadon.cs" Line="30" Column="21" />
+      <File FileName="Models/Khachhang.cs" Line="29" Column="21" />
+      <File FileName="Models/Khuyenmai.cs" Line="23" Column="21" />
       <File FileName="Models/lavenderContext.cs" Line="238" Column="38" />
-      <File FileName="Models/Loaisanpham.cs" Line="23" Column="23" />
-      <File FileName="Models/Nhacungcap.cs" Line="25" Column="28" />
-      <File FileName="Models/Nhanvien.cs" Line="32" Column="25" />
-      <File FileName="Models/Thuonghieu.cs" Line="24" Column="27" />
-      <File FileName="Models/Sanpham.cs" Line="1" Column="1" />
+      <File FileName="Models/Loaisanpham.cs" Line="20" Column="21" />
+      <File FileName="Models/Nhacungcap.cs" Line="22" Column="21" />
+      <File FileName="Models/Nhanvien.cs" Line="30" Column="21" />
+      <File FileName="Models/Thuonghieu.cs" Line="21" Column="21" />
+      <File FileName="Models/Sanpham.cs" Line="34" Column="21" />
       <File FileName="Models/Account/LoginForm.cs" Line="12" Column="2" />
       <File FileName="Models/Cart/AddToCartForm.cs" Line="12" Column="27" />
       <File FileName="Models/Account/RegisterForm.cs" Line="1" Column="1" />
+      <File FileName="Controllers/CartController.cs" Line="102" Column="1" />
+      <File FileName="Startup.cs" Line="64" Column="21" />
+      <File FileName="Models/ErrorViewModel.cs" Line="1" Column="1" />
+      <File FileName="Models/Taikhoannhanvien.cs" Line="1" Column="1" />
+      <File FileName="Models/Vanchuyen.cs" Line="11" Column="6" />
+      <File FileName="Common/Baohanh.cs" Line="23" Column="10" />
+      <File FileName="Controllers/RegisterController.cs" Line="27" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Back" expanded="True">
             <Node name="Back" expanded="True">
-              <Node name="Dependencies" expanded="True">
-                <Node name="FrameworkReferences" expanded="True" />
-                <Node name="PackageDependencies" expanded="True" />
-              </Node>
-              <Node name="Controllers" expanded="True">
-                <Node name="MobileController.cs" selected="True" />
-              </Node>
-              <Node name="Models" expanded="True">
-                <Node name="Account" expanded="True" />
-                <Node name="Cart" expanded="True" />
-              </Node>
+              <Node name="Common" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True" />
             </Node>
           </Node>
         </State>

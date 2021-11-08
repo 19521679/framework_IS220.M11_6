@@ -25,7 +25,9 @@ namespace Back.Models
         public Khachhang MakhachhangNavigation { get; set; }
         public Khuyenmai MakhuyenmaiNavigation { get; set; }
         public Nhanvien ManhanvienNavigation { get; set; }
+        [JsonIgnore]
         public ICollection<Chitiethoadon> Chitiethoadons { get; set; }
+        [JsonIgnore]
         public ICollection<Vanchuyen> Vanchuyens { get; set; }
         public override string ToString()
         {

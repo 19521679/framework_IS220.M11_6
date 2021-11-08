@@ -22,7 +22,9 @@ namespace Back.Models
         public string Tinhtrang { get; set; }
 
         public Sanpham MasanphamNavigation { get; set; }
+        [JsonIgnore]
         public ICollection<Baohanh> Baohanhs { get; set; }
+        [JsonIgnore]
         public ICollection<Chitiethoadon> Chitiethoadons { get; set; }
         public override string ToString()
         {

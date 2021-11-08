@@ -20,9 +20,13 @@ namespace Back.Models
         public DateTime? Ngaysinh { get; set; }
         public string Loaikhachhang { get; set; }
 
+        [JsonIgnore]
         public ICollection<Danhgia> Danhgia { get; set; }
+        [JsonIgnore]
         public ICollection<Giohang> Giohangs { get; set; }
+        [JsonIgnore]
         public ICollection<Hoadon> Hoadons { get; set; }
+        [JsonIgnore]
         public ICollection<Taikhoankhachhang> Taikhoankhachhangs { get; set; }
         public override string ToString()
         {

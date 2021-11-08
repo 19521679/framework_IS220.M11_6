@@ -1,11 +1,39 @@
 import React, { Component } from "react";
 import "./style.css";
 import Product from "./Product.js";
+import { withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import * as cartAct from "../redux/actions/cartAct";
+import PropTypes from "prop-types";
 
-export default class index extends Component {
+class index extends Component {
+  pushProduct(){
+    const {cart}= this.props.cart;
+    if (cart===undefined) return;
+    console.log("cart"+cart);
+    let result = null;
+    if (cart.length > 0)
+    {
+      result=  cart.map((value, key) => {
+        console.log(key);
+        return <Product product= {value} key={key}></Product>
+      });
+    }
+    console.log("listPro:"+JSON.stringify(cart));
+    return result;
+  }
+  componentDidMount() {
+    const {cartActionCreators}= this.props;
+    const email= localStorage.getItem("email");
+    const password = "1";
+    cartActionCreators.loadCartReport(email, password);
+    this.forceUpdate();
+  }
   render() {
     return (
       <section>
+        {/* {() => window.location.reload()} */}
         <div className="cart">
           <div className="container">
             <div className="row">
@@ -42,8 +70,7 @@ export default class index extends Component {
                         >
                           <div className="styles__StyledIntendedSeller-sc-1dwh2vk-0 kTsjPS">
                             <div className="sellers">
-                              <Product></Product>
-                              <Product></Product>
+                              <div className="pustProduct">{this.pushProduct()}</div>
                               <div className="styles__StyledSellerDiscount-sc-rbk7cj-0 hIODeW">
                                 <div
                                   className="wrapper"
@@ -110,7 +137,10 @@ export default class index extends Component {
                           data-view-id="platform_coupon.cart_coupon_view.all"
                           className="show-more"
                         >
-                          <img alt="" src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_icon.svg" />
+                          <img
+                            alt=""
+                            src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_icon.svg"
+                          />
                           <span>Chọn hoặc nhập Khuyến mãi </span>
                         </div>
                       </div>
@@ -158,3 +188,23 @@ export default class index extends Component {
     );
   }
 }
+index.propTypes = {
+  cartActionCreators: PropTypes.shape({
+    loadCartReport: PropTypes.func,
+  }),
+  password: PropTypes.string,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    password: state.login.password,
+    cart: state.cart.cart
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    cartActionCreators: bindActionCreators(cartAct, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index));

@@ -17,6 +17,7 @@ namespace Back.Models
         public string Maloai { get; set; }
         public string Tenloai { get; set; }
 
+        [JsonIgnore]
         public ICollection<Sanpham> Sanphams { get; set; }
         public override string ToString()
         {

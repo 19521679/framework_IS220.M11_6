@@ -25,7 +25,9 @@ namespace Back.Models
         public DateTime? Ngaysinh { get; set; }
         public string Chucvu { get; set; }
 
+        [JsonIgnore]
         public ICollection<Hoadon> Hoadons { get; set; }
+        [JsonIgnore]
         public ICollection<Taikhoannhanvien> Taikhoannhanviens { get; set; }
         public override string ToString()
         {

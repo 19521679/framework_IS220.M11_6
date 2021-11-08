@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Back.Common;
 
 namespace Back
 {
@@ -58,6 +59,12 @@ namespace Back
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                 }));
+            });
+
+            services
+            .AddMvc(options =>
+            {
+                options.InputFormatters.Insert(0, new RawJsonBodyInputFormatter());
             });
 
             // Cấu hình Cookie

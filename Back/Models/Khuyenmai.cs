@@ -20,6 +20,7 @@ namespace Back.Models
         public DateTime? Ngayketthuc { get; set; }
         public string Dieukien { get; set; }
 
+        [JsonIgnore]
         public ICollection<Hoadon> Hoadons { get; set; }
         public override string ToString()
         {

@@ -1,11 +1,7 @@
 import "./App.css";
 import routes from "./Common/Router/routes.js";
 import { ToastContainer } from "react-toastify";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import React from "react";
@@ -34,12 +30,16 @@ class App extends React.Component {
     var result = null;
     if (routes.length) {
       result = routes.map((value, key) => {
+        let keyRan=key;
+        if (value.path === "/cart") keyRan = Date.now();
         return (
           <Route
             key={key}
             path={value.path}
             exact={value.exact}
             component={value.main}
+            keyProp={key}
+            key={keyRan}
           ></Route>
         );
       });

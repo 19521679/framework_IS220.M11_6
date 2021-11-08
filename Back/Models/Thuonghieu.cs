@@ -18,6 +18,7 @@ namespace Back.Models
         public string Tenthuonghieu { get; set; }
         public string Xuatxu { get; set; }
 
+        [JsonIgnore]
         public  ICollection<Sanpham> Sanphams { get; set; }
         public override string ToString()
         {

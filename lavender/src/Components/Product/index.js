@@ -397,7 +397,6 @@ index.propTypes = {
   cartActionCreators: PropTypes.shape({
     addToCartReport: PropTypes.func,
   }),
-  email: PropTypes.string,
   password: PropTypes.string,
 };
 

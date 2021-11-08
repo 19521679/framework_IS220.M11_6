@@ -27,7 +27,6 @@ namespace Back.Controllers
         [Route("login")]
         public IActionResult LoginKhachhang(LoginForm loginForm)
         {
-            Console.WriteLine("Form: Login" + loginForm.ToString());
             var taikhoan = (from t in lavenderContext.Taikhoankhachhang
                             where t.Username.Equals(loginForm.email)
                             && t.Password.Equals(loginForm.password)
@@ -40,7 +39,6 @@ namespace Back.Controllers
                 var khachhang = (from k in lavenderContext.Khachhang
                                  where k.Makhachhang.Equals(taikhoan.Makhachhang)
                                  select k).FirstOrDefault();
-                Console.WriteLine("taikhoan:" + taikhoan.ToString());
                 return StatusCode(200, taikhoan);
             }
             //return NoContent();

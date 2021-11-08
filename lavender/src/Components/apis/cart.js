@@ -1,12 +1,12 @@
 import axiosServices from "./axiosServices";
-import {API_ENDPOINT} from "../../Common/constants/index";
+import { API_ENDPOINT } from "../../Common/constants/index";
 
-const url="/cart";
-    
-export const cart=()=>{
-    return axiosServices.get(API_ENDPOINT+url);
+export const loadCart = (request) => {
+  const url = "/cart";
+  console.log(`${API_ENDPOINT}${url}?email=${request.email}&password=${request.password}`);
+  return axiosServices.get(`${API_ENDPOINT}${url}?email=${request.email}&password=${request.password}`);
 };
-export const addToCart=(data)=>{
-    console.log("data"+JSON.stringify(data));
-    return axiosServices.post(API_ENDPOINT+url,data);
+export const addToCart = (data) => {
+    const url="/add-to-cart";
+  return axiosServices.post(API_ENDPOINT + url, data);
 };

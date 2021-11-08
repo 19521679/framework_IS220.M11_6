@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import "./Product.css";
+import * as imageApi from "../apis/image";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-export default class Product extends Component {
+class Product extends Component {
+  changeQuantity(){
+
+  }
   render() {
     return (
       <div className="styles__StyledIntended-sc-1dwh2vk-1 bQOXDC">
@@ -27,8 +33,8 @@ export default class Product extends Component {
                     data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                   >
                     <img
-                      src="https://salt.tikicdn.com/cache/200x200/ts/product/95/e5/d5/c4444082f995a4782befa12a71b6f721.jpeg"
-                      alt="Bộ gội xả Nấm Truffle Weilaiya phục hồi đa tầng, giúp tóc mềm mượt  900ml - Dầu xả"
+                    src={imageApi.image(this.props.product.image, 0)}
+                      alt="icon"
                     />
                   </a>
                   <div className="intended__content">
@@ -44,14 +50,16 @@ export default class Product extends Component {
                         alt="tiki-fast"
                         className="intended__icon intended__icon--fast"
                       />
-                      Bộ gội xả Nấm Truffle Weilaiya phục hồi đa tầng, giúp tóc
-                      mềm mượt 900ml - Dầu xả
+                      <div className="product-name">
+                      {this.props.product.tensanpham}
+                      </div>
+                      
                     </a>
                   </div>
                 </div>
               </div>
               <div className="col-2">
-                <span className="intended__real-prices">650.000đ</span>
+                <span className="intended__real-prices">{this.props.product.dongia}₫</span>
               </div>
               <div className="col-3">
                 <div className="intended-qty">
@@ -66,7 +74,7 @@ export default class Product extends Component {
                         alt="decrease"
                       />
                     </span>
-                    <input type="tel" className="qty-input" defaultValue={1} />
+                    <input type="tel" className="qty-input" id="quantity" defaultValue={1} onChange={this.changeQuantity}/>
                     <span
                       data-view-id="cart_main_quantity.increase"
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
@@ -100,3 +108,15 @@ export default class Product extends Component {
     );
   }
 }
+
+Product.propTypes = {
+  cart: PropTypes.object,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    cart: state.cart.cart
+  };
+};
+
+export default connect(mapStateToProps)(Product);

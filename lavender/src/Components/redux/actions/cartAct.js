@@ -35,7 +35,11 @@ export const addToLogin = () => {
 
 export const addToCartReport = (oldreq, history) => {
   console.log(oldreq);
-  var req= {email:oldreq.email, password:oldreq.password, productid:oldreq.product.masanpham};
+  var req = {
+    email: oldreq.email,
+    password: oldreq.password,
+    masanpham: oldreq.product.masanpham,
+  };
   if (localStorage.setItem("hasLogined", false))
     return (dispatch) => {
       dispatch(addToLogin(history));
@@ -53,4 +57,45 @@ export const addToCartReport = (oldreq, history) => {
         });
     };
   }
+};
+
+/* Xem gio hang */
+export const loadCart = () => {
+  return {
+    type: cartConst.LOAD_CART
+  };
+};
+
+export const loadCartSuccess = (res) => {
+  return {
+    type: cartConst.LOAD_CART_SUCCESS,
+    payload: {
+      data: res.data
+    },
+  };
+};
+
+export const loadCartFailed = (error) => {
+  return {
+    type: cartConst.LOAD_CART_FAILED,
+    payload: {
+      error,
+    },
+  };
+};
+
+export const loadCartReport = (email, password) => {
+  let request = { email: email, password: password };
+  return (dispatch) => {
+    cartApi
+      .loadCart(request)
+      .then((res) => {
+        if (res.status === 200) dispatch(loadCartSuccess(res));
+        else if (res.status===404) dispatch(loadCart(res));
+        else dispatch(loadCartFailed(res));
+      })
+      .catch((error) => {
+        dispatch(loadCartFailed(error));
+      });
+  };
 };

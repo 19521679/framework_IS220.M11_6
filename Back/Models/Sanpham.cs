@@ -25,9 +25,13 @@ namespace Back.Models
 
         public Loaisanpham MaloaiNavigation { get; set; }
         public Thuonghieu MathuonghieuNavigation { get; set; }
+        [JsonIgnore]
         public ICollection<Chitietgiohang> Chitietgiohangs { get; set; }
+        [JsonIgnore]
         public ICollection<Chitietsanpham> Chitietsanphams { get; set; }
+        [JsonIgnore]
         public ICollection<Danhgia> Danhgia { get; set; }
+        [JsonIgnore]
         public ICollection<Phieunhapsanpham> Phieunhapsanphams { get; set; }
         public override string ToString()
         {

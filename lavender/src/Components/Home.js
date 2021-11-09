@@ -10,7 +10,7 @@ export default class Home extends Component {
   renderList() {
     var result = [];
     for (var i = 0; i < this.state.data.length; i++) {
-      result.push(<ProductItem product={this.state.data[i]}></ProductItem>);
+      result.push(<ProductItem key={i} product={this.state.data[i]}></ProductItem>);
     }
     return result;
   }

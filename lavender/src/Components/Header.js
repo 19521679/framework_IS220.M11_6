@@ -198,7 +198,6 @@ class Header extends Component {
           <h1 className="logo">
             <Link to="/">Lavender</Link>
           </h1>
-          {/* Uncomment below if you prefer to use an image logo */}
           <nav id="navbar" className="navbar">
             <ul>
               {showMenu(menus)}
@@ -214,7 +213,7 @@ class Header extends Component {
                   >
                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                   </svg>
-                  <a >Giỏ hàng</a>
+                 Giỏ hàng
                 </Link>
               </li>
               {hasLogined ? (
@@ -234,7 +233,7 @@ class Header extends Component {
                         d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                       />
                     </svg>
-                    <a >LMember</a>
+                    LMember
                   </Link>
                 </li>
               ) : (
@@ -254,7 +253,7 @@ class Header extends Component {
                         d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
                       />
                     </svg>
-                    <a >Login</a>
+                    Login
                   </Link>
                 </li>
               )}

@@ -1,7 +1,11 @@
 import "./App.css";
 import routes from "./Common/Router/routes.js";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  withRouter,
+} from "react-router-dom";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import React from "react";
@@ -13,20 +17,13 @@ const store = configureStore();
 class App extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-        <ToastContainer />
-        <Router>
-        <Route
-            key="admin"
-            path="/admin"
-            exact={true}
-            component={() => <Admin></Admin>}
-          ></Route>
-          <Header></Header>
-          <div>{this.showContentMenus(routes)}</div>
-          <Footer></Footer>
-        </Router>
-      </Provider>
+        <Provider store={store}>
+          <ToastContainer />
+
+          {this.props.location.pathname !== "/admin" ? <Header /> : null}
+          {this.showContentMenus(routes)}
+          {this.props.location.pathname !== "/admin" ? <Footer /> : null}
+        </Provider>
     );
   }
 
@@ -52,4 +49,4 @@ class App extends React.Component {
   };
 }
 
-export default App;
+export default withRouter(App);

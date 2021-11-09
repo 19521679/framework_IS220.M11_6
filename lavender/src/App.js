@@ -7,6 +7,7 @@ import Footer from "./Components/Footer";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "./Components/redux/configureStore";
+import Admin from "./Components/Admin";
 
 const store = configureStore();
 class App extends React.Component {
@@ -15,26 +16,29 @@ class App extends React.Component {
       <Provider store={store}>
         <ToastContainer />
         <Router>
-          <div>
-            <Header></Header>
-            <div>{this.showContentMenus(routes)}</div>
-            <Footer></Footer>
-          </div>
+        <Route
+            key="admin"
+            path="/admin"
+            exact={true}
+            component={() => <Admin></Admin>}
+          ></Route>
+          <Header></Header>
+          <div>{this.showContentMenus(routes)}</div>
+          <Footer></Footer>
         </Router>
       </Provider>
     );
   }
 
   showContentMenus = (routes) => {
-    console.log(routes.length);
     var result = null;
     if (routes.length) {
       result = routes.map((value, key) => {
-        let keyRan=key;
+        let keyRan = key;
         if (value.path === "/cart") keyRan = Date.now();
+        if (value.path === "admin") return;
         return (
           <Route
-            key={key}
             path={value.path}
             exact={value.exact}
             component={value.main}

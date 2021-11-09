@@ -9,6 +9,7 @@ import LMember from "../../Components/Accounts/LMember.js";
 import Login from "../../Components/Accounts/Login.js";
 import Register from "../../Components/Accounts/Register.js";
 import Product from "../../Components/Product";
+import Admin from "../../Components/Admin";
 const routes= [
   {
     path: '/',
@@ -91,7 +92,11 @@ const routes= [
     exact: false,
     main: ({match})=><Product match={match}></Product>
   },
-  
+  {
+    path: '/admin',
+    exact: false,
+    main: ()=><Admin></Admin>
+  },
   
   // {
   //   path: '/product/add',

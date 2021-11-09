@@ -78,7 +78,6 @@ namespace Back.Controllers
         //        return StatusCode(200, Json(chitietgiohang));
         //    }
         //    return StatusCode(401);
-
         //}
         [Route("/cart")]
         [HttpGet]

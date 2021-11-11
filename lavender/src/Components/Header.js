@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as loginAct from "./redux/actions/loginAct";
 import PropTypes from "prop-types";
-
+import logo from "../Asset/logo/logo.png";
 const menus = [
   {
     name: "Trang chủ",
@@ -70,16 +70,13 @@ const menus = [
   },
 ];
 
-var MenuLink = ({ lable, to, activeOnlyWhenExact, list }) => {
+var MenuLink = ({ lable, to, activeOnlyWhenExact }) => {
   return (
     <Route
       path={to}
       exact={activeOnlyWhenExact}
       children={({ match }) => {
         var active = match ? "active" : "";
-        if (list.length != 0) {
-          return showItemDown(lable, to, match, list);
-        } else {
           return (
             <li>
               <Link className={active} to={to}>
@@ -88,54 +85,54 @@ var MenuLink = ({ lable, to, activeOnlyWhenExact, list }) => {
             </li>
           );
         }
-      }}
+      }
     ></Route>
   );
 };
 
-var ItemLink = ( {lable, to} ) => {
-  return (
-    <Route
-      path={to}
-      children={({ match }) => {
-        var active = match ? "active" : "";
-        return (
-          <li>
-            <Link className="nav-link scrollto" className={active} to={to}>
-              {lable}
-            </Link>
-          </li>
-        );
-      }}
-    ></Route>
-  );
-};
+// var ItemLink = ( {lable, to} ) => {
+//   return (
+//     <Route
+//       path={to}
+//       children={({ match }) => {
+//         var active = match ? "active" : "";
+//         return (
+//           <li>
+//             <Link className="nav-link scrollto" className={active} to={to}>
+//               {lable}
+//             </Link>
+//           </li>
+//         );
+//       }}
+//     ></Route>
+//   );
+// };
 
-var showItemDown = (lable, to, match, list) => {
-  var result = null;
-  var active = match ? "active" : "";
-  result = (
-    <li className="dropdown">
-      <Link className={active} to={to}>
-        <span>{lable}</span> <i className="bi bi-chevron-down" />
-      </Link>
-      <ul>
-        {list.map((value, key) => {
-          return (
-            <ItemLink
-              key={key}
-              lable={value.name}
-              to={to + value.to}
-              match={match}
-              list={value.list}
-            ></ItemLink>
-          );
-        })}
-      </ul>
-    </li>
-  );
-  return result;
-};
+// var showItemDown = (lable, to, match, list) => {
+//   var result = null;
+//   var active = match ? "active" : "";
+//   result = (
+//     <li className="dropdown">
+//       <Link className={active} to={to}>
+//         <span>{lable}</span> <i className="bi bi-chevron-down" />
+//       </Link>
+//       <ul>
+//         {list.map((value, key) => {
+//           return (
+//             <ItemLink
+//               key={key}
+//               lable={value.name}
+//               to={to + value.to}
+//               match={match}
+//               list={value.list}
+//             ></ItemLink>
+//           );
+//         })}
+//       </ul>
+//     </li>
+//   );
+//   return result;
+// };
 
 // var showItemRight = (lable, to, match, list) => {
 //   var result = null;
@@ -195,10 +192,11 @@ class Header extends Component {
     return (
       <header id="header" className="fixed-top">
         <div className="container d-flex align-items-center justify-content-between">
+          <img alt="logo-img" className="logo-img" src={logo}></img>
           <h1 className="logo">
             <Link to="/">Lavender</Link>
           </h1>
-          <nav id="navbar" className="navbar">
+          <div id="navbar" className="navbar">
             <ul>
               {showMenu(menus)}
               <li>
@@ -259,7 +257,7 @@ class Header extends Component {
               )}
             </ul>
             <i className="bi bi-list mobile-nav-toggle" />
-          </nav>
+          </div>
           {/* .navbar */}
         </div>
       </header>

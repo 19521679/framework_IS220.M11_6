@@ -7,11 +7,46 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as cartAct from "../redux/actions/cartAct";
 import PropTypes from "prop-types";
-import { indexOf } from "lodash";
+// import { indexOf } from "lodash";
 import { withRouter } from "react-router-dom";
 
+function Mota(props) {
+  return <h1>Mô tả</h1>;
+}
+
+function Thongso(props) {
+  return <h1>Thông số kỹ thuật</h1>;
+}
+
+function Danhgia(props) {
+  return <h1>Đánh giá</h1>;
+}
+
 class index extends Component {
-  state = { product: {}, sohinhanh: 0 };
+  state = { product: {}, sohinhanh: 0, active: 0 };
+  renderTab(n) {
+    switch (n) {
+      case 0:
+        return <i className="material-icons">Mô tả</i>;
+      case 1:
+        return <i className="material-icons">Thông số kỹ thuật</i>;
+      case 2:
+        return <i className="material-icons">Đánh giá</i>;
+    }
+  }
+  click = (n) => {
+    this.setState({ active: n });
+  };
+  renderItem(n) {
+    switch (n) {
+      case 0:
+        return <Mota></Mota>;
+      case 1:
+        return <Thongso></Thongso>;
+      case 2:
+        return <Danhgia></Danhgia>;
+    }
+  }
 
   componentDidMount() {
     var { loai } = this.props.match.params;
@@ -71,7 +106,8 @@ class index extends Component {
                   data-layout="button_count"
                   data-show-faces="false"
                   data-share="true"
-                  fb-xfbml-state="rendered"                >
+                  fb-xfbml-state="rendered"
+                >
                   <span
                     style={{
                       verticalAlign: "bottom",
@@ -118,27 +154,19 @@ class index extends Component {
                 </div>
                 <div className="box-linked">
                   <div className="list-linked">
-                    <a 
-                      className="item-linked linked-1 box-shadow"
-                    >
+                    <a className="item-linked linked-1 box-shadow">
                       <strong>1TB</strong>
                       <span>47.500.000&nbsp;₫</span>
                     </a>
-                    <a 
-                      className="item-linked linked-2 box-shadow"
-                    >
+                    <a className="item-linked linked-2 box-shadow">
                       <strong>512GB</strong>
                       <span>42.490.000&nbsp;₫</span>
                     </a>
-                    <a 
-                      className="item-linked linked-3 active box-shadow"
-                    >
+                    <a className="item-linked linked-3 active box-shadow">
                       <strong>256GB</strong>
                       <span>36.990.000&nbsp;₫</span>
                     </a>
-                    <a 
-                      className="item-linked linked-4 box-shadow"
-                    >
+                    <a className="item-linked linked-4 box-shadow">
                       <strong>128GB</strong>
                       <span>33.990.000&nbsp;₫</span>
                     </a>
@@ -178,7 +206,7 @@ class index extends Component {
                         data-id={36558}
                         data-stock={1}
                       >
-                        <a 
+                        <a
                           name="b-c"
                           id="swatch161"
                           className="swatch-link swatch-link-80"
@@ -204,7 +232,7 @@ class index extends Component {
                         data-id={36560}
                         data-stock={1}
                       >
-                        <a 
+                        <a
                           name="v-ng"
                           id="swatch157"
                           className="swatch-link swatch-link-80"
@@ -230,7 +258,7 @@ class index extends Component {
                         data-id={36559}
                         data-stock={1}
                       >
-                        <a 
+                        <a
                           name="x-m"
                           id="swatch160"
                           className="swatch-link swatch-link-80"
@@ -251,7 +279,7 @@ class index extends Component {
                         </a>
                       </li>
                       <li id="option1075" className="item-color disable">
-                        <a 
+                        <a
                           name="xanh"
                           id="swatch1075"
                           className="swatch-link swatch-link-80"
@@ -297,7 +325,7 @@ class index extends Component {
                   <div className="box-content">
                     <ul className="list-promotions">
                       <li className="item-promotion general-promotion">
-                        <a > 
+                        <a>
                           Giảm 1 triệu khi thanh toán qua ví Moca, thẻ tín dụng
                           ACB, BIDV, Sacombank, mPOS, Shinhan, Standard Charter
                           (số lượng có hạn)&nbsp;
@@ -305,7 +333,7 @@ class index extends Component {
                         </a>
                       </li>
                       <li className="item-promotion general-promotion">
-                        <a >
+                        <a>
                           Thu cũ lên đời - Trợ giá 1 triệu&nbsp;
                           <span className="color-red">(xem chi tiết)</span>
                         </a>
@@ -313,7 +341,7 @@ class index extends Component {
                     </ul>
                     <div className="cps-additional-note">
                       <p>
-                        <a  data-toggle="modal" data-target="#myModal">
+                        <a data-toggle="modal" data-target="#myModal">
                           <strong className="color-red">
                             <img
                               src="/media/icon/icon_fire.png"
@@ -372,20 +400,96 @@ class index extends Component {
                     <span>(Giao tận nơi hoặc lấy tại cửa hàng)</span>
                   </a>
                   <div className="group-button ">
-                    <a 
-                      className="action-button button-blue"
-                      style={{}}
-                    >
+                    <a className="action-button button-blue" style={{}}>
                       <strong>TRẢ GÓP 0%</strong>
                       <span>(Xét duyệt qua điện thoại)</span>
                     </a>
-                    <a  className="action-button button-blue">
+                    <a className="action-button button-blue">
                       <strong>TRẢ GÓP QUA THẺ</strong>
                       <span>(Visa, Master Card, JCB)</span>
                     </a>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* phần thôn tin thêm */}
+          <div className="row">
+            <div className="col-md-12">
+              {/* Tabs with icons on Card */}
+              <div className="card card-nav-tabs">
+                <div className="card-header card-header-primary">
+                  {/* colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" */}
+                  <div className="nav-tabs-navigation">
+                    <div className="nav-tabs-wrapper">
+                      <ul className="nav nav-tabs" data-tabs="tabs">
+                        {function () {
+                          var result = [];
+                          for (var i = 0; i < 3; i++) {
+                            if (i === this.state.active) {
+                              result.push(
+                                <li
+                                  className="nav-item"
+                                  onClick={this.click.bind(this, i)}
+                                >
+                                  <a
+                                    className="nav-link active"
+                                    id="nav-link"
+                                    data-toggle="tab"
+                                  >
+                                    {this.renderTab(i)}
+                                  </a>
+                                </li>
+                              );
+                            } else {
+                              result.push(
+                                <li
+                                  className="nav-item"
+                                  onClick={this.click.bind(this, i)}
+                                >
+                                  <a
+                                    className="nav-link"
+                                    id="nav-link"
+                                    data-toggle="tab"
+                                  >
+                                    {this.renderTab(i)}
+                                  </a>
+                                </li>
+                              );
+                            }
+                          }
+                          return result;
+                        }.bind(this)()}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="card-body ">
+                  <div className="tab-content text-center">
+                    {(function () {
+                      var result = [];
+                      for (var i = 0; i < 3; i++) {
+                        if (i === this.state.active) {
+                          result.push(
+                            <div className="tab-pane active" id="tab-pane">
+                              {this.renderTab(i)}
+                            </div>
+                          );
+                        } else {
+                          result.push(
+                            <div className="tab-pane" id="tab-pane">
+                              {this.renderTab(i)}
+                            </div>
+                          );
+                        }
+                      }
+                      return result;
+                    }).bind(this)()}
+                  </div>
+                </div>
+              </div>
+              {/* End Tabs with icons on Card */}
             </div>
           </div>
         </div>

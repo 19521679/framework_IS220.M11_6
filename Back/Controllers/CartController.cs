@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Back.Models;
 using Back.Models.Account;
@@ -35,11 +36,11 @@ namespace Back.Controllers
 
         [Route("/add-to-cart")]
         [HttpPost]
-        public async Task<IActionResult> AddToCart(AddToCartForm form)
+        public async Task<IActionResult> AddToCart(JsonElement form)
         {
             var taikhoan = await (from t in lavenderContext.Taikhoankhachhang
-                                  where t.Username.Equals(form.email)
-                                  && t.Password.Equals(form.password)
+                                  where t.Username.Equals(form.GetString("email"))
+                                  && t.Password.Equals(form.GetString("password"))
                                   select t).FirstOrDefaultAsync();
             if (taikhoan == null) return StatusCode(401);
             else
@@ -83,7 +84,6 @@ namespace Back.Controllers
         [HttpGet]
         public async Task<IActionResult> Cart(string email, string password)
         {
-            Console.WriteLine("cart" + email + password);
             var khachhangid = await (from t in lavenderContext.Taikhoankhachhang
                                      where t.Username.Equals(email)
                                      && t.Password.Equals(password)
@@ -111,6 +111,37 @@ namespace Back.Controllers
             return StatusCode(401);
 
         }
+
+        [Route("/cart/{khachhangid}/delete")]
+        [HttpDelete]
+        public async Task<IActionResult> deleteProduct (string khachhangid, string productid)
+        {
+            Console.WriteLine("cart" + khachhangid + productid);
+            var giohangid = await (from g in lavenderContext.Giohang
+                           where g.Makhachhang.Equals(khachhangid)
+                           select g.Magiohang
+                          ).FirstOrDefaultAsync();
+            var chitietgiohang = await (from c in lavenderContext.Chitietgiohang
+                                  where c.Magiohang.Equals(giohangid)
+                                  select c).FirstOrDefaultAsync();
+            lavenderContext.Remove(chitietgiohang);
+            await lavenderContext.SaveChangesAsync();
+
+            if (giohangid == null) return StatusCode(404);
+            var chitietgiohangs = await (from c in lavenderContext.Chitietgiohang
+                                         where c.Magiohang.Equals(giohangid)
+                                         select c).ToListAsync();
+            List<Sanpham> sanphams = new List<Sanpham>();
+            foreach (var c in chitietgiohangs)
+            {
+                var e = lavenderContext.Entry(c);
+                await e.Reference(c => c.MasanphamNavigation).LoadAsync();
+                sanphams.Add(c.MasanphamNavigation);
+            }
+
+            return StatusCode(200, Json(sanphams));
+        }
+
     }
 
 }

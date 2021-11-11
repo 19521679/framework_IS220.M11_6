@@ -40,6 +40,25 @@ const reducer = (state = initialState, action, history) => {
       myToast.toastError("Tải giỏ hàng thất bại");
       return { ...state };
     }
+
+    /*Xoa san pham*/
+
+    case cartConst.DELETE_PRODUCT: {
+      return { ...state };
+    }
+    case cartConst.DELETE_PRODUCT_SUCCESS: {
+      const { data } = action.payload;
+      let cart=  data.value.$values ;
+      console.log("cart"+cart);
+      return {
+        cart: { ...state, cart},
+      };
+    }
+    case cartConst.DELETE_PRODUCT_FAILED: {
+      myToast.toastError("Xoá sản phẩm hàng thất bại");
+      console.log("thatbat");
+      return { ...state };
+    }
     default:
       return state;
   }

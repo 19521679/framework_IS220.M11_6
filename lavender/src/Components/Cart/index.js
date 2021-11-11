@@ -8,25 +8,26 @@ import * as cartAct from "../redux/actions/cartAct";
 import PropTypes from "prop-types";
 
 class index extends Component {
+  constructor(props) {
+    super(props)
+  }
   pushProduct(){
     const {cart}= this.props.cart;
     if (cart===undefined) return;
-    console.log("cart"+cart);
     let result = null;
     if (cart.length > 0)
     {
       result=  cart.map((value, key) => {
-        console.log(key);
-        return <Product product= {value} key={key}></Product>
+        return <Product product= {value} key={key} productid={key}></Product>
       });
     }
-    console.log("listPro:"+JSON.stringify(cart));
     return result;
   }
+
   componentDidMount() {
     const {cartActionCreators}= this.props;
     const email= localStorage.getItem("email");
-    const password = "1";
+    const password = this.props.password;
     cartActionCreators.loadCartReport(email, password);
     this.forceUpdate();
   }

@@ -37,7 +37,7 @@ export default class index extends Component {
         <section>
           <div className="row carousel-container">
             <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-              <Carousel variant="dark">
+              <Carousel  className="mobile-carousel">
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
@@ -66,7 +66,7 @@ export default class index extends Component {
             </div>
 
             <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-              <Carousel>
+              <Carousel className="mobile-carousel">
                 <Carousel.Item>
                   <img
                     className="d-block w-100"

@@ -2,12 +2,22 @@ import React, { Component } from "react";
 import "./Product.css";
 import * as imageApi from "../apis/image";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-
+import * as cartAct from "../redux/actions/cartAct";
 class Product extends Component {
-  changeQuantity(){
-
+  deleteProduct() {
+    console.log("props:"+JSON.stringify(this.props));
+    let {cartActionCreators} = this.props;
+    var customerid= this.props.customer.makhachhang;
+    cartActionCreators.deleteProductReport(customerid, this.props.product.masanpham);
   }
+  setValue(quantity) {
+    this.props.cart.cart[this.props.productid].chitietgiohangs.$values[0].soluong +=
+      quantity;
+    this.forceUpdate();
+  }
+  
   render() {
     return (
       <div className="styles__StyledIntended-sc-1dwh2vk-1 bQOXDC">
@@ -20,20 +30,19 @@ class Product extends Component {
                     <label className="styles__StyledCheckbox-sc-kvz5pc-0 hNjxWW">
                       <input
                         type="checkbox"
-                        data-view-id
+                        data-teliew-id
                         data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                       />
                       <span className="checkbox-fake" />
                     </label>
                   </div>
                   <a
-                  
                     className="intended__img"
                     data-view-id="cart_main_product"
                     data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                   >
                     <img
-                    src={imageApi.image(this.props.product.image, 0)}
+                      src={imageApi.image(this.props.product.image, 0)}
                       alt="icon"
                     />
                   </a>
@@ -41,7 +50,6 @@ class Product extends Component {
                     <a
                       className="intended__name"
                       target="_blank"
-                      
                       data-view-id="cart_main_product"
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                     >
@@ -51,15 +59,16 @@ class Product extends Component {
                         className="intended__icon intended__icon--fast"
                       />
                       <div className="product-name">
-                      {this.props.product.tensanpham}
+                        {this.props.product.tensanpham}
                       </div>
-                      
                     </a>
                   </div>
                 </div>
               </div>
               <div className="col-2">
-                <span className="intended__real-prices">{this.props.product.dongia}₫</span>
+                <span className="intended__real-prices">
+                  {this.props.product.dongia}₫
+                </span>
               </div>
               <div className="col-3">
                 <div className="intended-qty">
@@ -68,17 +77,24 @@ class Product extends Component {
                       data-view-id="cart_main_quantity.decrease"
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                       className="qty-decrease "
+                      onClick={() => this.setValue(-1)}
                     >
                       <img
                         src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/decrease.svg"
                         alt="decrease"
                       />
                     </span>
-                    <input type="tel" className="qty-input" id="quantity" defaultValue={1} onChange={this.changeQuantity}/>
+                    <a className="qty-input" id="quantity">
+                      {
+                        this.props.cart.cart[this.props.productid].chitietgiohangs
+                          .$values[0].soluong
+                      }
+                    </a>
                     <span
                       data-view-id="cart_main_quantity.increase"
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                       className="qty-increase "
+                      onClick={() => this.setValue(1)}
                     >
                       <img
                         src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/increase.svg"
@@ -93,10 +109,12 @@ class Product extends Component {
                   className="intended__delete"
                   data-view-id="cart_main_remove.product"
                   data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
+                  onClick={()=>this.deleteProduct()}
                 >
                   <img
                     src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/trash.svg"
                     alt="deleted"
+                    
                   />
                 </span>
               </div>
@@ -110,13 +128,22 @@ class Product extends Component {
 }
 
 Product.propTypes = {
+  cartActionCreators: PropTypes.shape({
+    deleteCartReport: PropTypes.func,
+  }),
   cart: PropTypes.object,
+  customer: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
   return {
-    cart: state.cart.cart
+    cart: state.cart.cart,
+    customer: state.login.customer
   };
 };
-
-export default connect(mapStateToProps)(Product);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    cartActionCreators: bindActionCreators(cartAct, dispatch),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Product);

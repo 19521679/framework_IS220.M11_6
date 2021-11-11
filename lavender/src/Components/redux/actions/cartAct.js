@@ -99,3 +99,55 @@ export const loadCartReport = (email, password) => {
       });
   };
 };
+
+/* Xoá sản phẩm trong giỏ hàng */
+export const deleteProduct = () => {
+  return {
+    type: cartConst.DELETE_PRODUCT
+  };
+};
+
+export const deleteProductSuccess = (success) => {
+  return {
+    type: cartConst.DELETE_PRODUCT_SUCCESS,
+    payload: {
+      data: success.data
+    },
+  };
+};
+
+export const deleteProductFailed = (error) => {
+  return {
+    type: cartConst.DELETE_PRODUCT_FAILED,
+    payload: {
+      error,
+    },
+  };
+};
+
+export const deleteProductReport = (customerid, productid) => {
+  console.log("id"+productid)
+  let request = { customerid:customerid, productid:productid };
+  return (dispatch) => {
+    cartApi
+      .deleteProduct(request)
+      .then((res) => {
+        console.log("res"+JSON.stringify(res));
+        if (res.status === 200) 
+        {
+          console.log("200");
+          dispatch(deleteProductSuccess(res));
+        }
+        else if (res.status===404) dispatch(deleteProduct(res));
+        else 
+        {
+          console.log("errorsadsa");
+          dispatch(deleteProductFailed(res));
+        }
+      })
+      .catch((error) => {
+        console.log("erre"+JSON.stringify(error));
+        dispatch(deleteProductFailed(error));
+      });
+  };
+};

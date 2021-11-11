@@ -129,21 +129,21 @@ namespace Back
 
             app.UseEndpoints(endpoints =>
             {
-                // endpoints.MapControllerRoute(
-                //     // name: "login",
-                //     name: "account",
-                //     pattern: "{url}/{id?}",
-                //     defaults: new
-                //     {
-                //         controller = "Account",
-                //         action = "Login"
-                //     },
-                //     //IRouteConstraint
-                //     constraints: new
-                //     {
-                //         url = new StringRouteConstraint("login"),
-                //         //id = new RangeRouteConstraint(2, 4)
-                //     }).RequireCors("MyPolicy");
+                 endpoints.MapControllerRoute(
+                     // name: "login",
+                     name: "account",
+                     pattern: "{url}/{id?}",
+                     defaults: new
+                     {
+                         controller = "Account",
+                         action = "Login"
+                     },
+                     //IRouteConstraint
+                     constraints: new
+                     {
+                         url = new StringRouteConstraint("login"),
+                         //id = new RangeRouteConstraint(2, 4)
+                     }).RequireCors("MyPolicy");
 
                 endpoints.MapControllerRoute(
                     name: "default",

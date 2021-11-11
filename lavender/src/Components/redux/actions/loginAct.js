@@ -7,11 +7,11 @@ export const postLogin = () => {
   };
 };
 
-export const postLoginSuccess = (data) => {
+export const postLoginSuccess = (success) => {
   return {
     type: loginConst.POST_LOGIN_SUCCESS,
     payload: {
-      data,
+      data:success.data,
     },
   };
 };

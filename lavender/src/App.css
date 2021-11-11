@@ -56,3 +56,9 @@
     max-width: 1147px!important;
   }
 }
+
+/*admin*/
+.left-menu{
+  margin-left:260px;
+  width: 1000px;
+}

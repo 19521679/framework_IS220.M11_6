@@ -12,18 +12,20 @@ const reducer = (state = initialState, action) => {
       return { ...state, hasLogined: false, email: "", password: "" };
     }
     case loginConst.POST_LOGIN_SUCCESS: {
-      const { data } = action.payload.data;
+      const { data } = action.payload;
       const username=  data.username;
       const password =  data.password;
       localStorage.setItem("hasLogined", true);
       localStorage.setItem("email", username);
       localStorage.setItem("password", password);
       myToast.toastSucces("Đăng nhập thành công");
+      console.log("taikhoan"+JSON.stringify(data));
       return {
         ...state,
         hasLogined: true,
         email: data.email,
         password: data.password,
+        customer:data
       };
     }
     case loginConst.POST_LOGIN_FAILED: {

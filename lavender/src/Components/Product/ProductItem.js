@@ -29,10 +29,7 @@ export default class ProductItem extends Component {
           <Link to={this.props.product.image} className="box-click" >
             <div className="icon">
               <img
-                // src={
-                //   this.state.resposeImage !== undefined &&
-                //   this.state.resposeImage
-                // }
+              alt="img"
                 src={imageApi.image(this.props.product.image)}
               ></img>
               <i className="bx bxl-dribbble" />

@@ -14,6 +14,12 @@ import ProductDashboard from "../../Components/Admin/ProductDashboard";
 import CustomerDashboard from "../../Components/Admin/CustomerDashboard";
 import BillingDashboard from "../../Components/Admin/BillingDashboard";
 import StaffDashboard from "../../Components/Admin/StaffDashboard";
+import SuplierDashboard from "../../Components/Admin/SuplierDashboard";
+import ThongBaoCuaToi from "../../Components/Accounts/ThongBaoCuaToi.js";
+import QuanLyDonHang from "../../Components/Accounts/QuanLyDonHang.js";
+import SanPhamYeuThich from "../../Components/Accounts/SanPhamYeuThich.js";
+import ThongTinTaiKhoan from "../../Components/Accounts/ThongTinTaiKhoan.js";
+import SoDiaChi from "../../Components/Accounts/SoDiaChi";
 const routes = [
   {
     path: "/",
@@ -50,11 +56,6 @@ const routes = [
     path: "/cart",
     exact: false,
     main: () => <Cart></Cart>,
-  },
-  {
-    path: "/lmember",
-    exact: false,
-    main: () => <LMember></LMember>,
   },
   {
     path: "/login",
@@ -95,6 +96,36 @@ const routes = [
     path: "/admin/billing",
     exact: true,
     main: () => <BillingDashboard></BillingDashboard>
+  },
+  {
+    path: "/admin/suplier",
+    exact: true,
+    main: () => <SuplierDashboard></SuplierDashboard>
+  },
+  {
+    path: "/lmember/thongtintaikhoan",
+    exact: true,
+    main: () => <ThongTinTaiKhoan></ThongTinTaiKhoan>
+  },
+  {
+    path: "/lmember/quanlydonhang",
+    exact: true,
+    main: () => <QuanLyDonHang></QuanLyDonHang>
+  },
+  {
+    path: "/lmember/thongbaocuatoi",
+    exact: true,
+    main: () => <ThongBaoCuaToi></ThongBaoCuaToi>
+  },
+  {
+    path: "/lmember/sodiachi",
+    exact: true,
+    main: () => <SoDiaChi></SoDiaChi>
+  },
+  {
+    path: "/lmember/sanphamyeuthich",
+    exact: true,
+    main: () => <SanPhamYeuThich></SanPhamYeuThich>
   },
   {
     path: "/",

@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import * as cartAct from "../redux/actions/cartAct";
 class Product extends Component {
   deleteProduct() {
+    // this.props.delete();
     console.log("props:"+JSON.stringify(this.props));
     let {cartActionCreators} = this.props;
     var customerid= this.props.customer.makhachhang;

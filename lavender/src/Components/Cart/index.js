@@ -23,6 +23,21 @@ class index extends Component {
     }
     return result;
   }
+  // pushProduct(){
+  //   const {cart}= this.props.cart;
+  //   if (cart===undefined) return;
+  //   let result = null;
+  //   if (cart.length > 0)
+  //   {
+  //     result=  cart.map((value, key) => {
+  //       return <Product product= {value} key={key} delete={this.deleteProduct.bind(this)} productid={key}></Product>
+  //     });
+  //   }
+  //   return result;
+  // }
+  // deleteProduct(){
+
+  // }
 
   componentDidMount() {
     const {cartActionCreators}= this.props;

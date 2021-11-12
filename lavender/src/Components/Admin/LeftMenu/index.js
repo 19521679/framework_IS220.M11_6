@@ -22,6 +22,10 @@ const table = [
     name: "Nhân viên",
     to: "/admin/staff",
   },
+  {
+    name: "Nhà cung cấp",
+    to: "/admin/suplier",
+  },
 ];
 
 var MenuLink = ({ lable, to }) => {

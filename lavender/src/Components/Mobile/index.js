@@ -185,6 +185,9 @@ export default class index extends Component {
           <div id="highlight" className="highlight section-bg">
             <div className="container list-item " data-aos="fade-up">
               <div className="row row-item">{this.renderList()}</div>
+              {/* <ul>
+              {this.renderList()}
+              </ul> */}
             </div>
           </div>
         </section>

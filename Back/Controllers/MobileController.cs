@@ -32,6 +32,7 @@ namespace Back.Controllers
         {
             Console.WriteLine("From: Mobile");
             var sanpham = lavenderContext.Sanpham.Where(s => s.Maloai.Contains("1")).ToList();
+            Console.WriteLine("data:"+ sanpham);
             return StatusCode(200, sanpham);
         }
 

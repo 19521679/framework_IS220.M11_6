@@ -1,9 +1,10 @@
-.hfMLFx{
-    width: 1270px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin-right: auto;
-    margin-left: auto;
+.leftmember{
+    max-width: 260px;
+    display:grid;
+}
+.rightmember{
+    max-width: 975px;
+    display:grid;
 }
 .dLDnti{
     display: flex;

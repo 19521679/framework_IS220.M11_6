@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{95503883-8AF5-4A26-8F54-C10426599DFA}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Models/Baohanh.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/MobileController.cs">
     <Files>
-      <File FileName="Controllers/MobileController.cs" Line="38" Column="6" />
+      <File FileName="Controllers/MobileController.cs" Line="37" Column="10" />
       <File FileName="Controllers/LoginController.cs" Line="41" Column="61" />
       <File FileName="Controllers/ProductController.cs" Line="57" Column="28" />
       <File FileName="Models/Taikhoankhachhang.cs" Line="20" Column="1" />
@@ -40,6 +40,15 @@
               <Node name="Common" expanded="True" />
               <Node name="Controllers" expanded="True" />
               <Node name="Models" expanded="True" />
+              <Node name="wwwroot" expanded="True">
+                <Node name="mobile" expanded="True">
+                  <Node name="Apple" expanded="True">
+                    <Node name="iPhone" expanded="True">
+                      <Node name="13" expanded="True" />
+                    </Node>
+                  </Node>
+                </Node>
+              </Node>
             </Node>
           </Node>
         </State>

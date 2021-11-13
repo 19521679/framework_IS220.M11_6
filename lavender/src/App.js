@@ -9,7 +9,6 @@ import { Provider } from "react-redux";
 import configureStore from "./Components/redux/configureStore";
 import LeftMenu from "./Components/Admin/LeftMenu";
 import "./Components/Admin/scss/material-dashboard/style.scss";
-import LMember from "./Components/Accounts/LMember.js";
 
 const store = configureStore();
 class App extends React.Component {
@@ -19,7 +18,7 @@ class App extends React.Component {
         <ToastContainer />
 
         {this.props.location.pathname.includes("/admin") ?  <LeftMenu>Home</LeftMenu> : <Header /> }
-        {this.props.location.pathname.includes("/lmember")?<LMember></LMember>:null}
+        {/* {this.props.location.pathname.includes("/lmember")?<LMember></LMember>:null} */}
         {this.showContentMenus(routes)}
         {this.props.location.pathname.includes("/admin") ?  null:<Footer /> }
       </Provider>

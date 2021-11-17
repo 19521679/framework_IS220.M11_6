@@ -7,11 +7,11 @@ export const postLogin = () => {
   };
 };
 
-export const postLoginSuccess = (success) => {
+export const postLoginSuccess = (data) => {
   return {
     type: loginConst.POST_LOGIN_SUCCESS,
     payload: {
-      data:success.data,
+      data:data,
     },
   };
 };
@@ -29,9 +29,9 @@ export const postLoginReport = (req) => {
   return (dispatch) => {
     loginApi
       .login(req)
-      .then((res) => {
-        if (res.status===200) dispatch(postLoginSuccess(res));
-        else dispatch(postLoginFailed(res));
+      .then((success) => {
+        if (success.status===200) dispatch(postLoginSuccess(success.data));
+        else dispatch(postLoginFailed(success));
       })
       .catch((error) => {
         dispatch(postLoginFailed(error));

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Back.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,41 +28,58 @@ namespace Back.Controllers
         }
 
         [Route("{loai}/{hang}/{dong}/{sanpham}")]
-        public IActionResult ProductInfo(string loai, string hang, string dong, string sanpham)
+        public async Task<IActionResult> ProductInfo(string loai, string hang, string dong, string sanpham)
         {
 
-            string maloai = "";
+            int maloai = 0;
             switch (loai)
             {
                 case "mobile":
-                    maloai = "1";
+                    maloai = 1;
                     break;
                 case "laptop":
-                    maloai = "2";
+                    maloai = 2;
                     break;
                 default:
                     break;
             }
-            var productid = lavenderContext.Sanpham
+            int productid = await lavenderContext.Sanpham
                 .Where(s => s.Tensanpham.Contains(sanpham))
                 .Where(s => s.Tensanpham.Contains(dong))
-                .Select(s => s.Masanpham).FirstOrDefault().ToString();
+                .Select(s => s.Masanpham).FirstOrDefaultAsync();
 
-            var trademarkid = lavenderContext.Thuonghieu.Where(s => s.Tenthuonghieu.Contains(hang)).Select(s => s.Mathuonghieu).FirstOrDefault().ToString();
-            var product = (from p in lavenderContext.Sanpham
+            int trademarkid = await lavenderContext.Thuonghieu.Where(s => s.Tenthuonghieu.Contains(hang)).Select(s => s.Mathuonghieu).FirstOrDefaultAsync();
+            var product = await (from p in lavenderContext.Sanpham
                            where
-                           p.Maloai.Equals(maloai) &&
-                           p.Mathuonghieu.Equals(trademarkid) &&
-                           p.Masanpham.Equals(productid)
-                           select p).ToList();
+                           p.Maloai==maloai &&
+                           p.Mathuonghieu==trademarkid &&
+                           p.Masanpham==productid
+                           select p).FirstOrDefaultAsync();
             int fCount = 0;
-            if (product.Count() > 0)
+            if (product!=null)
             {
                 fCount = Directory.GetFiles($"{_env.ContentRootPath}/wwwroot/{loai}/{hang}/{dong}/{sanpham}", "*", SearchOption.TopDirectoryOnly).Length;
                 return StatusCode(200, Json(product, new { sohinhanh = fCount }));
             }
+            Console.WriteLine("product" + product);
             return StatusCode(404);
 
+        }
+
+        [Route("/tim-sanpham-theo-sohoadon")]
+        [HttpGet]
+        public async Task<IActionResult> FindProductByBillId(int sohoadon)
+        {
+            var imei = await (from c in lavenderContext.Chitiethoadon
+                              where c.Sohoadon == sohoadon
+                              select c.Imei).FirstOrDefaultAsync();
+            var productid = await (from c in lavenderContext.Chitietsanpham
+                                   where c.Imei == imei
+                                   select c.Masanpham).FirstOrDefaultAsync();
+            var product = await (from p in lavenderContext.Sanpham
+                                 where p.Masanpham == productid
+                                 select p).FirstOrDefaultAsync();
+            return StatusCode(200, Json(product));
         }
     }
 

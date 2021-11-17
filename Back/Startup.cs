@@ -33,6 +33,7 @@ namespace Back
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllersWithViews();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
@@ -47,11 +48,6 @@ namespace Back
                 string connectstring = Configuration.GetConnectionString("AppMvcConnectionString");
                 options.UseMySQL(connectstring);
             });
-            //services.AddMvc().AddJsonOptions(o =>
-            //{
-            //    o.JsonSerializerOptions.PropertyNamingPolicy = null;
-            //    o.JsonSerializerOptions.DictionaryKeyPolicy = null;
-            //});
             services.AddControllers(options =>
             {
                 options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();

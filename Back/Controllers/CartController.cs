@@ -1,10 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Back.Common;
 using Back.Models;
 using Back.Models.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -13,10 +18,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 
 namespace Back.Controllers
 {
+    
     // [EnableCors(origins: "*", headers: "accept,content-type,origin,x-my-header", methods: "*")]
     [ApiController]
 
@@ -33,114 +40,113 @@ namespace Back.Controllers
             _env = env;
             this.lavenderContext = lavenderContext;
         }
-
         [Route("/add-to-cart")]
         [HttpPost]
-        public async Task<IActionResult> AddToCart(JsonElement form)
+        public async Task<IActionResult> AddToCart(JsonElement json)
         {
-            var taikhoan = await (from t in lavenderContext.Taikhoankhachhang
-                                  where t.Username.Equals(form.GetString("email"))
-                                  && t.Password.Equals(form.GetString("password"))
-                                  select t).FirstOrDefaultAsync();
-            if (taikhoan == null) return StatusCode(401);
+            Giohang giohang = await (from g in lavenderContext.Giohang
+                           where g.Makhachhang == int.Parse(json.GetString("makhachhang"))
+                           select g).FirstOrDefaultAsync();
+            Khachhang khachhang = await (from k in lavenderContext.Khachhang
+                                         where k.Makhachhang == int.Parse(json.GetString("makhachhang"))
+                                         select k).FirstOrDefaultAsync();
+            Console.WriteLine("giohang"+giohang);
+            if (giohang == null)
+            {
+                giohang = new Giohang();
+                giohang.Makhachhang = 1;
+                giohang.MakhachhangNavigation = khachhang;
+                await lavenderContext.Giohang.AddAsync(giohang);
+                await lavenderContext.SaveChangesAsync();
+                giohang = await (from g in lavenderContext.Giohang
+                                 where g.Makhachhang == int.Parse(json.GetString("makhachhang"))
+                                 select g).FirstOrDefaultAsync();
+            }
+
+            Chitietgiohang chitietgiohang = await (from c in lavenderContext.Chitietgiohang
+                                                    where c.Magiohang == giohang.Magiohang
+                                                    && c.Masanpham == int.Parse(json.GetString("masanpham"))
+                                                    select c).FirstOrDefaultAsync();
+            if (chitietgiohang== null)
+            {
+                chitietgiohang = new Chitietgiohang();
+                chitietgiohang.Magiohang = giohang.Magiohang;
+                chitietgiohang.Soluong = 1;
+                chitietgiohang.Masanpham = int.Parse(json.GetString("masanpham"));
+                await lavenderContext.Chitietgiohang.AddAsync(chitietgiohang);
+                await lavenderContext.SaveChangesAsync();
+            }
             else
             {
-                //Giohang gh = new Giohang();
-                //gh.Makhachhang = taikhoan.Makhachhang;
-                //g = form.masanpham;
-
-                //await lavenderContext.AddAsync(gh);
-                //await lavenderContext.SaveChangesAsync();
-                return StatusCode(200);
+                chitietgiohang.Soluong += 1;
+                await lavenderContext.SaveChangesAsync();
             }
+
+            
+            return StatusCode(200, Json(chitietgiohang));
         }
 
-        //[Route("/cart")]
-        //[HttpGet]
-        //public async Task<IActionResult> Cart([FromBody] System.Text.Json.JsonElement element)
-        //{
-        //    Console.WriteLine("thongtincart" + element.GetRawText());
-        //    string email = element.GetString("email");
-        //    string password = element.GetString("password");
-        //    var khachhangid = await (from t in lavenderContext.Taikhoankhachhang
-        //                             where t.Username.Equals(email)
-        //                             && t.Password.Equals(password)
-        //                             select t.Makhachhang).FirstOrDefaultAsync();
-        //    if (khachhangid != null)
-        //    {
-        //        var giohangid = await (from g in lavenderContext.Giohang
-        //                               where g.Makhachhang.Equals(khachhangid)
-        //                               select g.Magiohang
-        //                              ).FirstOrDefaultAsync();
-        //        if (giohangid == null) return StatusCode(404);
-        //        var chitietgiohang = await (from c in lavenderContext.Chitietgiohang
-        //                                    where c.Magiohang.Equals(giohangid)
-        //                                    select c).FirstOrDefaultAsync();
-        //        return StatusCode(200, Json(chitietgiohang));
-        //    }
-        //    return StatusCode(401);
-        //}
+
         [Route("/cart")]
         [HttpGet]
-        public async Task<IActionResult> Cart(string email, string password)
+        public async Task<IActionResult> GetCart([FromQuery] string makhachhang)
         {
-            var khachhangid = await (from t in lavenderContext.Taikhoankhachhang
-                                     where t.Username.Equals(email)
-                                     && t.Password.Equals(password)
-                                     select t.Makhachhang).FirstOrDefaultAsync();
-            if (khachhangid != null)
-            {
-                var giohangid = await (from g in lavenderContext.Giohang
-                                       where g.Makhachhang.Equals(khachhangid)
-                                       select g.Magiohang
-                                      ).FirstOrDefaultAsync();
-                if (giohangid == null) return StatusCode(404);
-                var chitietgiohangs = await (from c in lavenderContext.Chitietgiohang
-                                            where c.Magiohang.Equals(giohangid)
+            Console.WriteLine("makhachhang" + makhachhang);
+            int giohangid = 0;
+            giohangid = await (from g in lavenderContext.Giohang
+                             where g.Makhachhang == int.Parse(makhachhang)
+                             select g.Magiohang).FirstOrDefaultAsync();
+            Console.WriteLine("magiohang" + giohangid);
+            if (giohangid == 0) return StatusCode(404);
+            var chitietgiohanglist = await (from c in lavenderContext.Chitietgiohang
+                                            where c.Magiohang == giohangid
                                             select c).ToListAsync();
-                List<Sanpham> sanphams = new List<Sanpham>();
-                foreach (var c in chitietgiohangs)
-                {
-                    var e = lavenderContext.Entry(c);
-                        await e.Reference(c => c.MasanphamNavigation).LoadAsync();
-                    sanphams.Add(c.MasanphamNavigation);
-                }
-               
-                return StatusCode(200, Json(sanphams));
-            }
-            return StatusCode(401);
-
-        }
-
-        [Route("/cart/{khachhangid}/delete")]
-        [HttpDelete]
-        public async Task<IActionResult> deleteProduct (string khachhangid, string productid)
-        {
-            Console.WriteLine("cart" + khachhangid + productid);
-            var giohangid = await (from g in lavenderContext.Giohang
-                           where g.Makhachhang.Equals(khachhangid)
-                           select g.Magiohang
-                          ).FirstOrDefaultAsync();
-            var chitietgiohang = await (from c in lavenderContext.Chitietgiohang
-                                  where c.Magiohang.Equals(giohangid)
-                                  select c).FirstOrDefaultAsync();
-            lavenderContext.Remove(chitietgiohang);
-            await lavenderContext.SaveChangesAsync();
-
-            if (giohangid == null) return StatusCode(404);
-            var chitietgiohangs = await (from c in lavenderContext.Chitietgiohang
-                                         where c.Magiohang.Equals(giohangid)
-                                         select c).ToListAsync();
-            List<Sanpham> sanphams = new List<Sanpham>();
-            foreach (var c in chitietgiohangs)
+            foreach(var i in chitietgiohanglist)
             {
-                var e = lavenderContext.Entry(c);
-                await e.Reference(c => c.MasanphamNavigation).LoadAsync();
-                sanphams.Add(c.MasanphamNavigation);
+                var e = lavenderContext.Entry(i);
+                e.Reference(i=>i.MasanphamNavigation).Load();
             }
-
-            return StatusCode(200, Json(sanphams));
+            return StatusCode(200, Json(chitietgiohanglist));
         }
+
+        //[Route("/add-to-cart")]
+        //[HttpPost]
+
+        //public async Task<IActionResult> AddToCart(JsonElement form)
+        //{
+
+        //    bool res = false;
+        //    using ( MySqlConnection conn = new MySqlConnection("server=localhost;port=3306;database=lavender;user=root;password=01689808010kK"))
+        //    {
+        //        using (SqlCommand comm = new SqlCommand("dbo.addToCart", conn))
+        //        {
+        //            comm.CommandType = CommandType.StoredProcedure;
+
+        //            SqlParameter p1 = new SqlParameter("@makhachhang", SqlDbType.NVarChar);
+        //            SqlParameter p2 = new SqlParameter("@makhachhang", SqlDbType.NVarChar);
+        //            // You can call the return value parameter anything, .e.g. "@Result".
+        //            SqlParameter p3 = new SqlParameter("@Result", SqlDbType.Bit);
+
+        //            p1.Direction = ParameterDirection.Input;
+        //            p2.Direction = ParameterDirection.Input;
+        //            p3.Direction = ParameterDirection.ReturnValue;
+
+        //            p1.Value = "1";
+        //            p2.Value = "1";
+
+        //            comm.Parameters.Add(p1);
+        //            comm.Parameters.Add(p2);
+        //            comm.Parameters.Add(p3);
+        //            conn.Open();
+        //            comm.ExecuteNonQuery();
+
+        //            if (p3.Value != DBNull.Value)
+        //                res = (bool)p3.Value;
+        //        }
+        //    }
+        //    Console.WriteLine("res"+ res);
+        //    return StatusCode(200);
+        //}
 
     }
 

@@ -6,16 +6,23 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import * as cartAct from "../redux/actions/cartAct";
 class Product extends Component {
+  
+  constructor(props) {
+    super(props);
+
+    var product = this.props.product; 
+    this.state={ product: product };
+  }
   deleteProduct() {
     // this.props.delete();
-    console.log("props:"+JSON.stringify(this.props));
     let {cartActionCreators} = this.props;
     var customerid= this.props.customer.makhachhang;
     cartActionCreators.deleteProductReport(customerid, this.props.product.masanpham);
   }
   setValue(quantity) {
-    this.props.cart.cart[this.props.productid].chitietgiohangs.$values[0].soluong +=
-      quantity;
+    var producttemp=this.state.product;
+    producttemp.soluong+=quantity;
+    this.setState({ product: producttemp });
     this.forceUpdate();
   }
   
@@ -23,6 +30,7 @@ class Product extends Component {
     return (
       <div className="styles__StyledIntended-sc-1dwh2vk-1 bQOXDC">
         <div>
+          { ()=>{  }}
           <div className="styles__StyledIntendedProduct-sc-1idi3y3-0 glclPp">
             <div className="row">
               <div className="col-1">
@@ -43,7 +51,7 @@ class Product extends Component {
                     data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                   >
                     <img
-                      src={imageApi.image(this.props.product.image, 0)}
+                      src={imageApi.image(this.state.product.masanphamNavigation.image, 0)}
                       alt="icon"
                     />
                   </a>
@@ -60,7 +68,7 @@ class Product extends Component {
                         className="intended__icon intended__icon--fast"
                       />
                       <div className="product-name">
-                        {this.props.product.tensanpham}
+                        {this.state.product.masanphamNavigation.tensanpham}
                       </div>
                     </a>
                   </div>
@@ -68,7 +76,7 @@ class Product extends Component {
               </div>
               <div className="col-2">
                 <span className="intended__real-prices">
-                  {this.props.product.dongia}₫
+                  {this.state.product.masanphamNavigation.dongia}₫
                 </span>
               </div>
               <div className="col-3">
@@ -87,8 +95,7 @@ class Product extends Component {
                     </span>
                     <a className="qty-input" id="quantity">
                       {
-                        this.props.cart.cart[this.props.productid].chitietgiohangs
-                          .$values[0].soluong
+                        this.state.product.soluong
                       }
                     </a>
                     <span

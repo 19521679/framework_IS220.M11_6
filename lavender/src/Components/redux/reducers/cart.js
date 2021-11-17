@@ -14,7 +14,7 @@ const reducer = (state = initialState, action, history) => {
       return { ...state };
     }
     case cartConst.ADD_TO_CART_SUCCESS: {
-      const { data } = action.payload.data;
+      const { data } = action.payload;
       const product = data.product;
       myToast.toastSucces("Thêm vào giỏ hàng thành công");
       return {
@@ -33,11 +33,12 @@ const reducer = (state = initialState, action, history) => {
       const { data } = action.payload;
       let cart=  data.value.$values ;
       return {
-        cart: { ...state, cart},
+        cart: { ...state, cart:cart},
       };
     }
     case cartConst.LOAD_CART_FAILED: {
       myToast.toastError("Tải giỏ hàng thất bại");
+      console.log("errorcart"+JSON.stringify(action));
       return { ...state };
     }
 

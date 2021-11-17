@@ -33,13 +33,7 @@ export const addToLogin = () => {
   };
 };
 
-export const addToCartReport = (oldreq, history) => {
-  console.log(oldreq);
-  var req = {
-    email: oldreq.email,
-    password: oldreq.password,
-    masanpham: oldreq.product.masanpham,
-  };
+export const addToCartReport = (req, history) => {
   if (localStorage.setItem("hasLogined", false))
     return (dispatch) => {
       dispatch(addToLogin(history));
@@ -48,9 +42,9 @@ export const addToCartReport = (oldreq, history) => {
     return (dispatch) => {
       cartApi
         .addToCart(req)
-        .then((res) => {
-          if (res.status === 200) dispatch(addToCartSuccess(res));
-          else dispatch(addToCartFailed(res));
+        .then((success) => {
+          if (success.status === 200) dispatch(addToCartSuccess(success.data));
+          else dispatch(addToCartFailed(success));
         })
         .catch((error) => {
           dispatch(addToCartFailed(error));
@@ -66,11 +60,11 @@ export const loadCart = () => {
   };
 };
 
-export const loadCartSuccess = (res) => {
+export const loadCartSuccess = (data) => {
   return {
     type: cartConst.LOAD_CART_SUCCESS,
     payload: {
-      data: res.data
+      data: data
     },
   };
 };
@@ -84,15 +78,20 @@ export const loadCartFailed = (error) => {
   };
 };
 
-export const loadCartReport = (email, password) => {
-  let request = { email: email, password: password };
+export const loadCartReport = (customerid) => {
+  let request = { makhachhang:customerid };
   return (dispatch) => {
     cartApi
       .loadCart(request)
-      .then((res) => {
-        if (res.status === 200) dispatch(loadCartSuccess(res));
-        else if (res.status===404) dispatch(loadCart(res));
-        else dispatch(loadCartFailed(res));
+      .then((success) => {
+        if (success.status === 200) {
+          dispatch(loadCartSuccess(success.data));
+        }
+        else if (success.status===404) {
+          dispatch(loadCart(success));
+        } 
+        else {dispatch(loadCartFailed(success));
+        }
       })
       .catch((error) => {
         dispatch(loadCartFailed(error));
@@ -126,27 +125,23 @@ export const deleteProductFailed = (error) => {
 };
 
 export const deleteProductReport = (customerid, productid) => {
-  console.log("id"+productid)
   let request = { customerid:customerid, productid:productid };
   return (dispatch) => {
     cartApi
       .deleteProduct(request)
       .then((res) => {
-        console.log("res"+JSON.stringify(res));
         if (res.status === 200) 
         {
-          console.log("200");
           dispatch(deleteProductSuccess(res));
         }
         else if (res.status===404) dispatch(deleteProduct(res));
         else 
         {
-          console.log("errorsadsa");
           dispatch(deleteProductFailed(res));
         }
       })
       .catch((error) => {
-        console.log("erre"+JSON.stringify(error));
+        console.log("error"+JSON.stringify(error));
         dispatch(deleteProductFailed(error));
       });
   };

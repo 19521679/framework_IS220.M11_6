@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+
 #nullable disable
 
 namespace Back.Models
 {
-    public class Khachhang
+    public partial class Khachhang
     {
         public Khachhang()
         {
+            Danhgia = new HashSet<Danhgia>();
+            Giohangs = new HashSet<Giohang>();
+            Hoadons = new HashSet<Hoadon>();
+            Taikhoankhachhangs = new HashSet<Taikhoankhachhang>();
         }
-        [Key]
-        public string Makhachhang { get; set; }
+
+        public int Makhachhang { get; set; }
         public string Tenkhachhang { get; set; }
         public string Email { get; set; }
         public string Sodienthoai { get; set; }
@@ -21,13 +25,13 @@ namespace Back.Models
         public string Loaikhachhang { get; set; }
 
         [JsonIgnore]
-        public ICollection<Danhgia> Danhgia { get; set; }
+        public virtual ICollection<Danhgia> Danhgia { get; set; }
         [JsonIgnore]
-        public ICollection<Giohang> Giohangs { get; set; }
+        public virtual ICollection<Giohang> Giohangs { get; set; }
         [JsonIgnore]
-        public ICollection<Hoadon> Hoadons { get; set; }
+        public virtual ICollection<Hoadon> Hoadons { get; set; }
         [JsonIgnore]
-        public ICollection<Taikhoankhachhang> Taikhoankhachhangs { get; set; }
+        public virtual ICollection<Taikhoankhachhang> Taikhoankhachhangs { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

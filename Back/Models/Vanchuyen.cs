@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-
 #nullable disable
 
 namespace Back.Models
 {
-    public class Vanchuyen
+    public partial class Vanchuyen
     {
-        [Key]
-        public string Mavanchuyen { get; set; }
-        public string Sohoadon { get; set; }
-        public string Tinhtrang { get; set; }
-        public DateTime? Thoidiem { get; set; }
+        public Vanchuyen()
+        {
+            Chitietvanchuyens = new HashSet<Chitietvanchuyen>();
+        }
 
-        public Hoadon SohoadonNavigation { get; set; }
+        public int Mavanchuyen { get; set; }
+        public int Sohoadon { get; set; }
+        public string Trangthai { get; set; }
+
+        public virtual Hoadon SohoadonNavigation { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Chitietvanchuyen> Chitietvanchuyens { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

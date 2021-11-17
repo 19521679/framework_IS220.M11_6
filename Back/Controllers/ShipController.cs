@@ -13,28 +13,28 @@ namespace Back.Controllers
     // [EnableCors(origins: "*", headers: "accept,content-type,origin,x-my-header", methods: "*")]
     [ApiController]
 
-    public class CustomerController : Controller
+    public class ShipController : Controller
     {
-        private readonly ILogger<CustomerController> _logger;
+        private readonly ILogger<ShipController> _logger;
         private readonly IWebHostEnvironment _env;
 
         private readonly lavenderContext lavenderContext;
 
-        public CustomerController(ILogger<CustomerController> logger, IWebHostEnvironment env, lavenderContext lavenderContext)
+        public ShipController(ILogger<ShipController> logger, IWebHostEnvironment env, lavenderContext lavenderContext)
         {
             _logger = logger;
             _env = env;
             this.lavenderContext = lavenderContext;
         }
 
-        [Route("/tim-khachhang-theo-sohoadon")]
+        [Route("/tim-vanchuyen-theo-sohoadon")]
         [HttpGet]
-        public async Task<IActionResult> FindCustomerByBillId(int sohoadon)
+        public async Task<IActionResult> FindShipByBillId(int sohoadon)
         {
-            var customer = await (from k in lavenderContext.Khachhang
-                                  where k.Makhachhang == sohoadon
-                                  select k).FirstOrDefaultAsync();
-            return StatusCode(200, Json(customer));
+            var vanchuyen = await (from v in lavenderContext.Vanchuyen
+                                   where v.Sohoadon == sohoadon
+                                   select v).FirstOrDefaultAsync();
+            return StatusCode(200, Json(vanchuyen));
         }
     }
 

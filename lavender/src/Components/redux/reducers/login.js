@@ -5,11 +5,12 @@ const initialState = {
   hasLogined: false,
   email: "",
   password: "",
+  customer:{}
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case loginConst.POST_LOGIN: {
-      return { ...state, hasLogined: false, email: "", password: "" };
+      return { ...state, hasLogined: false, email: "", password: "", customer:{} };
     }
     case loginConst.POST_LOGIN_SUCCESS: {
       const { data } = action.payload;
@@ -31,7 +32,7 @@ const reducer = (state = initialState, action) => {
     case loginConst.POST_LOGIN_FAILED: {
       myToast.toastError("Đăng nhập thất bại");
       localStorage.setItem("hasLogined", false);
-      return { ...state, hasLogined: false, email: "", password: "" };
+      return { ...state, hasLogined: false, email: "", password: "" , customer:{}};
     }
     default:
       return state;

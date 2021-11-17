@@ -8,9 +8,6 @@ import * as cartAct from "../redux/actions/cartAct";
 import PropTypes from "prop-types";
 
 class index extends Component {
-  constructor(props) {
-    super(props)
-  }
   pushProduct(){
     const {cart}= this.props.cart;
     if (cart===undefined) return;
@@ -21,29 +18,15 @@ class index extends Component {
         return <Product product= {value} key={key} productid={key}></Product>
       });
     }
+    
     return result;
+  
   }
-  // pushProduct(){
-  //   const {cart}= this.props.cart;
-  //   if (cart===undefined) return;
-  //   let result = null;
-  //   if (cart.length > 0)
-  //   {
-  //     result=  cart.map((value, key) => {
-  //       return <Product product= {value} key={key} delete={this.deleteProduct.bind(this)} productid={key}></Product>
-  //     });
-  //   }
-  //   return result;
-  // }
-  // deleteProduct(){
-
-  // }
 
   componentDidMount() {
     const {cartActionCreators}= this.props;
-    const email= localStorage.getItem("email");
-    const password = this.props.password;
-    cartActionCreators.loadCartReport(email, password);
+    const customerid= this.props.customer.makhachhang;
+    cartActionCreators.loadCartReport(customerid);
     this.forceUpdate();
   }
   render() {
@@ -213,7 +196,7 @@ index.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    password: state.login.password,
+    customer: state.login.customer,
     cart: state.cart.cart
   };
 };

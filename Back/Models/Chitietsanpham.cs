@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 #nullable disable
 
 namespace Back.Models
 {
-    public class Chitietsanpham
+    public partial class Chitietsanpham
     {
         public Chitietsanpham()
         {
@@ -15,17 +14,16 @@ namespace Back.Models
             Chitiethoadons = new HashSet<Chitiethoadon>();
         }
 
-        [Key]
         public string Imei { get; set; }
-        public string Masanpham { get; set; }
-        public DateTime? Ngaysanxuat { get; set; }
+        public int Masanpham { get; set; }
+        public DateTime Ngaysanxuat { get; set; }
         public string Tinhtrang { get; set; }
 
-        public Sanpham MasanphamNavigation { get; set; }
+        public virtual Sanpham MasanphamNavigation { get; set; }
         [JsonIgnore]
-        public ICollection<Baohanh> Baohanhs { get; set; }
+        public virtual ICollection<Baohanh> Baohanhs { get; set; }
         [JsonIgnore]
-        public ICollection<Chitiethoadon> Chitiethoadons { get; set; }
+        public virtual ICollection<Chitiethoadon> Chitiethoadons { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

@@ -8,7 +8,7 @@ export default class index extends Component {
     return (
       <section>
         <BrowserRouter>
-          <div className="container">
+          <div className="container-fluid">
           <div className="row">
           <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
               <div className="leftmember">

@@ -30,9 +30,7 @@ namespace Back.Controllers
         [Route("mobile")]
         public IActionResult GetAllMobile()
         {
-            Console.WriteLine("From: Mobile");
-            var sanpham = lavenderContext.Sanpham.Where(s => s.Maloai.Contains("1")).ToList();
-            Console.WriteLine("data:"+ sanpham);
+            var sanpham = lavenderContext.Sanpham.Where(s => s.Maloai==1).ToList();
             return StatusCode(200, sanpham);
         }
 

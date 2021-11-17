@@ -32,6 +32,8 @@ class index extends Component {
         return <i className="material-icons">Thông số kỹ thuật</i>;
       case 2:
         return <i className="material-icons">Đánh giá</i>;
+        default:
+          return;
     }
   }
   click = (n) => {
@@ -45,6 +47,8 @@ class index extends Component {
         return <Thongso></Thongso>;
       case 2:
         return <Danhgia></Danhgia>;
+        default:
+          return;
     }
   }
 
@@ -57,9 +61,9 @@ class index extends Component {
     mobileApi
       .mobileInfo(query)
       .then((success) => {
-        if (success.status == 200) {
+        if (success.status === 200) {
           this.setState({
-            product: success.data.value.$values[0],
+            product: success.data.value,
             sohinhanh: success.data.serializerSettings.sohinhanh - 1,
           });
         }
@@ -69,16 +73,13 @@ class index extends Component {
       });
   }
   addToCart = () => {
-    let email = localStorage.getItem("email");
-    let password = localStorage.getItem("password");
     let { product } = this.state;
     let { cartActionCreators } = this.props;
 
     cartActionCreators.addToCartReport(
       {
-        email: email,
-        password: password,
-        product: product,
+        makhachhang: this.props.customer.makhachhangNavigation.makhachhang,
+        masanpham: product.masanpham,
       },
       this.props.history
     );
@@ -211,6 +212,7 @@ class index extends Component {
                           id="swatch161"
                           className="swatch-link swatch-link-80"
                           title="Bạc"
+                          alt=""
                         >
                           <img
                             className="cpslazy loaded"
@@ -506,7 +508,7 @@ index.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    password: state.login.password,
+    customer: state.login.customer,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -8,7 +8,6 @@ export const postRegister = () => {
 };
 
 export const postRegisterSuccess = (data) => {
-  console.log("Dang ky thanh cong");
   return {
     type: registerConst.POST_REGISTER_SUCCESS,
     payload: {
@@ -18,7 +17,6 @@ export const postRegisterSuccess = (data) => {
 };
 
 export const postRegisterFailed = (error) => {
-  console.log("Dang ky khong thanh cong"+error);
   return {
     type: registerConst.POST_REGISTER_FAILED,
     payload: {

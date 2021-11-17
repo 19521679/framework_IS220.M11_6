@@ -3,10 +3,11 @@ import { API_ENDPOINT } from "../../Common/constants/index";
 
 export const loadCart = (request) => {
   const url = "/cart";
-  return axiosServices.get(`${API_ENDPOINT}${url}?email=${request.email}&password=${request.password}`);
+  return axiosServices.get(`${API_ENDPOINT}${url}?makhachhang=${request.makhachhang}`);
 };
 export const addToCart = (data) => {
     const url="/add-to-cart";
+    console.log("addtocart"+JSON.stringify(data));
   return axiosServices.post(API_ENDPOINT + url, data);
 };
 export const updateCart = (data) => {

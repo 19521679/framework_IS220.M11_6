@@ -310,6 +310,8 @@ blockquote {
 b,
 strong {
   font-weight: 700;
+  color: #489620;
+  font-size: 110%;
 }
 
 small,
@@ -7865,7 +7867,7 @@ fieldset:disabled .btn {
 }
 
 .text-secondary {
-  color: #7b809a !important;
+  color: black !important;
 }
 
 .text-success {

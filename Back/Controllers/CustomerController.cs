@@ -40,6 +40,16 @@ namespace Back.Controllers
                                   select k).FirstOrDefaultAsync();
             return StatusCode(200, Json(customer));
         }
+
+        [Route("/khachhang")]
+        [HttpGet]
+        public async Task<IActionResult> AllKhachhang()
+        {
+            var khachhangs = await (from k in lavenderContext.Khachhang
+                                    select k).ToListAsync();
+            if (khachhangs == null || khachhangs.Count() == 0) return StatusCode(404);
+            return StatusCode(200, Json(khachhangs));
+        }
     }
 
 }

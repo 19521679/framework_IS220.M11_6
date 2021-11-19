@@ -14,13 +14,21 @@ import ProductDashboard from "../../Components/Admin/ProductDashboard";
 import CustomerDashboard from "../../Components/Admin/CustomerDashboard";
 import BillingDashboard from "../../Components/Admin/BillingDashboard";
 import StaffDashboard from "../../Components/Admin/StaffDashboard";
+import StaffAccountDashboard from "../../Components/Admin/StaffAccountDashboard";
 import SuplierDashboard from "../../Components/Admin/SuplierDashboard";
+import PromotionDashboard from "../../Components/Admin/PromotionDashboard";
+import CustomerAccountDashboard from "../../Components/Admin/CustomerAccountDashboard"
+import ProductTypeDashboard from "../../Components/Admin/ProductTypeDashboard"
+import GuaranteeDashboard from "../../Components/Admin/GuaranteeDashboard"
+import TrademarkDashboard from "../../Components/Admin/TrademarkDashboard"
+
 import LMember from "../../Components/Accounts/LMember.js";
 import ThongTinTaiKhoan from "../../Components/Accounts/ThongTinTaiKhoan";
 import ThongBaoCuaToi from "../../Components/Accounts/ThongBaoCuaToi";
 import QuanLyDonHang from "../../Components/Accounts/QuanLyDonHang";
 import SoDiaChi from "../../Components/Accounts/SoDiaChi";
 import SanPhamYeuThich from "../../Components/Accounts/SanPhamYeuThich";
+import AddCustomer from "../../Components/Admin/CustomerDashboard/AddCustomer.js";
 
 const routes = [
   {
@@ -110,6 +118,38 @@ const routes = [
     main: () => <SuplierDashboard></SuplierDashboard>
   },
   {
+    path: "/admin/staffaccount",
+    exact: true,
+    main: () => <StaffAccountDashboard></StaffAccountDashboard>
+  },
+  {
+    path: "/admin/promotion",
+    exact: true,
+    main: () => <PromotionDashboard></PromotionDashboard>
+  },
+  {
+    path: "/admin/customeraccount",
+    exact: true,
+    main: () => <CustomerAccountDashboard></CustomerAccountDashboard>
+  },
+  {
+    path: "/admin/producttype",
+    exact: true,
+    main: () => <ProductTypeDashboard></ProductTypeDashboard>
+  },
+  {
+    path: "/admin/guarantee",
+    exact: true,
+    main: () => <GuaranteeDashboard></GuaranteeDashboard>
+  },
+  {
+    path: "/admin/trademark",
+    exact: true,
+    main: () => <TrademarkDashboard></TrademarkDashboard>
+  },
+
+
+  {
     path: "/lmember/thongtintaikhoan",
     exact: true,
     main: () => <ThongTinTaiKhoan></ThongTinTaiKhoan>
@@ -133,6 +173,11 @@ const routes = [
     path: "/lmember/sanphamyeuthich",
     exact: true,
     main: () => <SanPhamYeuThich></SanPhamYeuThich>
+  },
+  {
+    path: "/admin/customer/add",
+    exact: true,
+    main: () => <AddCustomer></AddCustomer>
   },
   {
     path: "/lmember",

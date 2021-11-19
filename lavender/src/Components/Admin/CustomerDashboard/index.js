@@ -1,12 +1,30 @@
 import React, { Component } from "react";
-import * as mobileApi from "../../apis/mobile";
- export default class index extends Component {
+import * as customerApi from "../../apis/customer";
+import Item from "./Item";
+import { Link } from "react-router-dom";
 
+export default class index extends Component {
   state = {
-    data: [],
+    danhsachkhachhang: [],
   };
- 
-  render() { 
+  componentDidMount() {
+    customerApi
+      .allKhachhang()
+      .then((success) => {
+        this.setState({ danhsachkhachhang: success.data.value.$values });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  menuItem = () => {
+    var result = null;
+    result = this.state.danhsachkhachhang.map(function (value, key) {
+      return <Item khachhang={value} key={key}></Item>;
+    });
+    return result;
+  };
+  render() {
     return (
       <div className="left-menu">
         <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -196,6 +214,9 @@ import * as mobileApi from "../../apis/mobile";
                       <h6 className="text-white text-capitalize ps-3">
                         Danh sách khách hàng
                       </h6>
+                      <Link className="btn bg-gradient-dark mb-0 mt-4 " to="/admin/customer/add">
+                        + Thêm khách hàng{" "}
+                      </Link>
                     </div>
                   </div>
                   <div className="card-body px-0 pb-2">
@@ -203,9 +224,8 @@ import * as mobileApi from "../../apis/mobile";
                       <table className="table align-items-center mb-0">
                         <thead>
                           <tr>
-                            
-                           {/*  <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> */}
-                           <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                            {/*  <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> */}
+                            <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                               <b>Tên khách hàng</b>
                             </th>
                             <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -219,81 +239,17 @@ import * as mobileApi from "../../apis/mobile";
                             </th>
                             <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                               <b>Ngày sinh</b>
-                            </th>  
+                            </th>
                             <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                               <b>Loại khách hàng</b>
                             </th>
                             {/* <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                               <b>Trạng thái</b>
-                            </th>   */}                    
+                            </th>   */}
                             <th className="text-secondary opacity-7" />
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            {/* <div className="d-flex flex-column justify-content-center">
-                                <h6 className="text-secondary text-xs font-weight-bold">Nguyễn Ngọc Châu Pha</h6>
-                                <p className="text-xs text-secondary mb-0">
-                                    pha@gmail.com
-                                </p>
-                            </div> */}
-                             <td className="align-middle text-center">
-                              <span className="text-secondary text-xs font-weight-bold">
-                                Nguyễn Ngọc Châu Pha
-                              </span>
-                            </td>
-                            <td className="align-middle text-center">
-                              <span className="text-secondary text-xs font-weight-bold">
-                                pha@gmail.com
-                              </span>
-                            </td>
-                            <td className="align-middle text-center">
-                              <span className="text-secondary text-xs font-weight-bold">
-                                0385276400
-                              </span>
-                            </td>
-                            <td className="align-middle text-center">
-                              <span className="text-secondary text-xs font-weight-bold">
-                                Quảng Ngãi
-                              </span>
-                            </td>
-                            <td className="align-middle text-center">
-                              <span className="text-secondary text-xs font-weight-bold">
-                                18/08/2001
-                              </span>
-                            </td>
-                            <td className="align-middle text-center">
-                              <span className="text-secondary text-xs font-weight-bold">
-                                VIP
-                              </span>
-                            </td>
-                           {/*  <td className="align-middle text-center text-sm">
-                              <span className="badge badge-sm bg-gradient-success">
-                                Online
-                              </span>
-                            </td> */}
-                            
-                            <td className="align-middle">
-                              <a
-                                href="javascript:;"
-                                className="text-secondary font-weight-bold text-xs"
-                                data-toggle="tooltip"
-                                data-original-title="Edit user"
-                              >
-                                Edit/
-                              </a>
-                              <a
-                                href="javascript:;"
-                                className="text-secondary font-weight-bold text-xs"
-                                data-toggle="tooltip"
-                                data-original-title="Edit user"
-                              >
-                                Delete
-                              </a>
-                            </td>
-                          </tr>
-                          
-                        </tbody>
+                        <tbody>{this.menuItem()}</tbody>
                       </table>
                     </div>
                   </div>

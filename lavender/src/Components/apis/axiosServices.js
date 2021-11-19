@@ -21,7 +21,10 @@ class AxiosServices {
   post(url, data) {
     return this.instance.post(url, data);
   }
-  delete(url, data) {
+  put(url, data) {
+    return this.instance.put(url, data);
+  }
+  delete(url) {
     return this.instance.delete(url);
   }
 }

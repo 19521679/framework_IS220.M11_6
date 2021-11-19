@@ -16,7 +16,6 @@
   }
   #header .logo {
     font-size: 28px;
-    margin: 0px 213px 0px 0px;
     padding: 0;
     line-height: 1;
     font-weight: 300;
@@ -25,6 +24,7 @@
   }
   #header .logo a {
     color: #ffffff;
+    margin-right: 188px;
   }
   #header .logo img {
     max-height: 40px;

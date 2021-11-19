@@ -63,8 +63,14 @@ const menus = [
     list: [],
   },
   {
-    name: "Dịch vụ",
-    to: "/service",
+    name: "Bài viết",
+    to: "/blog",
+    exact: false,
+    list: [],
+  },
+  {
+    name: "Bảo hành",
+    to: "/guarantee",
     exact: false,
     list: [],
   },
@@ -89,76 +95,6 @@ var MenuLink = ({ lable, to, activeOnlyWhenExact }) => {
     ></Route>
   );
 };
-
-// var ItemLink = ( {lable, to} ) => {
-//   return (
-//     <Route
-//       path={to}
-//       children={({ match }) => {
-//         var active = match ? "active" : "";
-//         return (
-//           <li>
-//             <Link className="nav-link scrollto" className={active} to={to}>
-//               {lable}
-//             </Link>
-//           </li>
-//         );
-//       }}
-//     ></Route>
-//   );
-// };
-
-// var showItemDown = (lable, to, match, list) => {
-//   var result = null;
-//   var active = match ? "active" : "";
-//   result = (
-//     <li className="dropdown">
-//       <Link className={active} to={to}>
-//         <span>{lable}</span> <i className="bi bi-chevron-down" />
-//       </Link>
-//       <ul>
-//         {list.map((value, key) => {
-//           return (
-//             <ItemLink
-//               key={key}
-//               lable={value.name}
-//               to={to + value.to}
-//               match={match}
-//               list={value.list}
-//             ></ItemLink>
-//           );
-//         })}
-//       </ul>
-//     </li>
-//   );
-//   return result;
-// };
-
-// var showItemRight = (lable, to, match, list) => {
-//   var result = null;
-//   var active = match ? "active" : "";
-//   result = (
-//     <li className="dropdown">
-//       <Link className={active} to={to}>
-//         <span>{lable}</span> <i className="bi bi-chevron-right" />
-//       </Link>
-//       <ul>
-//         {list.map((value, key) => {
-//           return (
-//             <ItemLink
-//               key={key}
-//               lable={value.name}
-//               to={to + value.to}
-//               match={match}
-//               list={value.list}
-//             ></ItemLink>
-//           );
-//         })}
-//       </ul>
-//     </li>
-//   );
-//   return result;
-// };
 
 var showMenu = (temps) => {
   var result = null;
@@ -256,7 +192,6 @@ class Header extends Component {
                 </li>
               )}
             </ul>
-            <i className="bi bi-list mobile-nav-toggle" />
           </div>
           {/* .navbar */}
         </div>

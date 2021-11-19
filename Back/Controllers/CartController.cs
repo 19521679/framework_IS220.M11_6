@@ -91,22 +91,11 @@ namespace Back.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCart([FromQuery] string makhachhang)
         {
-            Console.WriteLine("makhachhang" + makhachhang);
-            int giohangid = 0;
-            giohangid = await (from g in lavenderContext.Giohang
-                             where g.Makhachhang == int.Parse(makhachhang)
-                             select g.Magiohang).FirstOrDefaultAsync();
-            Console.WriteLine("magiohang" + giohangid);
-            if (giohangid == 0) return StatusCode(404);
-            var chitietgiohanglist = await (from c in lavenderContext.Chitietgiohang
-                                            where c.Magiohang == giohangid
-                                            select c).ToListAsync();
-            foreach(var i in chitietgiohanglist)
-            {
-                var e = lavenderContext.Entry(i);
-                e.Reference(i=>i.MasanphamNavigation).Load();
-            }
-            return StatusCode(200, Json(chitietgiohanglist));
+            var giohang= await lavenderContext.Giohang.SingleOrDefaultAsync(g => g.Makhachhang == int.Parse(makhachhang));
+            if (giohang == null) return StatusCode(404);
+
+
+            return StatusCode(200, Json(giohang));
         }
 
         //[Route("/add-to-cart")]

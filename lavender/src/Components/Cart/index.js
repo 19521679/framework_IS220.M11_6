@@ -2,31 +2,49 @@ import React, { Component } from "react";
 import "./style.css";
 import Product from "./Product.js";
 import { withRouter } from "react-router-dom";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as cartAct from "../redux/actions/cartAct";
 import PropTypes from "prop-types";
+import * as cartApi from "../apis/cart";
+import * as myToast from "../../Common/helper/toastHelper";
+import * as detailCartApi from "../apis/detailCart";
 
 class index extends Component {
+  state = { cart: {}, detailCarts: []}
   pushProduct(){
-    const {cart}= this.props.cart;
-    if (cart===undefined) return;
     let result = null;
-    if (cart.length > 0)
-    {
-      result=  cart.map((value, key) => {
-        return <Product product= {value} key={key} productid={key}></Product>
-      });
-    }
-    
+    result= this.state.detailCarts.map((value, key)=>{
+      return <Product detailCart={value} key={key}></Product>
+    });
     return result;
-  
   }
 
-  componentDidMount() {
-    const {cartActionCreators}= this.props;
-    const customerid= this.props.customer.makhachhang;
-    cartActionCreators.loadCartReport(customerid);
+  async componentDidMount() {
+    console.log("customer"+JSON.stringify(this.props.customer));
+    let cart = undefined;
+    await cartApi.loadCart(this.props.customer.makhachhang)
+    .then((success)=>{
+      if (success.status === 200) 
+      {
+        cart=success.data.value;
+      }
+    })
+    .catch(error=>{
+      myToast.toastError("Tải giỏ hàng thất bại");
+      console.error(error);
+    });
+    if (cart===undefined) return;
+    
+    let detailCarts= undefined;
+    await detailCartApi.loadDetailCartByCartId(cart.magiohang)
+    .then(success => {
+      detailCarts=success.data.value.$values;
+    })
+    .catch(error => {
+      console.error(error);
+      myToast.toastError("Tải giỏ hàng thất bại");
+    });
+    if (detailCarts===undefined) return;
+    this.setState({cart:cart, detailCarts:detailCarts});
     this.forceUpdate();
   }
   render() {
@@ -188,22 +206,13 @@ class index extends Component {
   }
 }
 index.propTypes = {
-  cartActionCreators: PropTypes.shape({
-    loadCartReport: PropTypes.func,
-  }),
-  password: PropTypes.string,
+  customer: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
     customer: state.login.customer,
-    cart: state.cart.cart
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    cartActionCreators: bindActionCreators(cartAct, dispatch),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index));
+export default connect(mapStateToProps)(withRouter(index));

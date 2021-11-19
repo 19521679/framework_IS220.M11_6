@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using Newtonsoft.Json;
-=======
->>>>>>> khang
 
 #nullable disable
 
 namespace Back.Models
 {
-<<<<<<< HEAD
     public partial class Nhanvien
-=======
-    public class Nhanvien
->>>>>>> khang
     {
         public Nhanvien()
         {
@@ -21,16 +14,11 @@ namespace Back.Models
             Taikhoannhanviens = new HashSet<Taikhoannhanvien>();
         }
 
-<<<<<<< HEAD
         public int Manhanvien { get; set; }
-=======
-        public string Manhanvien { get; set; }
->>>>>>> khang
         public string Tennhanvien { get; set; }
         public string Email { get; set; }
         public string Sodienthoai { get; set; }
         public string Diachi { get; set; }
-<<<<<<< HEAD
         public DateTime Ngayvaolam { get; set; }
         public string Cccd { get; set; }
         public DateTime Ngaysinh { get; set; }
@@ -44,14 +32,5 @@ namespace Back.Models
         {
             return JsonConvert.SerializeObject(this);
         }
-=======
-        public DateTime? Ngayvaolam { get; set; }
-        public string Cccd { get; set; }
-        public DateTime? Ngaysinh { get; set; }
-        public string Chucvu { get; set; }
-
-        public ICollection<Hoadon> Hoadons { get; set; }
-        public ICollection<Taikhoannhanvien> Taikhoannhanviens { get; set; }
->>>>>>> khang
     }
 }

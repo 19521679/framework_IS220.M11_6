@@ -2,51 +2,65 @@ import React, { Component } from "react";
 import Modal from "../MyModal/index";
 import * as hoadonApi from "../../apis/billing";
 import * as myToast from "../../../Common/helper/toastHelper";
+import * as detailBill from "../../apis/detailBill";
 
 export default class AddBill extends Component {
-  state = {
-    chitiethoadon: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      sohoadon: this.props.bill !== undefined ? this.props.bill.sohoadon : 0,
+      makhachhang:
+        this.props.bill !== undefined ? this.props.bill.makhachhang : 0,
+      makhuyenmai:
+        this.props.bill !== undefined ? this.props.bill.makhuyenmai : 0,
+      ngayhoadon:
+        this.props.bill !== undefined ? new Date(this.props.bill.ngayhoadon) : new Date(),
+      manhanvien:
+        this.props.bill !== undefined ? this.props.bill.manhanvien : 0,
+      tongtien: this.props.bill !== undefined ? this.props.bill.tongtien : 0,
+      chitiethoadon: [],
+    };
+  }
   themChiTietHoaDon() {
-    this.setState({ chitiethoadon: this.state.chitiethoadon + 1 });
+    let newchitiethoadon = this.state.chitiethoadon;
+    newchitiethoadon.push({ imei: 0, tien: 0 });
+    this.setState({ chitiethoadon: newchitiethoadon });
+  }
+  async componentDidMount() {
+    if (this.props.bill !== undefined)
+      await detailBill
+        .detailByBillId(this.props.bill.sohoadon)
+        .then((success) => {
+          this.setState({ chitiethoadon: success.data.value.$values });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   }
   async saveChanges() {
-    let makhachhang = document.getElementById("makhachhang").value;
-    let makhuyenmai = document.getElementById("makhuyenmai").value;
-    let ngayhoadon = document.getElementById("ngayhoadon").value;
-    let manhanvien = document.getElementById("manhanvien").value;
-    let tongtien = document.getElementById("tongtien").value;
-
-    let imei = document.getElementsByName("imei");
-    let tien = document.getElementsByName("tien");
-    let chitiethoadon = [];
-    if (imei !== undefined)
-      for (let i = 0; i < imei.length; i++) {
-        let temp = { imei: imei[i].value, tien: tien[i].value };
-        chitiethoadon.push(temp);
-      }
-
     let hoadon = {
-      makhachhang: parseInt(makhachhang),
-      makhuyenmai: parseInt(makhuyenmai),
-      ngayhoadon: ngayhoadon,
-      manhanvien: parseInt(manhanvien),
-      tongtien: parseInt(tongtien),
-      chitiethoadon: chitiethoadon,
+      sohoadon: parseInt(this.state.sohoadon),
+      makhachhang: parseInt(this.state.makhachhang),
+      makhuyenmai: parseInt(this.state.makhuyenmai),
+      ngayhoadon: new Date(this.state.ngayhoadon),
+      manhanvien: parseInt(this.state.manhanvien),
+      tongtien: parseInt(this.state.tongtien),
+      chitiethoadon: this.state.chitiethoadon,
     };
-    console.log('hoadon'+JSON.stringify(hoadon));
-    await hoadonApi.addBilling(hoadon)
-    .then((success)=>{
-        if (success.status===200) {
-            myToast.toastSucces("Thêm mới hoá đơn thành công");
-            this.props.handleSave();
-        }
-        else myToast.toastError("Thêm mới thát bại");
-    })
-    .catch((error)=>{
-        console.log('error'+JSON.stringify(error));
-    });
-    // this.props.handleSave();
+    let hadDone = false;
+    await hoadonApi
+      .addOrUpdateBilling(hoadon)
+      .then((success) => {
+        if (success.status === 200) {
+          myToast.toastSucces("Thành công");
+          hadDone = true;
+        } else myToast.toastError("Thất bại");
+      })
+      .catch((error) => {
+        myToast.toastError("Thất bại");
+      });
+
+    if (hadDone) this.props.handleSave();
   }
   render() {
     return (
@@ -57,7 +71,15 @@ export default class AddBill extends Component {
       >
         <div className="row mb-1">
           <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">Số hoá đơn</div>
-          <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 "></div>
+          <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+            <input
+              className="form-control border "
+              id="sohoadon"
+              placeholder=""
+              disabled
+              value={this.state.sohoadon}
+            ></input>
+          </div>
         </div>
         <div className="row mb-1">
           <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -68,6 +90,10 @@ export default class AddBill extends Component {
               className="form-control border "
               id="makhachhang"
               placeholder=""
+              onChange={((e) => {
+                this.setState({ makhachhang: e.target.value });
+              }).bind(this)}
+              value={this.state.makhachhang}
             ></input>
           </div>
         </div>
@@ -80,6 +106,10 @@ export default class AddBill extends Component {
               className="form-control border"
               id="makhuyenmai"
               placeholder=""
+              onChange={((e) => {
+                this.setState({ makhuyenmai: e.target.value });
+              }).bind(this)}
+              value={this.state.makhuyenmai}
             ></input>
           </div>
         </div>
@@ -93,6 +123,10 @@ export default class AddBill extends Component {
               type="date"
               id="ngayhoadon"
               name="trip-start"
+              onChange={((e) => {
+                this.setState({ ngayhoadon: new Date(e.target.value) });
+              }).bind(this)}
+              value={(this.state.ngayhoadon).toISOString().split('T')[0]}
             ></input>
           </div>
         </div>
@@ -105,6 +139,10 @@ export default class AddBill extends Component {
               className="form-control border"
               id="manhanvien"
               placeholder=""
+              onChange={((e) => {
+                this.setState({ manhanvien: e.target.value });
+              }).bind(this)}
+              value={this.state.manhanvien}
             ></input>
           </div>
         </div>
@@ -115,6 +153,10 @@ export default class AddBill extends Component {
               className="form-control border"
               id="tongtien"
               placeholder=""
+              onChange={((e) => {
+                this.setState({ tongtien: e.target.value });
+              }).bind(this)}
+              value={this.state.tongtien}
             ></input>
           </div>
         </div>
@@ -122,9 +164,9 @@ export default class AddBill extends Component {
 
         {function () {
           let result = [];
-          for (var i = 0; i < this.state.chitiethoadon; i++) {
+          for (var i = 0; i < this.state.chitiethoadon.length; i++) {
             result.push(
-              <div>
+              <div key={i}>
                 <div className="row mb-1">
                   <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     IMEI
@@ -135,6 +177,12 @@ export default class AddBill extends Component {
                       id="imei"
                       name="imei"
                       placeholder=""
+                      onChange={((i, e) => {
+                        let temp = [...this.state.chitiethoadon];
+                        temp[i].imei = e.target.value;
+                        this.setState({ chitiethoadon: temp });
+                      }).bind(this, i)}
+                      value={this.state.chitiethoadon[i].imei}
                     ></input>
                   </div>
                 </div>
@@ -148,6 +196,12 @@ export default class AddBill extends Component {
                       id="tien"
                       name="tien"
                       placeholder=""
+                      onChange={((i, e) => {
+                        let temp = [...this.state.chitiethoadon];
+                        temp[i].tien = e.target.value;
+                        this.setState({ chitiethoadon: temp });
+                      }).bind(this, i)}
+                      value={this.state.chitiethoadon[i].tien}
                     ></input>
                   </div>
                 </div>

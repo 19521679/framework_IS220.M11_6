@@ -3,9 +3,6 @@ import "./modal.css";
 import React, { Component } from 'react'
 
 export default class index extends Component {
-  async handleSave(){
-    this.props.handleSave();
-  }
   render() {
     return (
       <div className="modal display-block">
@@ -24,10 +21,10 @@ export default class index extends Component {
               data-dismiss="modal"
               onClick={this.props.handleClose}
             >
-              Close
+              Đóng
             </button>
-            <button type="button" class="btn btn-primary" onClick={()=>{ this.handleSave()}}>
-              Save changes
+            <button type="button" class="btn btn-primary" onClick={this.props.handleSave}>
+              Lưu thay đổi
             </button>
           </div>
         </div>

@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 
 class Login extends Component {
   submitSignin = () => {
-    let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
     const { loginActionCreators } = this.props;
@@ -29,8 +28,8 @@ class Login extends Component {
                 <img
                   src="https://mdbootstrap.com/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
                   className="img-fluid"
-                  alt="Phone image"
-                />
+                  alt="Phone"
+                ></img>
               </div>
               <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                 {/* Email input */}
@@ -70,7 +69,7 @@ class Login extends Component {
                       Remember me{" "}
                     </label>
                   </div>
-                  <a href="#!">Forgot password?</a>
+                  <a >Forgot password?</a>
                 </div>
                 {/* Submit button */}
                 <button
@@ -84,32 +83,26 @@ class Login extends Component {
                 </div>
                 <Link
                   className="btn btn-primary btn-lg btn-block"
-                  style={{ backgroundColor: "#55acee" }}
                   to="/register"
                   role="button"
                 >
                   <i className="fab fa-register me-2" />
                   Register
                 </Link>
-                <a
+                <Link
                   className="btn btn-primary btn-lg btn-block"
-                  style={{ backgroundColor: "#3b5998" }}
-                  href="#!"
                   role="button"
                 >
                   <i className="fab fa-facebook-f me-2" />
                   Continue with Facebook
-                </a>
-                <a
+                </Link>
+                <Link
                   className="btn btn-primary btn-lg btn-block"
-                  style={{ backgroundColor: "#55acee" }}
-                  href="#!"
                   role="button"
                 >
                   <i className="fab fa-twitter me-2" />
                   Continue with Twitter
-                </a>
-                
+                </Link>
               </div>
             </div>
           </div>

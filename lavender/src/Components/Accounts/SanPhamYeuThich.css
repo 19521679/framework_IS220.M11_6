@@ -1,4 +1,6 @@
-.kagiDG .heading{
+
+.kagiDG .heading {
+
     font-size: 19px;
     line-height: 21px;
     font-weight: 300;
@@ -14,15 +16,24 @@
     display: flex;
     position: relative;
 }
-.jDowEZ.loaded .image{
+.jDowEZ .image {
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    vertical-align: middle;
+}
+
+.jDowEZ.loaded .image {
     display: inline-block;
 }
 
-
-.kagiDG .item .body{
+.kagiDG .item .body {
     flex: 1 1 0%;
 }
-.kagiDG .item .name{
+
+.kagiDG .item .name {
     font-size: 14px;
     margin: 0px 0px 15px;
     line-height: 20px;
@@ -31,7 +42,15 @@
     display: block;
 }
 
-.kagiDG .review-count{
+.kagiDG .rating {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.kagiDG .review-count {
     font-size: 12px;
     color: rgb(102, 102, 102);
     display: inline-block;
@@ -39,16 +58,25 @@
     margin: 0px 0px 0px 4px;
 }
 
-
-
-.kagiDG .footer{
+.kagiDG .footer {
     width: 190px;
     min-width: 230px;
     margin-left: 25px;
     text-align: right;
 }
 
-.kagiDG .footer .wrap{
+.kagiDG .footer .price {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    margin: 0px 0px 8px;
+    color: rgb(56, 56, 61);
+}
+.kagiDG .footer .price.has-discount {
+    color: rgb(255, 66, 78);
+}
+
+.kagiDG .footer .wrap {
     display: flex;
     -webkit-box-pack: end;
     justify-content: flex-end;
@@ -57,24 +85,12 @@
     align-items: center;
 }
 
-.kagiDG .footer .price{
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    margin: 0px 0px 8px;
-    color: rgb(56, 56, 61);
-}
-
-.kagiDG .footer .price.has-discount{
-    color: rgb(255, 66, 78);
-}
-
-.kagiDG .footer .list-price{
+.kagiDG .footer .list-price {
     color: rgb(128, 128, 137);
-text-decoration: line-through;
+    text-decoration: line-through;
 }
 
-.kagiDG .footer .discount{
+.kagiDG .footer .discount {
     position: relative;
     z-index: 1;
     padding: 0px 2px;
@@ -88,9 +104,7 @@ text-decoration: line-through;
     margin-left: 20px;
 }
 
-
-
-.kagiDG .btn-delete{
+.kagiDG .btn-delete {
     width: 40px;
     height: 40px;
     padding: 0px;
@@ -105,7 +119,24 @@ text-decoration: line-through;
     cursor: pointer;
 }
 
-.kagiDG .rating__progress{
+a {
+    color: rgb(11, 116, 229);
+    text-decoration: none;
+}
+
+.kagiDG .item .thumbnail {
+    width: 130px;
+    min-width: 130px;
+    margin: 0px 25px;
+}
+
+.kagiDG .rating__base {
+    color: rgb(222, 221, 220);
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.kagiDG .rating__progress {
     color: rgb(255, 195, 36);
     position: absolute;
     z-index: 2;
@@ -114,10 +145,12 @@ text-decoration: line-through;
     overflow: hidden;
 }
 
-.kagiDG .rating{
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-    z-index: 1;
-    white-space: nowrap;
+.kagiDG .footer .discount::before {
+    content: "";
+    height: 10px;
+    width: 1px;
+    background-color: rgb(102, 102, 102);
+    position: absolute;
+    left: -11px;
+    top: 2px;
 }

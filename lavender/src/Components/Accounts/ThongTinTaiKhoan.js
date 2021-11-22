@@ -1,6 +1,10 @@
 import React, { Component } from "react";
-
+import "./ThongTinTaiKhoan.css";
 export default class ThongTinTaiKhoan extends Component {
+  state ={nickname:""}
+  luuThayDoi(){
+    console.log("nickname"+this.props);
+  }
   render() {
     return (
       <div className="Account__StyledAccountLayoutInner-sc-1d5h8iz-1 jXurFV">
@@ -12,18 +16,18 @@ export default class ThongTinTaiKhoan extends Component {
             <div className="info-left">
               <span className="info-title">Thông tin cá nhân</span>
               <div className="styles__StyledAccountInfo-sc-s5c7xj-2 khBVOu">
-                <form>
+                <div>
                   <div className="form-control">
                     <label className="input-label">Họ &amp; Tên</label>
                     <div>
                       <div className="styles__StyledInput-sc-s5c7xj-5 hisWEc">
                         <input
-                          className="input "
+                          className="input"
                           type="search"
                           name="fullName"
                           maxLength={128}
                           placeholder="Thêm họ tên"
-                          defaultValue="Khánh Duy Lê"
+                          defaultValue="Nguyễn Lê Nguyên Khang"
                         />
                       </div>
                     </div>
@@ -33,12 +37,15 @@ export default class ThongTinTaiKhoan extends Component {
                     <div>
                       <div className="styles__StyledInput-sc-s5c7xj-5 hisWEc">
                         <input
-                          className="input "
+                          className="input"
                           name="userName"
                           maxLength={128}
                           placeholder="Thêm nickname"
                           type="search"
+                          id="nickname"
                           defaultValue
+                          value = {this.state.nickname}
+                          onChange={((e)=>this.setState({nickname:e.target.value}))}
                         />
                       </div>
                     </div>
@@ -78,7 +85,6 @@ export default class ThongTinTaiKhoan extends Component {
                         <option value={28}>28</option>
                         <option value={29}>29</option>
                         <option value={30}>30</option>
-                        <option value={31}>31</option>
                       </select>
                       <select name="month">
                         <option value={0}>Tháng</option>
@@ -245,16 +251,15 @@ export default class ThongTinTaiKhoan extends Component {
                       <span className="label">Khác</span>
                     </label>
                   </div>
-                  <div className="form-control">
-                    <label className="input-label">&nbsp;</label>
+
                     <button
-                      type="submit"
                       className="styles__StyledBtnSubmit-sc-s5c7xj-3 cqEaiM btn-submit"
+                      onClick={this.luuThayDoi}
                     >
                       Lưu thay đổi
                     </button>
-                  </div>
-                </form>
+  
+                </div>
               </div>
             </div>
             <div className="info-vertical" />
@@ -270,7 +275,7 @@ export default class ThongTinTaiKhoan extends Component {
                     />
                     <div className="detail">
                       <span>Số điện thoại</span>
-                      <span>0914630145</span>
+                      <span>0327403627</span>
                     </div>
                   </div>
                   <div className="status">
@@ -287,7 +292,7 @@ export default class ThongTinTaiKhoan extends Component {
                     />
                     <div className="detail">
                       <span>Địa chỉ email</span>
-                      <span className="span hint">Thêm địa chỉ email</span>
+                      <span>nguyenkhang15032001@gmail.com</span>
                     </div>
                   </div>
                   <div className="status">

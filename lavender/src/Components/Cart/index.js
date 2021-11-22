@@ -9,43 +9,67 @@ import * as myToast from "../../Common/helper/toastHelper";
 import * as detailCartApi from "../apis/detailCart";
 
 class index extends Component {
-  state = { cart: {}, detailCarts: []}
-  pushProduct(){
+  state = { cart: undefined, detailCarts: [] };
+  pushProduct() {
     let result = null;
-    result= this.state.detailCarts.map((value, key)=>{
-      return <Product detailCart={value} key={key}></Product>
+    result = this.state.detailCarts.map((value, key) => {
+      return (
+        <Product
+          detailCart={value}
+          key={key}
+          reload={this.reload.bind(this)}
+        ></Product>
+      );
     });
     return result;
   }
 
-  async componentDidMount() {
-    console.log("customer"+JSON.stringify(this.props.customer));
+  async loadCart() {
     let cart = undefined;
-    await cartApi.loadCart(this.props.customer.makhachhang)
-    .then((success)=>{
-      if (success.status === 200) 
-      {
-        cart=success.data.value;
-      }
-    })
-    .catch(error=>{
-      myToast.toastError("Tải giỏ hàng thất bại");
-      console.error(error);
-    });
-    if (cart===undefined) return;
-    
-    let detailCarts= undefined;
-    await detailCartApi.loadDetailCartByCartId(cart.magiohang)
-    .then(success => {
-      detailCarts=success.data.value.$values;
-    })
-    .catch(error => {
-      console.error(error);
-      myToast.toastError("Tải giỏ hàng thất bại");
-    });
-    if (detailCarts===undefined) return;
-    this.setState({cart:cart, detailCarts:detailCarts});
-    this.forceUpdate();
+    await cartApi
+      .loadCart(this.props.customer.makhachhang)
+      .then((success) => {
+        if (success.status === 200) {
+          cart = success.data.value.$values[0];
+        }
+      })
+      .catch((error) => {
+        myToast.toastError("Tải giỏ hàng thất bại");
+        console.error(error);
+      });
+
+    if (cart === undefined || cart.lenght === 0) 
+    {
+      this.setState({cart:{}});
+      return;
+    }
+    let detailCarts = undefined;
+    await detailCartApi
+      .loadDetailCartByCartId(cart.magiohang)
+      .then((success) => {
+        if (success.status === 200) {
+          if (success.data.value !== undefined)
+            detailCarts = success.data.value.$values;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        myToast.toastError("Tải giỏ hàng thất bại");
+      });
+    if (detailCarts === undefined) 
+    {
+      this.setState({detailCarts:[]});
+      return;
+    }
+    this.setState({ cart: cart, detailCarts: detailCarts });
+  }
+
+  async reload() {
+    await this.loadCart();
+  }
+
+  async componentDidMount() {
+    await this.loadCart();
   }
   render() {
     return (
@@ -87,7 +111,9 @@ class index extends Component {
                         >
                           <div className="styles__StyledIntendedSeller-sc-1dwh2vk-0 kTsjPS">
                             <div className="sellers">
-                              <div className="pustProduct">{this.pushProduct()}</div>
+                              <div className="pustProduct">
+                                {this.pushProduct()}
+                              </div>
                               <div className="styles__StyledSellerDiscount-sc-rbk7cj-0 hIODeW">
                                 <div
                                   className="wrapper"

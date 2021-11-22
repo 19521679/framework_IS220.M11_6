@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { mobiletrademark } from "../../Common/constants/trademark";
-import { laptoptrademark } from "../../Common/constants/trademark";
 import { Route, Link } from "react-router-dom";
 import "./style.css";
+import * as trademarkApi from "../apis/trademark";
 
 function importAll(r) {
   return r.keys().map(r);
@@ -22,23 +21,31 @@ const myImage = (name) => {
 };
 
 export default class index extends Component {
-  mapTrademark = (type, mobiletrademark, laptoptrademark) => {
+  state = {trademark:[]}
+   componentDidMount() {
+     let trademark=[];
+     trademarkApi.trademark(this.props.type)
+    .then((success) => {
+      if (success.status===200) {
+        let temp = [success.data.value.$values];
+        for (var i=0; i<temp.length; i++) {
+          trademark.push(temp[i].tenthuonghieu);
+        }
+        this.setState({trademark:trademark})
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return;
+    });
+  }
+   mapTrademark = () => {
     let result = null;
-    let trademark = null;
-    switch (type) {
-      case "mobile":
-        trademark = mobiletrademark;
-        break;
-      case "laptop":
-        trademark = laptoptrademark;
-        break;
-      default:
-    }
 
-    if (trademark.length !== 0) {
-      result = trademark.map((value, index) => {
+    if (this.state.trademark.length === 0) return
+      result = this.state.trademark.map((value, index) => {
         return (
-          <Link to={"/" + type + "/" + value} className="trademark-item">
+          <Link to={"/" + this.props.type + "/" + value} key={index} className="trademark-item">
             <img
               className="trademark-icon loaded"
               // data-ll-status="loaded"
@@ -48,13 +55,13 @@ export default class index extends Component {
           </Link>
         );
       });
-    }
+    
     return <Route>{result}</Route>;
   };
-  render() {
+   render() {
     return (
       <div className="trademark-list">
-        {this.mapTrademark(this.props.type, mobiletrademark, laptoptrademark)}
+        {this.mapTrademark()}
       </div>
     );
   }

@@ -10,7 +10,7 @@ export default class BillItem extends Component {
     let product = undefined;
     let customer = undefined;
     await productApi
-      .findProductById(this.props.bill.sohoadon)
+      .findProductByBillId(this.props.bill.sohoadon)
       .then((success) => {
         product = success.data.value;
       })

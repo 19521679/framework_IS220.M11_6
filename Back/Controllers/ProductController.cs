@@ -81,6 +81,15 @@ namespace Back.Controllers
                                  select p).FirstOrDefaultAsync();
             return StatusCode(200, Json(product));
         }
+
+        [Route("/tim-sanpham-theo-masanpham")]
+        [HttpGet]
+        public async Task<IActionResult> FindProductbyId(int masanpham)
+        {
+            var sanpham= await lavenderContext.Sanpham.SingleOrDefaultAsync(x => x.Masanpham == masanpham);
+            if (sanpham == null) return StatusCode(404);
+            return StatusCode(200, Json(sanpham));
+        }
     }
 
 }

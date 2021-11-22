@@ -1,36 +1,47 @@
 import React, { Component } from "react";
 import "./Product.css";
 import * as imageApi from "../apis/image";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
-import * as cartAct from "../redux/actions/cartAct";
-class Product extends Component {
-  
-  constructor(props) {
-    super(props);
+import * as productApi from "../apis/product";
+import * as detailCartApi from "../apis/detailCart";
 
-    var product = this.props.product; 
-    this.state={ product: product };
-  }
+class Product extends Component {
+
+  state={product:{}};
   deleteProduct() {
-    // this.props.delete();
-    let {cartActionCreators} = this.props;
-    var customerid= this.props.customer.makhachhang;
-    cartActionCreators.deleteProductReport(customerid, this.props.product.masanpham);
+    // eslint-disable-next-line no-restricted-globals
+    var r = confirm("Bạn có chắc chắn muốn xoá không?");
+    if (r===false) return;
+    detailCartApi.deleteDetailCart(this.props.detailCart.magiohang, this.props.detailCart.masanpham)
+    .then(success=>{
+      if(success.status ===200) this.props.reload();
+    })
+    .catch(error=>{
+      console.error(error);
+    })
   }
   setValue(quantity) {
-    var producttemp=this.state.product;
-    producttemp.soluong+=quantity;
-    this.setState({ product: producttemp });
-    this.forceUpdate();
+    detailCartApi.setQuantityForDetailCart({...this.props.detailCart, soluong:this.props.detailCart.soluong+quantity})
+    .then(success => {
+      if (success.status===200) {this.props.reload();}
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
   
+  async componentDidMount() {
+    await productApi.findProductById(this.props.detailCart.masanpham)
+    .then((success) => {
+      this.setState({product:success.data.value});
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
   render() {
     return (
       <div className="styles__StyledIntended-sc-1dwh2vk-1 bQOXDC">
         <div>
-          { ()=>{  }}
           <div className="styles__StyledIntendedProduct-sc-1idi3y3-0 glclPp">
             <div className="row">
               <div className="col-1">
@@ -51,7 +62,7 @@ class Product extends Component {
                     data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                   >
                     <img
-                      src={imageApi.image(this.state.product.masanphamNavigation.image, 0)}
+                      src={imageApi.image(this.state.product.image)}
                       alt="icon"
                     />
                   </a>
@@ -68,7 +79,7 @@ class Product extends Component {
                         className="intended__icon intended__icon--fast"
                       />
                       <div className="product-name">
-                        {this.state.product.masanphamNavigation.tensanpham}
+                        {this.state.product.tensanpham}
                       </div>
                     </a>
                   </div>
@@ -76,7 +87,7 @@ class Product extends Component {
               </div>
               <div className="col-2">
                 <span className="intended__real-prices">
-                  {this.state.product.masanphamNavigation.dongia}₫
+                  {this.state.product.dongia}₫
                 </span>
               </div>
               <div className="col-3">
@@ -94,9 +105,7 @@ class Product extends Component {
                       />
                     </span>
                     <a className="qty-input" id="quantity">
-                      {
-                        this.state.product.soluong
-                      }
+                      {this.props.detailCart.soluong}
                     </a>
                     <span
                       data-view-id="cart_main_quantity.increase"
@@ -135,23 +144,4 @@ class Product extends Component {
   }
 }
 
-Product.propTypes = {
-  cartActionCreators: PropTypes.shape({
-    deleteCartReport: PropTypes.func,
-  }),
-  cart: PropTypes.object,
-  customer: PropTypes.object
-};
-
-const mapStateToProps = (state) => {
-  return {
-    cart: state.cart.cart,
-    customer: state.login.customer
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    cartActionCreators: bindActionCreators(cartAct, dispatch),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Product);
+export default (Product);

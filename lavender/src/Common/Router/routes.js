@@ -38,13 +38,18 @@ const routes = [
   },
   {
     path: "/:loai/:hang/:dong/:sanpham",
-    exact: false,
+    exact: true,
     main: ({ match }) => <Product match={match}></Product>,
   },
   {
+    path: "/mobile/:trademark",
+    exact: false,
+    main: ({match}) => <Mobile match={match} ></Mobile>,
+  },
+  {
     path: "/mobile",
-    exact: true,
-    main: () => <Mobile></Mobile>,
+    exact: false,
+    main: () => <Mobile ></Mobile>,
   },
 
   {

@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Back.Common;
@@ -45,14 +46,38 @@ namespace Back.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadDetailCartByCartId([FromQuery]int magiohang)
         {
-            Console.WriteLine("magiohang" + magiohang);
             var chitietgiohangs = await (from c in lavenderContext.Chitietgiohang
                                          where c.Magiohang == magiohang
                                          select c).ToListAsync();
-            if (chitietgiohangs == null || chitietgiohangs.Count() == 0) return StatusCode(404);
+            if (chitietgiohangs == null || chitietgiohangs.Count() == 0) return StatusCode(200);
             return StatusCode(200, Json(chitietgiohangs));
         }
 
+        [Route("dat-soluong-cho-chitietgiohang")]
+        [HttpPost]
+        public async Task<IActionResult> SetQuantityForDetailCart(JsonElement json)
+        {
+            var chitietgiohang = await lavenderContext.Chitietgiohang.SingleOrDefaultAsync(x => (x.Magiohang == int.Parse(json.GetString("magiohang")) && x.Masanpham == int.Parse(json.GetString("masanpham"))));
+            if (chitietgiohang == null) return StatusCode(404);
+            chitietgiohang.Soluong = int.Parse(json.GetString("soluong"));
+            await lavenderContext.SaveChangesAsync();
+            return StatusCode(200);
+        }
+
+        [Route("/xoa-chitietgiohang")]
+        [HttpDelete]
+        public async Task<IActionResult> deleteDetailCart(int magiohang, int masanpham)
+        {
+            var chitietgiohang = await (from c in lavenderContext.Chitietgiohang
+                                        where c.Magiohang == magiohang
+                                        && c.Masanpham == masanpham
+                                        select c).FirstOrDefaultAsync();
+
+            if (chitietgiohang == null) return StatusCode(404);
+            lavenderContext.Remove(chitietgiohang);
+            await lavenderContext.SaveChangesAsync();
+            return StatusCode(200);
+        }
     }
 
 }

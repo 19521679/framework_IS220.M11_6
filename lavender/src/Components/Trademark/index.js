@@ -27,9 +27,9 @@ export default class index extends Component {
      trademarkApi.trademark(this.props.type)
     .then((success) => {
       if (success.status===200) {
-        let temp = [success.data.value.$values];
+        let temp = success.data.value.$values;
         for (var i=0; i<temp.length; i++) {
-          trademark.push(temp[i].tenthuonghieu);
+          trademark.push(temp[i].tenthuonghieu.toLowerCase());
         }
         this.setState({trademark:trademark})
       }

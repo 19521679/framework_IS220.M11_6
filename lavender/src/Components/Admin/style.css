@@ -307,12 +307,6 @@ blockquote {
   margin: 0 0 1rem;
 }
 
-b,
-strong {
-  font-weight: 700;
-  color: #489620;
-  font-size: 110%;
-}
 
 small,
 .small {

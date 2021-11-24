@@ -27,10 +27,9 @@ namespace Back.Controllers
             this.lavenderContext = lavenderContext;
         }
 
-        [Route("{loai}/{hang}/{dong}/{sanpham}")]
-        public async Task<IActionResult> ProductInfo(string loai, string hang, string dong, string sanpham)
+        [Route("/{loai}/{hang}/{dong}/{sanpham}")]
+        public async Task<IActionResult> ProductInfo(string loai, string hang, string dong, string sanpham, string dungluong, string mausac)
         {
-
             int maloai = 0;
             switch (loai)
             {
@@ -43,7 +42,7 @@ namespace Back.Controllers
                 default:
                     break;
             }
-            int productid = await lavenderContext.Sanpham
+            int productid = (int)await lavenderContext.Sanpham
                 .Where(s => s.Tensanpham.Contains(sanpham))
                 .Where(s => s.Tensanpham.Contains(dong))
                 .Select(s => s.Masanpham).FirstOrDefaultAsync();
@@ -89,6 +88,18 @@ namespace Back.Controllers
             var sanpham= await lavenderContext.Sanpham.SingleOrDefaultAsync(x => x.Masanpham == masanpham);
             if (sanpham == null) return StatusCode(404);
             return StatusCode(200, Json(sanpham));
+        }
+
+        [Route("tim-sanpham-theo-tenthuonghieu")]
+        [HttpGet]
+        public async Task<IActionResult> TimsanphamTheoThuonghieu(string tenthuonghieu)
+        {
+            var thuonghieu = await lavenderContext.Thuonghieu.SingleOrDefaultAsync(x => x.Tenthuonghieu.ToLower().Equals(tenthuonghieu));
+            if (thuonghieu == null) return StatusCode(404);
+            var sanphams = await (from s in lavenderContext.Sanpham
+                                  where s.Mathuonghieu == thuonghieu.Mathuonghieu
+                                  select s).ToListAsync();
+            return StatusCode(200, Json(sanphams));
         }
     }
 

@@ -6,29 +6,30 @@ import ProductItem from "../Product/ProductItem.js";
 import * as mobileApi from "../apis/mobile";
 
 export default class index extends Component {
-  state = { sapxep: "", data: [] };
+  state = { hang: "", data: [] };
 
   renderList() {
-    var result = [];
-    for (var i = 0; i < this.state.data.length; i++) {
-      result.push(<ProductItem product={this.state.data[i]}></ProductItem>);
-    }
+    var result = null;
+    result= this.state.data.map((value, key)=>{
+      return (<ProductItem product={value} key={key}></ProductItem>);
+    });
+
     return result;
   }
 
-  componentDidMount() {
-    const { firm } = this.props;
-    if (firm != null) {
-      this.setState({ sapxep: this.props.firm });
-    }
-    mobileApi
+  async componentDidMount() {
+    console.log(this.props.match);
+    let hang = this.props.match!==undefined&& this.props.match.params.trademark;
+    let data = null;
+    await mobileApi
       .mobile()
       .then((success) => {
-        this.setState({ data: success.data.$values });
+        data=success.data.value.$values ;
       })
       .catch((error) => {
         console.log(error);
       });
+      this.setState({ data: data, hang: hang });
   }
 
   render() {
@@ -98,7 +99,7 @@ export default class index extends Component {
           {this.state.sapxep}
           <div className="row">
             <div className="mt-3">
-              <Trademark type="1"></Trademark>
+              <Trademark type={"mobile"} hang = {this.state.hang}></Trademark>
             </div>
           </div>
           <div className="row">

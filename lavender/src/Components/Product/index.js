@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import "./style.css";
 import SlideShow from "../SlideShow";
 import * as mobileApi from "../apis/mobile";
-
+import * as detailProductApi from "../apis/detailProduct";
+import * as imageApi from "../apis/image";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as cartAct from "../redux/actions/cartAct";
@@ -23,7 +24,16 @@ function Danhgia(props) {
 }
 
 class index extends Component {
-  state = { product: {}, sohinhanh: 0, active: 0 };
+  state = {
+    product: {},
+    sohinhanh: 0,
+    active: 0,
+    dongia: 0,
+    dungluong: [],
+    mausac: [],
+    chondungluong: "-1",
+    chonmausac: "-1",
+  };
   renderTab(n) {
     switch (n) {
       case 0:
@@ -32,8 +42,8 @@ class index extends Component {
         return <i className="material-icons">Thông số kỹ thuật</i>;
       case 2:
         return <i className="material-icons">Đánh giá</i>;
-        default:
-          return;
+      default:
+        return;
     }
   }
   click = (n) => {
@@ -47,18 +57,90 @@ class index extends Component {
         return <Thongso></Thongso>;
       case 2:
         return <Danhgia></Danhgia>;
-        default:
-          return;
+      default:
+        return;
     }
   }
-
-  componentDidMount() {
+  xemGia(){
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
     var { sanpham } = this.props.match.params;
+
+    var request = {
+      loai: loai,
+      hang: hang,
+      dong: dong,
+      sanpham: sanpham,
+      dungluong: this.state.chondungluong,
+      mausac: this.state.chonmausac
+    };
+
+    detailProductApi
+      .xemgiatheodungluongvamausac(request)
+      .then((success) => {
+        if (success.status === 200) {
+          this.setState({
+            dongia: success.data.value,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  async loadDungluong() {
+ 
+    var { loai } = this.props.match.params;
+    var { hang } = this.props.match.params;
+    var { dong } = this.props.match.params;
+    var { sanpham } = this.props.match.params;
+    var query;
+    query = `/${loai}/${hang}/${dong}/${sanpham}/dungluong?mausac=${this.state.chonmausac}`;
+    await detailProductApi
+      .dungluong(query)
+      .then((success) => {
+        if (success.status === 200) {
+          this.setState({ dungluong: success.data.value.$values });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  async loadMausac() {
+    var { loai } = this.props.match.params;
+    var { hang } = this.props.match.params;
+    var { dong } = this.props.match.params;
+    var { sanpham } = this.props.match.params;
+    var query;
+    query = `/${loai}/${hang}/${dong}/${sanpham}/mausac?dungluong=${this.state.chondungluong}`;
+    await detailProductApi
+      .mausac(query)
+      .then((success) => {
+        if (success.status === 200) {
+          this.setState({ mausac: success.data.value.$values });
+  
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  async componentDidMount() {
+    var { loai } = this.props.match.params;
+    var { hang } = this.props.match.params;
+    var { dong } = this.props.match.params;
+    var { sanpham } = this.props.match.params;
+
+    this.loadDungluong();
+    this.loadMausac();
+
     var query = `/${loai}/${hang}/${dong}/${sanpham}`;
-    mobileApi
+    await mobileApi
       .mobileInfo(query)
       .then((success) => {
         if (success.status === 200) {
@@ -69,8 +151,9 @@ class index extends Component {
         }
       })
       .catch((error) => {
-        console.log("error" + error);
+        console.error("error" + error);
       });
+    await this.xemGia();
   }
   addToCart = () => {
     let { product } = this.state;
@@ -80,6 +163,8 @@ class index extends Component {
       {
         makhachhang: this.props.customer.makhachhangNavigation.makhachhang,
         masanpham: product.masanpham,
+        dungluong: this.state.dungluong[this.state.chondungluong].dungluong,
+        mausac: this.state.mausac[this.state.chonmausac].mausac,
       },
       this.props.history
     );
@@ -101,43 +186,6 @@ class index extends Component {
                 <i className="fas fa-star checked" />
                 &nbsp;14 đánh giá
               </div>
-              <div className="box-info__box-social ">
-                <div
-                  className="fb-like fb_iframe_widget"
-                  data-layout="button_count"
-                  data-show-faces="false"
-                  data-share="true"
-                  fb-xfbml-state="rendered"
-                >
-                  <span
-                    style={{
-                      verticalAlign: "bottom",
-                      width: "150px",
-                      height: "28px",
-                    }}
-                  >
-                    <iframe
-                      name="f21f31bf5b23fc8"
-                      width="1000px"
-                      height="1000px"
-                      data-testid="fb:like Facebook Social Plugin"
-                      title="fb:like Facebook Social Plugin"
-                      frameBorder={0}
-                      allowTransparency="true"
-                      allowFullScreen="true"
-                      scrolling="no"
-                      allow="encrypted-media"
-                      style={{
-                        border: "none",
-                        visibility: "visible",
-                        width: "150px",
-                        height: "28px",
-                      }}
-                      className
-                    />
-                  </span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -151,156 +199,157 @@ class index extends Component {
               </div>
               <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <div id="price" className="price mt-5">
-                  {this.state.product.dongia}₫
+                  {this.state.dongia}₫
                 </div>
                 <div className="box-linked">
+                  <div className="box-title">
+                    <p className="box-title__title">Chọn dung lượng</p>
+                  </div>
                   <div className="list-linked">
-                    <a className="item-linked linked-1 box-shadow">
-                      <strong>1TB</strong>
-                      <span>47.500.000&nbsp;₫</span>
-                    </a>
-                    <a className="item-linked linked-2 box-shadow">
-                      <strong>512GB</strong>
-                      <span>42.490.000&nbsp;₫</span>
-                    </a>
-                    <a className="item-linked linked-3 active box-shadow">
-                      <strong>256GB</strong>
-                      <span>36.990.000&nbsp;₫</span>
-                    </a>
-                    <a className="item-linked linked-4 box-shadow">
-                      <strong>128GB</strong>
-                      <span>33.990.000&nbsp;₫</span>
-                    </a>
+                    {function () {
+                      var result = [];
+                      result = this.state.dungluong.map((value, key) => {
+                        return (
+                          <a
+                            className={
+                              key ===
+                              (() => {
+                                var i = 0;
+                                for (; i < this.state.dungluong.length; i++) {
+                                  if (
+                                    this.state.dungluong[i].dungluong ===
+                                    this.state.chondungluong
+                                  )
+                                    break;
+                                }
+                                return i;
+                              })()
+                                ? "item-linked box-shadow selected"
+                                : "item-linked box-shadow"
+                            }
+                            href={() => false}
+                            key={key}
+                            onClick={async () => {
+                              if (
+                                key ===
+                                (() => {
+                                  var i = 0;
+                                  for (; i < this.state.dungluong.length; i++) {
+                                    if (
+                                      this.state.dungluong[i].dungluong ===
+                                      this.state.chondungluong
+                                    )
+                                      break;
+                                  }
+                                  return i;
+                                })()
+                              ) {
+                                await this.setState({ chondungluong: "-1" });
+                                if (this.state.chonmausac==="-1") this.xemGia();
+                              } else
+                                await this.setState({
+                                  chondungluong:
+                                    this.state.dungluong[key].dungluong,
+                                });
+                              this.loadMausac();
+                              if (this.state.chonmausac === "-1") return;
+
+                              this.xemGia();
+                            }}
+                          >
+                            <strong>{value.dungluong}</strong>
+                          </a>
+                        );
+                      });
+
+                      return result;
+                    }.bind(this)()}
                   </div>
                 </div>
 
                 <div className="box-product-option">
                   <div className="box-title">
-                    <p className="box-title__title">
-                      Chọn màu để xem giá và chi nhánh có hàng
-                    </p>
+                    <p className="box-title__title">Chọn màu</p>
                   </div>
                   <div className="box-content">
-                    <select
-                      name="super_attribute[80]"
-                      id="attribute80"
-                      className="required-entry super-attribute-select no-display swatch-select box-shadow"
-                    >
-                      <option value>Choose an Option...</option>
-                      <option value={161} price={36990000} data-label="bạc">
-                        Bạc
-                      </option>
-                      <option value={157} price={36990000} data-label="vàng">
-                        Vàng
-                      </option>
-                      <option value={160} price={36990000} data-label="xám">
-                        Xám
-                      </option>
-                      <option value={1075} price={36990000} data-label="xanh">
-                        Xanh
-                      </option>
-                    </select>
                     <ul id="configurable_swatch_color" className="list-colors">
-                      <li
-                        id="option161"
-                        className="item-color option-b-c  wide-swatch swatch selected"
-                        data-id={36558}
-                        data-stock={1}
-                      >
-                        <a
-                          name="b-c"
-                          id="swatch161"
-                          className="swatch-link swatch-link-80"
-                          title="Bạc"
-                          alt=""
-                        >
-                          <img
-                            className="cpslazy loaded"
-                            data-src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-3_6.jpg"
-                            alt="Bạc"
-                            title="Bạc"
-                            data-ll-status="loaded"
-                            src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-3_6.jpg"
-                          />
-                          <p>
-                            <strong>Bạc</strong>
-                            <span>36.990.000&nbsp;₫</span>
-                          </p>
-                        </a>
-                      </li>
-                      <li
-                        id="option157"
-                        className="item-color option-v-ng  wide-swatch swatch"
-                        data-id={36560}
-                        data-stock={1}
-                      >
-                        <a
-                          name="v-ng"
-                          id="swatch157"
-                          className="swatch-link swatch-link-80"
-                          title="Vàng"
-                        >
-                          <img
-                            className="cpslazy loaded"
-                            data-src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-2_1_5.jpg"
-                            alt="Vàng"
-                            title="Vàng"
-                            data-ll-status="loaded"
-                            src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-2_1_5.jpg"
-                          />
-                          <p>
-                            <strong>Vàng</strong>
-                            <span>36.990.000&nbsp;₫</span>
-                          </p>
-                        </a>
-                      </li>
-                      <li
-                        id="option160"
-                        className="item-color option-x-m  wide-swatch swatch"
-                        data-id={36559}
-                        data-stock={1}
-                      >
-                        <a
-                          name="x-m"
-                          id="swatch160"
-                          className="swatch-link swatch-link-80"
-                          title="Xám"
-                        >
-                          <img
-                            className="cpslazy loaded"
-                            data-src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-4_6.jpg"
-                            alt="Xám"
-                            title="Xám"
-                            data-ll-status="loaded"
-                            src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-4_6.jpg"
-                          />
-                          <p>
-                            <strong>Xám</strong>
-                            <span>36.990.000&nbsp;₫</span>
-                          </p>
-                        </a>
-                      </li>
-                      <li id="option1075" className="item-color disable">
-                        <a
-                          name="xanh"
-                          id="swatch1075"
-                          className="swatch-link swatch-link-80"
-                          title="Xanh"
-                        >
-                          <img
-                            className="cpslazy loaded"
-                            data-src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-5_6.jpg"
-                            alt="Xanh"
-                            title="Xanh"
-                            data-ll-status="loaded"
-                            src="https://cdn.cellphones.com.vn/media/catalog/product/cache/7/thumbnail/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_13-_pro-5_6.jpg"
-                          />
-                          <p>
-                            <strong>Xanh</strong>
-                            <span>36.990.000&nbsp;₫</span>
-                          </p>
-                        </a>
-                      </li>
+                      {function () {
+                        var result = [];
+                        result = this.state.mausac.map((value, key) => {
+                          return (
+                            <li
+                              key={key}
+                              id="option161"
+                              className={
+                                key ===
+                                (() => {
+                                  var i = 0;
+                                  for (; i < this.state.mausac.length; i++) {
+                                    if (
+                                      this.state.mausac[i].mausac ===
+                                      this.state.chonmausac
+                                    )
+                                      break;
+                                  }
+                                  return i;
+                                })()
+                                  ? "item-color option-b-c  wide-swatch swatch box-shadow selected"
+                                  : "item-color option-b-c  wide-swatch swatch box-shadow "
+                              }
+                            >
+                              <a
+                                name="b-c"
+                                id="swatch161"
+                                className="swatch-link swatch-link-80"
+                                title={value.mausac}
+                                href={() => false}
+                                alt={value.mausac}
+                                onClick={async () => {
+                                  if (
+                                    key ===
+                                    (() => {
+                                      var i = 0;
+                                      for (
+                                        ;
+                                        i < this.state.mausac.length;
+                                        i++
+                                      ) {
+                                        if (
+                                          this.state.mausac[i].mausac ===
+                                          this.state.chonmausac
+                                        )
+                                          break;
+                                      }
+                                      return i;
+                                    })()
+                                  ) {
+                                    await this.setState({ chonmausac: "-1" });
+                                    if (this.state.chondungluong==="-1") this.xemGia();
+                                  } else
+                                    await this.setState({
+                                      chonmausac: this.state.mausac[key].mausac,
+                                    });
+                                  this.loadDungluong();
+                                  if (this.state.chondungluong === "-1") return;
+                                  this.xemGia();
+                                }}
+                              >
+                                <img
+                                  className="cpslazy loaded"
+                                  alt={value.mausac}
+                                  title={value.mausac}
+                                  data-ll-status="loaded"
+                                  src={imageApi.image(value.image)}
+                                />
+                                <p>
+                                  <strong>{value.mausac}</strong>
+                                </p>
+                              </a>
+                            </li>
+                          );
+                        });
+                        return result;
+                      }.bind(this)()}
                     </ul>
                   </div>
                 </div>
@@ -327,7 +376,7 @@ class index extends Component {
                   <div className="box-content">
                     <ul className="list-promotions">
                       <li className="item-promotion general-promotion">
-                        <a>
+                        <a href={() => false}>
                           Giảm 1 triệu khi thanh toán qua ví Moca, thẻ tín dụng
                           ACB, BIDV, Sacombank, mPOS, Shinhan, Standard Charter
                           (số lượng có hạn)&nbsp;
@@ -335,7 +384,7 @@ class index extends Component {
                         </a>
                       </li>
                       <li className="item-promotion general-promotion">
-                        <a>
+                        <a href={() => false}>
                           Thu cũ lên đời - Trợ giá 1 triệu&nbsp;
                           <span className="color-red">(xem chi tiết)</span>
                         </a>
@@ -343,9 +392,14 @@ class index extends Component {
                     </ul>
                     <div className="cps-additional-note">
                       <p>
-                        <a data-toggle="modal" data-target="#myModal">
+                        <a
+                          data-toggle="modal"
+                          data-target="#myModal"
+                          href={() => false}
+                        >
                           <strong className="color-red">
                             <img
+                            alt =""
                               src="/media/icon/icon_fire.png"
                               style={{ width: "20px" }}
                             />
@@ -353,48 +407,13 @@ class index extends Component {
                           </strong>
                         </a>
                       </p>
-                      <div className="modal fade" id="myModal">
-                        <div className="modal-dialog">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <button
-                                className="close"
-                                type="button"
-                                data-dismiss="modal"
-                              >
-                                ×
-                              </button>
-                              <ul>
-                                <li>18 Võ Văn Ngân, Quận Thủ Đức</li>
-                                <li>59 Quang Trung, Quận Gò Vấp</li>
-                                <li>359 Cộng Hòa, Quận Tân Bình</li>
-                                <li>956 Âu Cơ, P.14, Quận Tân Bình</li>
-                                <li>
-                                  536 Xô Viết Nghệ Tĩnh, P. 25, Q. Bình Thạnh
-                                </li>
-                                <li>288 đường 3/2, Quận 10</li>
-                                <li>55B Trần Quang Khải, Quận 1</li>
-                                <li>134 Nguyễn Thái Học, Quận 1</li>
-                              </ul>
-                            </div>
-                            <div className="modal-footer">
-                              <button
-                                className="btn btn-danger"
-                                type="button"
-                                data-dismiss="modal"
-                              >
-                                Đóng
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>{" "}
                   </div>
                 </div>
 
                 <div className="box-action-button">
                   <a
+                    href={() => false}
                     className="action-button button-red"
                     onClick={this.addToCart}
                   >
@@ -402,11 +421,11 @@ class index extends Component {
                     <span>(Giao tận nơi hoặc lấy tại cửa hàng)</span>
                   </a>
                   <div className="group-button ">
-                    <a className="action-button button-blue" style={{}}>
+                    <a href={() => false}className="action-button button-blue" style={{}}>
                       <strong>TRẢ GÓP 0%</strong>
                       <span>(Xét duyệt qua điện thoại)</span>
                     </a>
-                    <a className="action-button button-blue">
+                    <a href={() => false} className="action-button button-blue">
                       <strong>TRẢ GÓP QUA THẺ</strong>
                       <span>(Visa, Master Card, JCB)</span>
                     </a>
@@ -435,7 +454,7 @@ class index extends Component {
                                   className="nav-item"
                                   onClick={this.click.bind(this, i)}
                                 >
-                                  <a
+                                  <a href={() => false}
                                     className="nav-link active"
                                     id="nav-link"
                                     data-toggle="tab"
@@ -450,7 +469,7 @@ class index extends Component {
                                   className="nav-item"
                                   onClick={this.click.bind(this, i)}
                                 >
-                                  <a
+                                  <a href={() => false}
                                     className="nav-link"
                                     id="nav-link"
                                     data-toggle="tab"
@@ -469,7 +488,7 @@ class index extends Component {
                 </div>
                 <div className="card-body ">
                   <div className="tab-content text-center">
-                    {(function () {
+                    {function () {
                       var result = [];
                       for (var i = 0; i < 3; i++) {
                         if (i === this.state.active) {
@@ -487,7 +506,7 @@ class index extends Component {
                         }
                       }
                       return result;
-                    }).bind(this)()}
+                    }.bind(this)()}
                   </div>
                 </div>
               </div>

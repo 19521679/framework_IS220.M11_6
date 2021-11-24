@@ -108,7 +108,7 @@ export default class AddBill extends Component {
               placeholder=""
               onChange={((e) => {
                 this.setState({ makhuyenmai: e.target.value });
-              }).bind(this)}
+              })}
               value={this.state.makhuyenmai}
             ></input>
           </div>
@@ -125,7 +125,7 @@ export default class AddBill extends Component {
               name="trip-start"
               onChange={((e) => {
                 this.setState({ ngayhoadon: new Date(e.target.value) });
-              }).bind(this)}
+              })}
               value={(this.state.ngayhoadon).toISOString().split('T')[0]}
             ></input>
           </div>
@@ -141,7 +141,7 @@ export default class AddBill extends Component {
               placeholder=""
               onChange={((e) => {
                 this.setState({ manhanvien: e.target.value });
-              }).bind(this)}
+              })}
               value={this.state.manhanvien}
             ></input>
           </div>
@@ -155,7 +155,7 @@ export default class AddBill extends Component {
               placeholder=""
               onChange={((e) => {
                 this.setState({ tongtien: e.target.value });
-              }).bind(this)}
+              })}
               value={this.state.tongtien}
             ></input>
           </div>

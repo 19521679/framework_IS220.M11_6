@@ -153,32 +153,6 @@ const routes = [
     main: () => <TrademarkDashboard></TrademarkDashboard>
   },
 
-
-  {
-    path: "/lmember/thongtintaikhoan",
-    exact: true,
-    main: () => <ThongTinTaiKhoan></ThongTinTaiKhoan>
-  },
-  {
-    path: "/lmember/quanlydonhang",
-    exact: true,
-    main: () => <QuanLyDonHang></QuanLyDonHang>
-  },
-  {
-    path: "/lmember/thongbaocuatoi",
-    exact: true,
-    main: () => <ThongBaoCuaToi></ThongBaoCuaToi>
-  },
-  {
-    path: "/lmember/sodiachi",
-    exact: true,
-    main: () => <SoDiaChi></SoDiaChi>
-  },
-  {
-    path: "/lmember/sanphamyeuthich",
-    exact: true,
-    main: () => <SanPhamYeuThich></SanPhamYeuThich>
-  },
   {
     path: "/admin/customer/add",
     exact: true,

@@ -1,9 +1,70 @@
 import React, { Component } from "react";
 import "./ThongTinTaiKhoan.css";
-export default class ThongTinTaiKhoan extends Component {
-  state ={nickname:""}
-  luuThayDoi(){
-    console.log("nickname"+this.props);
+import * as customerApi from "../apis/customer";
+import * as myToast from "../../Common/helper/toastHelper";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import * as khachhangApi from "../apis/customer";
+import {Link } from "react-router-dom";
+
+class ThongTinTaiKhoan extends Component {
+  state = {
+    hovaten: "",
+    diachi: "",
+    ngaysinh: new Date(),
+    sdt: "",
+    email: "",
+    sdt: "",
+    email: "",
+  };
+  luuThayDoi() {
+    var request = null;
+
+    request = {
+      makhachhang: this.props.customer.makhachhang,
+      hovaten: this.state.hovaten,
+      diachi: this.state.diachi,
+      ngaysinh: new Date(this.state.ngaysinh),
+    };
+    customerApi
+      .thayDoiThongTin(request)
+      .then((success) => {
+        if (success.status === 200) {
+          myToast.toastSucces("Thay đổi thông tin thành công");
+        } else myToast.toastError("Thay đổi thông tin thất bại");
+      })
+      .catch((error) => {
+        myToast.toastError("Thay đổi thông tin thất bại");
+        console.error(error);
+      });
+  }
+  async componentDidMount() {
+    let hovaten = "";
+    let diachi = "";
+    let ngaysinh = new Date();
+    let sdt = "";
+    let email = "";
+    await khachhangApi
+      .findCustomerByCustomerId(this.props.customer.makhachhang)
+      .then((success) => {
+        if (success.status === 200) {
+          hovaten = success.data.value.tenkhachhang;
+          diachi = success.data.value.diachi;
+          ngaysinh = new Date(success.data.value.ngaysinh);
+          sdt = success.data.value.sodienthoai;
+          email = success.data.value.email;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    this.setState({
+      hovaten: hovaten,
+      diachi: diachi,
+      ngaysinh: ngaysinh,
+      email: email,
+      sdt: sdt,
+    });
   }
   render() {
     return (
@@ -15,250 +76,72 @@ export default class ThongTinTaiKhoan extends Component {
           <div className="info">
             <div className="info-left">
               <span className="info-title">Thông tin cá nhân</span>
-              <div className="styles__StyledAccountInfo-sc-s5c7xj-2 khBVOu">
+              <div className="styles__StyledAccountInfo-sc-s5c7xj-2 ">
                 <div>
                   <div className="form-control">
-                    <label className="input-label">Họ &amp; Tên</label>
-                    <div>
-                      <div className="styles__StyledInput-sc-s5c7xj-5 hisWEc">
+                    <div className="mb-3 row">
+                      <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-form-label">
+                        Họ &amp; Tên
+                      </div>
+                      <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                         <input
-                          className="input"
+                          className="form-control-plaintext border rounded p-1"
                           type="search"
-                          name="fullName"
-                          maxLength={128}
+                          name="hovaten"
+                          maxLength={200}
                           placeholder="Thêm họ tên"
-                          defaultValue="Nguyễn Lê Nguyên Khang"
+                          value = {this.state.hovaten}
+                          onChange={(e) =>
+                            this.setState({ hovaten: e.target.value })
+                          }
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="form-control">
-                    <label className="input-label">Nickname</label>
-                    <div>
-                      <div className="styles__StyledInput-sc-s5c7xj-5 hisWEc">
+
+                    <div className="mb-3 row">
+                      <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-form-label">
+                        Địa chỉ
+                      </div>
+                      <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                         <input
-                          className="input"
-                          name="userName"
-                          maxLength={128}
-                          placeholder="Thêm nickname"
-                          type="search"
-                          id="nickname"
-                          defaultValue
-                          value = {this.state.nickname}
-                          onChange={((e)=>this.setState({nickname:e.target.value}))}
+                          className="form-control-plaintext border rounded p-1"
+                          type="address"
+                          name="address"
+                          onChange={(e) =>
+                            this.setState({ diachi: e.target.value })
+                          }
+                          maxLength={200}
+                          placeholder=""
+                          value = {this.state.diachi}
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="form-control">
-                    <label className="input-label">Ngày sinh</label>
-                    <div className="style__StyledBirthdayPicker-sc-1325vtm-0 bvIJNZ">
-                      <select name="day">
-                        <option value={0}>Ngày</option>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                        <option value={6}>6</option>
-                        <option value={7}>7</option>
-                        <option value={8}>8</option>
-                        <option value={9}>9</option>
-                        <option value={10}>10</option>
-                        <option value={11}>11</option>
-                        <option value={12}>12</option>
-                        <option value={13}>13</option>
-                        <option value={14}>14</option>
-                        <option value={15}>15</option>
-                        <option value={16}>16</option>
-                        <option value={17}>17</option>
-                        <option value={18}>18</option>
-                        <option value={19}>19</option>
-                        <option value={20}>20</option>
-                        <option value={21}>21</option>
-                        <option value={22}>22</option>
-                        <option value={23}>23</option>
-                        <option value={24}>24</option>
-                        <option value={25}>25</option>
-                        <option value={26}>26</option>
-                        <option value={27}>27</option>
-                        <option value={28}>28</option>
-                        <option value={29}>29</option>
-                        <option value={30}>30</option>
-                      </select>
-                      <select name="month">
-                        <option value={0}>Tháng</option>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                        <option value={6}>6</option>
-                        <option value={7}>7</option>
-                        <option value={8}>8</option>
-                        <option value={9}>9</option>
-                        <option value={10}>10</option>
-                        <option value={11}>11</option>
-                        <option value={12}>12</option>
-                      </select>
-                      <select name="year">
-                        <option value={0}>Năm</option>
-                        <option value={2021}>2021</option>
-                        <option value={2020}>2020</option>
-                        <option value={2019}>2019</option>
-                        <option value={2018}>2018</option>
-                        <option value={2017}>2017</option>
-                        <option value={2016}>2016</option>
-                        <option value={2015}>2015</option>
-                        <option value={2014}>2014</option>
-                        <option value={2013}>2013</option>
-                        <option value={2012}>2012</option>
-                        <option value={2011}>2011</option>
-                        <option value={2010}>2010</option>
-                        <option value={2009}>2009</option>
-                        <option value={2008}>2008</option>
-                        <option value={2007}>2007</option>
-                        <option value={2006}>2006</option>
-                        <option value={2005}>2005</option>
-                        <option value={2004}>2004</option>
-                        <option value={2003}>2003</option>
-                        <option value={2002}>2002</option>
-                        <option value={2001}>2001</option>
-                        <option value={2000}>2000</option>
-                        <option value={1999}>1999</option>
-                        <option value={1998}>1998</option>
-                        <option value={1997}>1997</option>
-                        <option value={1996}>1996</option>
-                        <option value={1995}>1995</option>
-                        <option value={1994}>1994</option>
-                        <option value={1993}>1993</option>
-                        <option value={1992}>1992</option>
-                        <option value={1991}>1991</option>
-                        <option value={1990}>1990</option>
-                        <option value={1989}>1989</option>
-                        <option value={1988}>1988</option>
-                        <option value={1987}>1987</option>
-                        <option value={1986}>1986</option>
-                        <option value={1985}>1985</option>
-                        <option value={1984}>1984</option>
-                        <option value={1983}>1983</option>
-                        <option value={1982}>1982</option>
-                        <option value={1981}>1981</option>
-                        <option value={1980}>1980</option>
-                        <option value={1979}>1979</option>
-                        <option value={1978}>1978</option>
-                        <option value={1977}>1977</option>
-                        <option value={1976}>1976</option>
-                        <option value={1975}>1975</option>
-                        <option value={1974}>1974</option>
-                        <option value={1973}>1973</option>
-                        <option value={1972}>1972</option>
-                        <option value={1971}>1971</option>
-                        <option value={1970}>1970</option>
-                        <option value={1969}>1969</option>
-                        <option value={1968}>1968</option>
-                        <option value={1967}>1967</option>
-                        <option value={1966}>1966</option>
-                        <option value={1965}>1965</option>
-                        <option value={1964}>1964</option>
-                        <option value={1963}>1963</option>
-                        <option value={1962}>1962</option>
-                        <option value={1961}>1961</option>
-                        <option value={1960}>1960</option>
-                        <option value={1959}>1959</option>
-                        <option value={1958}>1958</option>
-                        <option value={1957}>1957</option>
-                        <option value={1956}>1956</option>
-                        <option value={1955}>1955</option>
-                        <option value={1954}>1954</option>
-                        <option value={1953}>1953</option>
-                        <option value={1952}>1952</option>
-                        <option value={1951}>1951</option>
-                        <option value={1950}>1950</option>
-                        <option value={1949}>1949</option>
-                        <option value={1948}>1948</option>
-                        <option value={1947}>1947</option>
-                        <option value={1946}>1946</option>
-                        <option value={1945}>1945</option>
-                        <option value={1944}>1944</option>
-                        <option value={1943}>1943</option>
-                        <option value={1942}>1942</option>
-                        <option value={1941}>1941</option>
-                        <option value={1940}>1940</option>
-                        <option value={1939}>1939</option>
-                        <option value={1938}>1938</option>
-                        <option value={1937}>1937</option>
-                        <option value={1936}>1936</option>
-                        <option value={1935}>1935</option>
-                        <option value={1934}>1934</option>
-                        <option value={1933}>1933</option>
-                        <option value={1932}>1932</option>
-                        <option value={1931}>1931</option>
-                        <option value={1930}>1930</option>
-                        <option value={1929}>1929</option>
-                        <option value={1928}>1928</option>
-                        <option value={1927}>1927</option>
-                        <option value={1926}>1926</option>
-                        <option value={1925}>1925</option>
-                        <option value={1924}>1924</option>
-                        <option value={1923}>1923</option>
-                        <option value={1922}>1922</option>
-                        <option value={1921}>1921</option>
-                        <option value={1920}>1920</option>
-                        <option value={1919}>1919</option>
-                        <option value={1918}>1918</option>
-                        <option value={1917}>1917</option>
-                        <option value={1916}>1916</option>
-                        <option value={1915}>1915</option>
-                        <option value={1914}>1914</option>
-                        <option value={1913}>1913</option>
-                        <option value={1912}>1912</option>
-                        <option value={1911}>1911</option>
-                        <option value={1910}>1910</option>
-                        <option value={1909}>1909</option>
-                        <option value={1908}>1908</option>
-                        <option value={1907}>1907</option>
-                        <option value={1906}>1906</option>
-                        <option value={1905}>1905</option>
-                        <option value={1904}>1904</option>
-                        <option value={1903}>1903</option>
-                        <option value={1902}>1902</option>
-                        <option value={1901}>1901</option>
-                        <option value={1900}>1900</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="form-control">
-                    <label className="input-label">Giới tính</label>
-                    <label className="Radio__StyledRadio-sc-1tpsfw1-0 eQckrx">
+
+                    <div className="mb-3 row">
+                      <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-form-label">
+                        Ngày sinh
+                      </div>
+
+                      <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9"></div>
                       <input
-                        type="radio"
-                        name="gender"
-                        defaultValue="male"
-                        defaultChecked
-                      />
-                      <span className="radio-fake" />
-                      <span className="label">Nam</span>
-                    </label>
-                    <label className="Radio__StyledRadio-sc-1tpsfw1-0 eQckrx">
-                      <input type="radio" name="gender" defaultValue="female" />
-                      <span className="radio-fake" />
-                      <span className="label">Nữ</span>
-                    </label>
-                    <label className="Radio__StyledRadio-sc-1tpsfw1-0 eQckrx">
-                      <input type="radio" name="gender" defaultValue="other" />
-                      <span className="radio-fake" />
-                      <span className="label">Khác</span>
-                    </label>
+                        className="form-control-plaintext border w-30 rounded p-1"
+                        type="date"
+                        id="ngayhoadon"
+                        name="trip-start"
+                        onChange={(e) => {
+                          this.setState({ ngaysinh: new Date(e.target.value) });
+                        }}
+                        value={this.state.ngaysinh.toISOString().split("T")[0]}
+                      ></input>
+                    </div>
                   </div>
 
-                    <button
-                      className="styles__StyledBtnSubmit-sc-s5c7xj-3 cqEaiM btn-submit"
-                      onClick={this.luuThayDoi}
-                    >
-                      Lưu thay đổi
-                    </button>
-  
+                  <button
+                    className="btn btn-primary"
+                    onClick={this.luuThayDoi.bind(this)}
+                  >
+                    Lưu thay đổi
+                  </button>
                 </div>
               </div>
             </div>
@@ -275,14 +158,15 @@ export default class ThongTinTaiKhoan extends Component {
                     />
                     <div className="detail">
                       <span>Số điện thoại</span>
-                      <span>0327403627</span>
+                      <span>{this.state.sdt}</span>
                     </div>
                   </div>
                   <div className="status">
                     <span />
-                    <button className="button active">Cập nhật</button>
+                    <Link to ="/lmember/thongtintaikhoan/sdt" className="btn btn-primary">Cập nhật</Link>
                   </div>
                 </div>
+
                 <div className="list-item">
                   <div className="info">
                     <img
@@ -292,12 +176,12 @@ export default class ThongTinTaiKhoan extends Component {
                     />
                     <div className="detail">
                       <span>Địa chỉ email</span>
-                      <span>nguyenkhang15032001@gmail.com</span>
+                      <span>{this.state.email}</span>
                     </div>
                   </div>
                   <div className="status">
                     <span />
-                    <button className="button active">Cập nhật</button>
+                    <Link to ="/lmember/thongtintaikhoan/email" className="btn btn-primary">Cập nhật</Link>
                   </div>
                 </div>
               </div>
@@ -367,3 +251,14 @@ export default class ThongTinTaiKhoan extends Component {
     );
   }
 }
+ThongTinTaiKhoan.propTypes = {
+  customer: PropTypes.object,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    customer: state.login.customer,
+  };
+};
+
+export default connect(mapStateToProps)(ThongTinTaiKhoan);

@@ -3,6 +3,7 @@ import "./Home.css";
 import Carousel from "react-bootstrap/Carousel";
 import ProductItem from "./Product/ProductItem.js";
 import * as mobileApi from "./apis/mobile";
+import {Link} from "react-router-dom";
 
 export default class Home extends Component {
   state = { data: [] };
@@ -19,7 +20,7 @@ export default class Home extends Component {
     mobileApi
       .mobile()
       .then((success) => {
-        this.setState({ data: success.data.$values });
+        this.setState({ data: success.data.value.$values });
       })
       .catch((error) => {
         console.log(error);
@@ -97,46 +98,53 @@ export default class Home extends Component {
             </a>
             <div className="box-related-tag">
               <div className="list-related-tag">
-                <a
+                <Link
+                to ="/mobile/apple"
                   className="btn btn-default btn-sm"
                 >
                   Apple
-                </a>
-                <a
+                </Link>
+                <Link
+                 to ="/mobile/samsung"
                   className="btn btn-default btn-sm"
                 >
                   Samsung
-                </a>
-                <a
+                </Link>
+                <Link
+                 to ="/mobile/xiaomi"
                   className="btn btn-default btn-sm"
                 >
                   Xiaomi
-                </a>
-                <a
+                </Link>
+                <Link
+                 to ="/mobile/oppo"
                   className="btn btn-default btn-sm"
                 >
                   OPPO
-                </a>
-                <a
+                </Link>
+                <Link
+                 to ="/mobile/realme"
                   className="btn btn-default btn-sm"
                 >
                   Realme
-                </a>
-                <a
+                </Link>
+                <Link
+                to ="/mobile/nokia"
                   className="btn btn-default btn-sm"
                 >
                   Nokia
-                </a>
-                <a
+                </Link>
+                <Link
+                 to ="/mobile/vivo"
                   className="btn btn-default btn-sm"
                 >
                   Vivo
-                </a>{" "}
-                <a
+                </Link>
+                <Link to ="/mobile"
                   className="item-related-tag"
                 >
                   Xem tất cả
-                </a>
+                </Link>
               </div>
             </div>
           </div>

@@ -176,7 +176,7 @@ select option{
 #configurable_swatch_color li {
   display: inline-block;
 }
-.box-product-option .box-content .list-colors .item-color.selected{
+.box-product-option .box-content .list-colors .item-color.selected, .box-linked .list-linked .item-linked.selected{
   border: 1px solid #D70018!important;
   outline: none;
 }
@@ -640,4 +640,17 @@ footer p a{
 footer p a:hover {
   color: #9f26aa;
   text-decoration: none;
+}
+
+.swatch-link {
+  cursor:pointer;
+}
+.product-price .old-price{
+  display: inline-block;
+  margin: 0 0 5px 10px !important;
+  float: left;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  text-decoration: line-through;
+  color: #707070;
 }

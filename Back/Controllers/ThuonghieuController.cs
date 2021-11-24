@@ -43,8 +43,21 @@ namespace Back.Controllers
 
         [Route("/thuonghieu")]
         [HttpGet]
-        public async Task<IActionResult> AllTrademark(int maloai)
+        public async Task<IActionResult> AllTrademark(string loai)
         {
+            int maloai = 0;
+            switch (loai)
+            {
+                case "mobile":
+                    maloai = 1;
+                    break;
+                case "laptop":
+                    maloai = 2;
+                    break;
+                default:
+                    break;
+            }
+
             var sanphamtemp = await (from s in lavenderContext.Sanpham
                                      where s.Maloai == maloai
                                      select s).FirstOrDefaultAsync();

@@ -155,6 +155,24 @@ namespace Back.Models
                     .IsUnicode(false)
                     .HasColumnName("TINHTRANG");
 
+                entity.Property(e => e.Mausac)
+                    .HasMaxLength(45)
+                    .IsUnicode(true)
+                    .HasColumnName("MAUSAC");
+
+                entity.Property(e => e.Dungluong)
+                    .HasMaxLength(45)
+                    .IsUnicode(false)
+                    .HasColumnName("DUNGLUONG");
+
+                entity.Property(e => e.Giamoi)
+                    .HasColumnName("GIAMOI");
+
+                entity.Property(e => e.Image)
+                    .HasMaxLength(45)
+                    .IsUnicode(false)
+                    .HasColumnName("IMAGE");
+
                 entity.HasOne(d => d.MasanphamNavigation)
                     .WithMany(p => p.Chitietsanphams)
                     .HasForeignKey(d => d.Masanpham)
@@ -515,8 +533,6 @@ namespace Back.Models
 
                 entity.Property(e => e.Masanpham).HasColumnName("MASANPHAM");
 
-                entity.Property(e => e.Dongia).HasColumnName("DONGIA");
-
                 entity.Property(e => e.Image)
                     .HasColumnType("text")
                     .HasColumnName("IMAGE");
@@ -530,6 +546,8 @@ namespace Back.Models
                     .HasColumnName("MOTA");
 
                 entity.Property(e => e.Soluongton).HasColumnName("SOLUONGTON");
+
+                entity.Property(e => e.Dongia).HasColumnName("DONGIA");
 
                 entity.Property(e => e.Tensanpham)
                     .IsRequired()

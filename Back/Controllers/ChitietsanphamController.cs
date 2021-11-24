@@ -1,102 +1,203 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.IO;
+
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Back.Common;
+
 using Back.Models;
-using Back.Models.Account;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json.Linq;
 
 namespace Back.Controllers
 {
-    
+
     // [EnableCors(origins: "*", headers: "accept,content-type,origin,x-my-header", methods: "*")]
     [ApiController]
 
-    public class CartController : Controller
+    public class ChitietsanphamController : Controller
     {
-        private readonly ILogger<CartController> _logger;
+        private readonly ILogger<ChitietsanphamController> _logger;
         private readonly IWebHostEnvironment _env;
 
         private readonly lavenderContext lavenderContext;
 
-        public CartController(ILogger<CartController> logger, IWebHostEnvironment env, lavenderContext lavenderContext)
+        public ChitietsanphamController(ILogger<ChitietsanphamController> logger, IWebHostEnvironment env, lavenderContext lavenderContext)
         {
             _logger = logger;
             _env = env;
             this.lavenderContext = lavenderContext;
         }
-        [Route("/add-to-cart")]
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(JsonElement json)
+
+        [Route("{loai}/{hang}/{dong}/{sanpham}/dungluong")]
+        [HttpGet]
+        public async Task<IActionResult> Sokieudungluong(string loai, string hang, string dong, string sanpham, string mausac)
         {
-            Giohang giohang = await (from g in lavenderContext.Giohang
-                           where g.Makhachhang == int.Parse(json.GetString("makhachhang"))
-                           select g).FirstOrDefaultAsync();
-            Khachhang khachhang = await (from k in lavenderContext.Khachhang
-                                         where k.Makhachhang == int.Parse(json.GetString("makhachhang"))
-                                         select k).FirstOrDefaultAsync();
-            Console.WriteLine("giohang"+giohang);
-            if (giohang == null)
+            int maloai = 0;
+            switch (loai)
             {
-                giohang = new Giohang();
-                giohang.Makhachhang = 1;
-                giohang.MakhachhangNavigation = khachhang;
-                await lavenderContext.Giohang.AddAsync(giohang);
-                await lavenderContext.SaveChangesAsync();
-                giohang = await (from g in lavenderContext.Giohang
-                                 where g.Makhachhang == int.Parse(json.GetString("makhachhang"))
-                                 select g).FirstOrDefaultAsync();
+                case "mobile":
+                    maloai = 1;
+                    break;
+                case "laptop":
+                    maloai = 2;
+                    break;
+                default:
+                    break;
             }
 
-            Chitietgiohang chitietgiohang = await (from c in lavenderContext.Chitietgiohang
-                                                    where c.Magiohang == giohang.Magiohang
-                                                    && c.Masanpham == int.Parse(json.GetString("masanpham"))
-                                                    select c).FirstOrDefaultAsync();
-            if (chitietgiohang== null)
+            int thuonghieuid = await (from t in lavenderContext.Thuonghieu
+                                      where t.Tenthuonghieu.Equals(hang)
+                                      select t.Mathuonghieu).FirstOrDefaultAsync();
+            if (thuonghieuid == 0) return StatusCode(404);
+
+            var sanphamtemp = await lavenderContext.Sanpham.SingleOrDefaultAsync(x => x.Maloai == maloai && x.Tensanpham.Contains(dong) && x.Tensanpham.Contains(sanpham) && x.Mathuonghieu == thuonghieuid);
+            if (sanphamtemp == null) return StatusCode(404);
+            var chitietsanphams = await (from c in lavenderContext.Chitietsanpham
+                                         where c.Masanpham == sanphamtemp.Masanpham
+                                         && mausac.Equals("-1") ? true : c.Mausac.Equals(mausac)
+                                         select c).ToListAsync();
+            if (chitietsanphams.Count() == 0) return StatusCode(404);
+
+            List<Chitietsanpham> listsanphamtheodungluong = new List<Chitietsanpham>();
+            List<dynamic> dungluong = new List<dynamic>();
+            foreach (var i in chitietsanphams)
             {
-                chitietgiohang = new Chitietgiohang();
-                chitietgiohang.Magiohang = giohang.Magiohang;
-                chitietgiohang.Soluong = 1;
-                chitietgiohang.Masanpham = int.Parse(json.GetString("masanpham"));
-                await lavenderContext.Chitietgiohang.AddAsync(chitietgiohang);
-                await lavenderContext.SaveChangesAsync();
-            }
-            else
-            {
-                chitietgiohang.Soluong += 1;
-                await lavenderContext.SaveChangesAsync();
+                var timduoccaimoinaodo = true;
+                foreach (var j in listsanphamtheodungluong)
+                {
+                    if (j.Dungluong.Equals(i.Dungluong))
+                    {
+                        timduoccaimoinaodo = false;
+                        break;
+                    }
+                }
+
+                if (timduoccaimoinaodo == true)
+                {
+                    dungluong.Add(new { dungluong = i.Dungluong });
+                }
+
             }
 
-            
-            return StatusCode(200, Json(chitietgiohang));
+            return StatusCode(200, Json(dungluong));
         }
 
-
-        [Route("/cart")]
+        [Route("{loai}/{hang}/{dong}/{sanpham}/mausac")]
         [HttpGet]
-        public async Task<IActionResult> GetCart([FromQuery] string makhachhang)
+        public async Task<IActionResult> Sokieumausac(string loai, string hang, string dong, string sanpham, string dungluong)
         {
-            var giohang = await (from g in lavenderContext.Giohang
-                                 select g).ToListAsync();
-            if (giohang == null||giohang.Count()==0) return StatusCode(404);
+            int maloai = 0;
+            switch (loai)
+            {
+                case "mobile":
+                    maloai = 1;
+                    break;
+                case "laptop":
+                    maloai = 2;
+                    break;
+                default:
+                    break;
+            }
+
+            int thuonghieuid = await (from t in lavenderContext.Thuonghieu
+                                      where t.Tenthuonghieu.Equals(hang)
+                                      select t.Mathuonghieu).FirstOrDefaultAsync();
+            if (thuonghieuid == 0) return StatusCode(404);
+
+            var sanphamtemp = await lavenderContext.Sanpham.SingleOrDefaultAsync(x => x.Maloai == maloai && x.Tensanpham.Contains(dong) && x.Tensanpham.Contains(sanpham) && x.Mathuonghieu == thuonghieuid);
+            if (sanphamtemp == null) return StatusCode(404);
+
+            var chitietsanphams = await (from c in lavenderContext.Chitietsanpham
+                                         where c.Masanpham == sanphamtemp.Masanpham
+                                         && dungluong.Equals("-1") ? true : c.Dungluong.Equals(dungluong)
+                                         select c).ToListAsync();
+
+            if (chitietsanphams.Count() == 0) return StatusCode(404);
+
+            List<Chitietsanpham> listsanphamtheomausac = new List<Chitietsanpham>();
+            List<dynamic> mausac = new List<dynamic>();
+            foreach (var i in chitietsanphams)
+            {
+                var timduoccaimoinaodo = true;
+                foreach (var j in listsanphamtheomausac)
+                {
+                    if (j.Mausac.Equals(i.Mausac))
+                    {
+                        timduoccaimoinaodo = false;
+                        break;
+                    }
+                }
+
+                if (timduoccaimoinaodo == true)
+                {
+                    mausac.Add(new { mausac = i.Mausac, image = i.Image });
+                }
+
+            }
+
+            return StatusCode(200, Json(mausac));
+        }
+
+        [Route("/{loai}/{hang}/{dong}/{sanpham}/xemgia")]
+        [HttpGet]
+        public async Task<IActionResult> XemGia(string loai, string hang, string dong, string sanpham, string dungluong, string mausac)
+        {
 
 
-            return StatusCode(200, Json(giohang));
+            int maloai = 0;
+            switch (loai)
+            {
+                case "mobile":
+                    maloai = 1;
+                    break;
+                case "laptop":
+                    maloai = 2;
+                    break;
+                default:
+                    break;
+            }
+
+            int thuonghieuid = await (from t in lavenderContext.Thuonghieu
+                                      where t.Tenthuonghieu.Equals(hang)
+                                      select t.Mathuonghieu).FirstOrDefaultAsync();
+            if (thuonghieuid == 0) return StatusCode(404);
+
+
+            var sanphamtemp = await lavenderContext.Sanpham.SingleOrDefaultAsync(x => x.Maloai == maloai && x.Tensanpham.Contains(dong) && x.Tensanpham.Contains(sanpham) && x.Mathuonghieu == thuonghieuid);
+            if (sanphamtemp == null) return StatusCode(404);
+
+            float giamoi = 0;
+
+            giamoi = await (from c in lavenderContext.Chitietsanpham
+                            where c.Masanpham == sanphamtemp.Masanpham
+                            && dungluong.Equals("-1")?true:c.Dungluong.Equals(dungluong)
+                            && mausac.Equals("-1")?true:c.Mausac.Equals(mausac)
+                            orderby c.Giamoi ascending
+                            select c.Giamoi).FirstOrDefaultAsync();
+
+            if (giamoi == 0) return StatusCode(404);
+            return StatusCode(200, Json(giamoi));
+        }
+
+        [Route("xem-gia-theo-masanpham")]
+        [HttpGet]
+        public async Task<IActionResult> XemGiaTheoMasanpham(int masanpham)
+        {
+            float giamoi = 0;
+
+            giamoi = await (from c in lavenderContext.Chitietsanpham
+                            where c.Masanpham == masanpham
+                            orderby c.Giamoi ascending
+                            select c.Giamoi).FirstOrDefaultAsync();
+
+            if (giamoi == 0) return StatusCode(404);
+            return StatusCode(200, Json(giamoi));
         }
     }
 

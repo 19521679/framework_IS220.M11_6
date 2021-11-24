@@ -61,7 +61,7 @@ namespace Back.Controllers
         {
             var hoadonlist = await (from h in lavenderContext.Hoadon
                                     select h).OrderByDescending(x => x.Ngayhoadon).Take(20).ToListAsync();
-            if (hoadonlist==null || hoadonlist.Count == 0) return StatusCode(404);
+            if (hoadonlist==null || hoadonlist.Count() == 0) return StatusCode(404);
             var newlist = new List<Hoadon>();
             foreach (var i in hoadonlist)
             {

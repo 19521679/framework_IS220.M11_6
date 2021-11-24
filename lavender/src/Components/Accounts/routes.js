@@ -3,12 +3,24 @@ import ThongBaoCuaToi from "./ThongBaoCuaToi";
 import QuanLyDonHang from "./QuanLyDonHang";
 import SoDiaChi from "./SoDiaChi";
 import SanPhamYeuThich from "./SanPhamYeuThich";
+import ThayDoiSDT from "./ThayDoiSDT";
+import ThayDoiEmail from "./ThayDoiEmail";
 
 const routes=[
     {
         path: "/lmember/thongtintaikhoan",
         exact: true,
         main: () => <ThongTinTaiKhoan></ThongTinTaiKhoan>
+      },
+      {
+        path: "/lmember/thongtintaikhoan/sdt",
+        exact: true,
+        main: () => <ThayDoiSDT></ThayDoiSDT>
+      },
+      {
+        path: "/lmember/thongtintaikhoan/email",
+        exact: true,
+        main: () => <ThayDoiEmail></ThayDoiEmail>
       },
       {
         path: "/lmember/quanlydonhang",

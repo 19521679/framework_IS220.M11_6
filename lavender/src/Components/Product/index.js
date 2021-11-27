@@ -8,6 +8,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as cartAct from "../redux/actions/cartAct";
 import PropTypes from "prop-types";
+import * as favoriteApi from "../apis/favorite";
+import * as myToast from "../../Common/helper/toastHelper";
 // import { indexOf } from "lodash";
 import { withRouter } from "react-router-dom";
 
@@ -25,6 +27,7 @@ function Danhgia(props) {
 
 class index extends Component {
   state = {
+    liked: false,
     product: {},
     sohinhanh: 0,
     active: 0,
@@ -61,7 +64,39 @@ class index extends Component {
         return;
     }
   }
-  xemGia(){
+
+  changeLike() {
+    if (this.props.customer === undefined) {
+      this.props.history.push("/login");
+      return;
+    }
+    if (this.state.liked) {
+      favoriteApi
+        .unlike(this.props.customer.makhachhang, this.state.product.masanpham)
+        .then((success) => {
+          if (success.status === 200) {
+            this.setState({ liked: false });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      return;
+    }
+
+    favoriteApi
+      .like(this.props.customer.makhachhang, this.state.product.masanpham)
+      .then((success) => {
+        if (success.status === 200) {
+          this.setState({ liked: true });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    return;
+  }
+  xemGia() {
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
@@ -73,7 +108,7 @@ class index extends Component {
       dong: dong,
       sanpham: sanpham,
       dungluong: this.state.chondungluong,
-      mausac: this.state.chonmausac
+      mausac: this.state.chonmausac,
     };
 
     detailProductApi
@@ -91,7 +126,6 @@ class index extends Component {
   }
 
   async loadDungluong() {
- 
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
@@ -122,7 +156,20 @@ class index extends Component {
       .then((success) => {
         if (success.status === 200) {
           this.setState({ mausac: success.data.value.$values });
-  
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  async checked() {
+    if (this.props.customer === undefined) return;
+    await favoriteApi
+      .checklike(this.props.customer.makhachhang, this.state.product.masanpham)
+      .then((success) => {
+        if (success.status === 200) {
+          this.setState({ liked: true });
         }
       })
       .catch((error) => {
@@ -154,17 +201,25 @@ class index extends Component {
         console.error("error" + error);
       });
     await this.xemGia();
+    await this.checked();
   }
   addToCart = () => {
     let { product } = this.state;
     let { cartActionCreators } = this.props;
-
+    if (this.state.chondungluong==="-1") {
+      myToast.toastError("Bạn cần chọn dung lượng");
+      return;
+    }
+    if (this.state.chonmausac==="-1") {
+      myToast.toastError("Bạn cần chọn màu sắc");
+      return;
+    }
     cartActionCreators.addToCartReport(
       {
         makhachhang: this.props.customer.makhachhangNavigation.makhachhang,
         masanpham: product.masanpham,
-        dungluong: this.state.dungluong[this.state.chondungluong].dungluong,
-        mausac: this.state.mausac[this.state.chonmausac].mausac,
+        dungluong: this.state.chondungluong,
+        mausac: this.state.chonmausac,
       },
       this.props.history
     );
@@ -245,7 +300,8 @@ class index extends Component {
                                 })()
                               ) {
                                 await this.setState({ chondungluong: "-1" });
-                                if (this.state.chonmausac==="-1") this.xemGia();
+                                if (this.state.chonmausac === "-1")
+                                  this.xemGia();
                               } else
                                 await this.setState({
                                   chondungluong:
@@ -324,7 +380,8 @@ class index extends Component {
                                     })()
                                   ) {
                                     await this.setState({ chonmausac: "-1" });
-                                    if (this.state.chondungluong==="-1") this.xemGia();
+                                    if (this.state.chondungluong === "-1")
+                                      this.xemGia();
                                   } else
                                     await this.setState({
                                       chonmausac: this.state.mausac[key].mausac,
@@ -399,7 +456,7 @@ class index extends Component {
                         >
                           <strong className="color-red">
                             <img
-                            alt =""
+                              alt=""
                               src="/media/icon/icon_fire.png"
                               style={{ width: "20px" }}
                             />
@@ -420,15 +477,73 @@ class index extends Component {
                     <strong>MUA NGAY</strong>
                     <span>(Giao tận nơi hoặc lấy tại cửa hàng)</span>
                   </a>
-                  <div className="group-button ">
-                    <a href={() => false}className="action-button button-blue" style={{}}>
-                      <strong>TRẢ GÓP 0%</strong>
-                      <span>(Xét duyệt qua điện thoại)</span>
-                    </a>
-                    <a href={() => false} className="action-button button-blue">
-                      <strong>TRẢ GÓP QUA THẺ</strong>
-                      <span>(Visa, Master Card, JCB)</span>
-                    </a>
+                  <div className="group-button mb-5">
+                    <div className="styles__ProductActionV2Container-sc-1l4uvuo-0 iVoRpG">
+                      <div className="styles__Text-sc-1l4uvuo-1 iBQIpk">
+                        Chia sẻ:
+                      </div>
+                      <img
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-facebook.svg"
+                        alt="social-facebook"
+                        className="styles__Icon-sc-1l4uvuo-2 hUSuHV left"
+                      />
+                      <img
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-messenger.svg"
+                        alt="social-messenger"
+                        className="styles__Icon-sc-1l4uvuo-2 hUSuHV"
+                      />
+                      <img
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-pinterest.svg"
+                        alt="social-pinterest"
+                        className="styles__Icon-sc-1l4uvuo-2 hUSuHV"
+                      />
+                      <img
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-twitter.svg"
+                        alt="social-twitter"
+                        className="styles__Icon-sc-1l4uvuo-2 hUSuHV"
+                      />
+                      <img
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-copy.svg"
+                        alt="social-copy"
+                        className="styles__Icon-sc-1l4uvuo-2 hUSuHV last"
+                      />
+                      <div className="styles__Separator-sc-1l4uvuo-3 hdEAcm" />
+                      {(() => {
+                        if (this.state.liked)
+                          return (
+                            <div
+                              data-view-id="pdp_details_like"
+                              className="styles__LikeInfo-sc-1l4uvuo-4 kQruUZ"
+                              onClick={this.changeLike.bind(this)}
+                            >
+                              <img
+                                src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/icons-liked.svg"
+                                alt="social-liked"
+                                className="styles__Icon-sc-1l4uvuo-2 hUSuHV"
+                              />
+                              <div className="styles__Text-sc-1l4uvuo-1 iBQIpk">
+                                Đã thích
+                              </div>
+                            </div>
+                          );
+                        return (
+                          <div
+                            data-view-id="pdp_details_like"
+                            className="styles__LikeInfo-sc-1l4uvuo-4 kQruUZ"
+                            onClick={this.changeLike.bind(this)}
+                          >
+                            <img
+                              src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/icons-like.svg"
+                              alt="social-like"
+                              className="styles__Icon-sc-1l4uvuo-2 hUSuHV"
+                            />
+                            <div className="styles__Text-sc-1l4uvuo-1 iBQIpk">
+                              Thích
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -454,7 +569,8 @@ class index extends Component {
                                   className="nav-item"
                                   onClick={this.click.bind(this, i)}
                                 >
-                                  <a href={() => false}
+                                  <a
+                                    href={() => false}
                                     className="nav-link active"
                                     id="nav-link"
                                     data-toggle="tab"
@@ -469,7 +585,8 @@ class index extends Component {
                                   className="nav-item"
                                   onClick={this.click.bind(this, i)}
                                 >
-                                  <a href={() => false}
+                                  <a
+                                    href={() => false}
                                     className="nav-link"
                                     id="nav-link"
                                     data-toggle="tab"

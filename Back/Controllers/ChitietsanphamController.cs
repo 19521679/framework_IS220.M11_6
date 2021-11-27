@@ -199,6 +199,17 @@ namespace Back.Controllers
             if (giamoi == 0) return StatusCode(404);
             return StatusCode(200, Json(giamoi));
         }
+
+        [Route("/xemgia-theo-dungluong-mausac-masanpham")]
+        [HttpGet]
+        public async Task<IActionResult> XemGiaTheoDungluongMausacMasanpham(int masanpham, string dungluong, string mausac)
+        {
+            var chitietsanpham = await lavenderContext.Chitietsanpham.SingleOrDefaultAsync(x => x.Masanpham == masanpham
+            && x.Dungluong.ToLower().Equals(dungluong.ToLower())
+            && x.Mausac.Equals(mausac));
+            if (chitietsanpham == null) return StatusCode(200, Json(new { giamoi = 0}));
+            return StatusCode(200, Json(chitietsanpham.Giamoi));
+        }
     }
 
 }

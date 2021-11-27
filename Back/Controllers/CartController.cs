@@ -50,7 +50,6 @@ namespace Back.Controllers
             Khachhang khachhang = await (from k in lavenderContext.Khachhang
                                          where k.Makhachhang == int.Parse(json.GetString("makhachhang"))
                                          select k).FirstOrDefaultAsync();
-            Console.WriteLine("giohang"+giohang);
             if (giohang == null)
             {
                 giohang = new Giohang();
@@ -66,6 +65,8 @@ namespace Back.Controllers
             Chitietgiohang chitietgiohang = await (from c in lavenderContext.Chitietgiohang
                                                     where c.Magiohang == giohang.Magiohang
                                                     && c.Masanpham == int.Parse(json.GetString("masanpham"))
+                                                    && c.Dungluong==json.GetString("dungluong")
+                                                    && c.Mausac == json.GetString("mausac")
                                                     select c).FirstOrDefaultAsync();
             if (chitietgiohang== null)
             {
@@ -73,6 +74,8 @@ namespace Back.Controllers
                 chitietgiohang.Magiohang = giohang.Magiohang;
                 chitietgiohang.Soluong = 1;
                 chitietgiohang.Masanpham = int.Parse(json.GetString("masanpham"));
+                chitietgiohang.Dungluong = json.GetString("dungluong");
+                chitietgiohang.Mausac = json.GetString("mausac");
                 await lavenderContext.Chitietgiohang.AddAsync(chitietgiohang);
                 await lavenderContext.SaveChangesAsync();
             }

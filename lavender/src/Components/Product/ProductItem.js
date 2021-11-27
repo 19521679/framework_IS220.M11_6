@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import "./ProductItem.css";
 import * as imageApi from "../apis/image.js";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as detailProductapi from "../apis/detailProduct";
 
 export default class ProductItem extends Component {
-  state={giamoi:0}
-  componentDidMount(){
-    detailProductapi.xemgiatheomasanpham(this.props.product.masanpham)
-    .then(success => {
-      this.setState({giamoi:success.data.value});
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  state = { giamoi: 0 };
+  componentDidMount() {
+    detailProductapi
+      .xemgiamoitheomasanpham(this.props.product.masanpham)
+      .then((success) => {
+        this.setState({ giamoi: success.data.value });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
   // state = { resposeImage: {} };
   // componentDidMount() {
@@ -35,34 +36,46 @@ export default class ProductItem extends Component {
         data-aos-delay={100}
       >
         <div className="icon-box iconbox-blue">
-          {function(){
-            if  (this.state.giamoi!=this.props.product.dongia)
-            return (<div className="box-item-sticker-percent">
-            <p>Giảm {((100-this.state.giamoi/this.props.product.dongia*100).toFixed(0))}%</p>
-          </div>);
+          {function () {
+            if (this.state.giamoi !== this.props.product.dongia)
+              return (
+                <div className="box-item-sticker-percent">
+                  <p>
+                    Giảm{" "}
+                    {(
+                      100 -
+                      (this.state.giamoi / this.props.product.dongia) * 100
+                    ).toFixed(0)}
+                    %
+                  </p>
+                </div>
+              );
           }.bind(this)()}
-          
-          <Link to={this.props.product.image} className="box-click" >
+
+          <Link to={this.props.product.image} className="box-click">
             <div className="icon">
               <img
-              alt="img"
+                alt="img"
                 src={imageApi.image(this.props.product.image)}
               ></img>
               <i className="bx bxl-dribbble" />
             </div>
             <h4>
-              <a  className="product-name">{this.props.product.tensanpham}</a>
+              <a href={() => false} className="product-name">
+                {this.props.product.tensanpham}
+              </a>
             </h4>
           </Link>
 
           <div className="product-price">
-            {function(){
+            {function () {
               var result = [];
-              if (this.state.giamoi!=this.props.product.dongia)
-              {
-                result.push(<p className="old-price">{this.props.product.dongia}₫</p>);
+              if (this.state.giamoi !== this.props.product.dongia) {
+                result.push(
+                  <p className="old-price">{this.props.product.dongia}₫</p>
+                );
               }
-              result.push(<a >{this.state.giamoi} ₫</a>);
+              result.push(<a href={() => false}>{this.state.giamoi} ₫</a>);
               return result;
             }.bind(this)()}
           </div>

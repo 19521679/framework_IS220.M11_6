@@ -23,11 +23,6 @@ import GuaranteeDashboard from "../../Components/Admin/GuaranteeDashboard"
 import TrademarkDashboard from "../../Components/Admin/TrademarkDashboard"
 
 import LMember from "../../Components/Accounts/LMember.js";
-import ThongTinTaiKhoan from "../../Components/Accounts/ThongTinTaiKhoan";
-import ThongBaoCuaToi from "../../Components/Accounts/ThongBaoCuaToi";
-import QuanLyDonHang from "../../Components/Accounts/QuanLyDonHang";
-import SoDiaChi from "../../Components/Accounts/SoDiaChi";
-import SanPhamYeuThich from "../../Components/Accounts/SanPhamYeuThich";
 import AddCustomer from "../../Components/Admin/CustomerDashboard/AddCustomer.js";
 
 const routes = [

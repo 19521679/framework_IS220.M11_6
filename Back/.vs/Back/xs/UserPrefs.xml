@@ -1,29 +1,39 @@
 ﻿<Properties StartupConfiguration="{95503883-8AF5-4A26-8F54-C10426599DFA}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/CustomerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/DetailcartController.cs">
     <Files>
-      <File FileName="Models/Sanpham.cs" Line="27" Column="42" IsPinned="True" />
+      <File FileName="Models/Sanpham.cs" Line="32" Column="71" IsPinned="True" />
       <File FileName="Models/Khachhang.cs" />
       <File FileName="Models/Khuyenmai.cs" />
       <File FileName="Models/Phieunhapsanpham.cs" />
       <File FileName="Models/Nhanvien.cs" />
       <File FileName="Controllers/DanhsachyeuthichController.cs" />
       <File FileName="Models/Baohanh.cs" />
-      <File FileName="Controllers/ThuonghieuController.cs" Line="49" Column="26" />
+      <File FileName="Controllers/ThuonghieuController.cs" />
       <File FileName="Controllers/ShipController.cs" />
       <File FileName="Models/Chitietsanpham.cs" />
-      <File FileName="Controllers/ChitietsanphamController.cs" Line="188" Column="17" />
-      <File FileName="Models/lavenderContext.cs" Line="553" Column="34" />
-      <File FileName="Controllers/ProductController.cs" Line="102" Column="52" />
+      <File FileName="Controllers/ChitietsanphamController.cs" />
+      <File FileName="Models/lavenderContext.cs" />
+      <File FileName="Controllers/ProductController.cs" />
       <File FileName="Models/Nhacungcap.cs" />
       <File FileName="Models/Chitiethoadon.cs" />
       <File FileName="Models/Hoadon.cs" />
-      <File FileName="Controllers/HoadonController.cs" Line="110" Column="89" />
-      <File FileName="Controllers/DetailcartController.cs" />
-      <File FileName="Controllers/CustomerController.cs" Line="99" Column="36" />
-      <File FileName="Controllers/MobileController.cs" Line="31" Column="23" />
-      <File FileName="Controllers/PhieunhapsanphamController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/PhieunhapController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/LoginController.cs" Line="1" Column="5" />
+      <File FileName="Controllers/HoadonController.cs" />
+      <File FileName="Controllers/DetailcartController.cs" Line="41" Column="24" />
+      <File FileName="Controllers/CustomerController.cs" />
+      <File FileName="Controllers/MobileController.cs" />
+      <File FileName="Controllers/PhieunhapsanphamController.cs" />
+      <File FileName="Controllers/PhieunhapController.cs" />
+      <File FileName="Controllers/LoginController.cs" />
+      <File FileName="Models/Vanchuyen.cs" />
+      <File FileName="Models/Danhgia.cs" />
+      <File FileName="Controllers/KhuyenmaiController.cs" />
+      <File FileName="Controllers/RegisterController.cs" />
+      <File FileName="Models/Danhsachyeuthich.cs" />
+      <File FileName="Models/Chitietgiohang.cs" />
+      <File FileName="Controllers/CartController.cs" />
+      <File FileName="Models/Giohang.cs" />
+      <File FileName="Controllers/KhuyenmaicuatoiController.cs" />
+      <File FileName="Controllers/ChitiethoadonController.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -32,7 +42,7 @@
             <Node name="Back" expanded="True">
               <Node name="Dependencies" expanded="True" />
               <Node name="Controllers" expanded="True">
-                <Node name="CustomerController.cs" selected="True" />
+                <Node name="DetailcartController.cs" selected="True" />
               </Node>
               <Node name="Models" expanded="True" />
             </Node>

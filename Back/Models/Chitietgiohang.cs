@@ -14,6 +14,8 @@ namespace Back.Models
         public int Magiohang { get; set; }
         public int Masanpham { get; set; }
         public int? Soluong { get; set; }
+        public string Dungluong { get; set; }
+        public string Mausac { get; set; }
 
         [ForeignKey(nameof(Masanpham))]
         public Sanpham MasanphamNavigation { get; set; }

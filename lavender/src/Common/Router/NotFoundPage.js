@@ -7,7 +7,7 @@ export default function NotFoundPage() {
     <div> 
       <section className="wrapper">
         <div className="container">
-        <img alt="logo" src={logo}/>
+        <img alt="logo" className="notfoundlogo" style={{marginBottom:"400px"}} src={logo}/>
           <div id="scene" className="scene" data-hover-only="false">
             <div className="circle" data-depth="1.2" />
             <div className="one" data-depth="0.9">
@@ -49,7 +49,6 @@ export default function NotFoundPage() {
           </div>
         </div>
       </section>
-      Run Pen Resources1× 0.5× 0.25×Rerun
     </div>
   );
 }

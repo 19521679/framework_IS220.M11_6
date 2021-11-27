@@ -41,7 +41,16 @@ namespace Back.Controllers
             _env = env;
             this.lavenderContext = lavenderContext;
         }
-
+        /* GET  /chitietgiohang-bang-magiohang?magiohang=1
+         * POST 
+         * 
+         * {
+         *  magiohang: 1,
+         *  tengiohang: a
+         *
+         * }
+         * A
+         * */
         [Route("/chitietgiohang-bang-magiohang")]
         [HttpGet]
         public async Task<IActionResult> LoadDetailCartByCartId([FromQuery]int magiohang)
@@ -57,7 +66,10 @@ namespace Back.Controllers
         [HttpPost]
         public async Task<IActionResult> SetQuantityForDetailCart(JsonElement json)
         {
-            var chitietgiohang = await lavenderContext.Chitietgiohang.SingleOrDefaultAsync(x => (x.Magiohang == int.Parse(json.GetString("magiohang")) && x.Masanpham == int.Parse(json.GetString("masanpham"))));
+            var chitietgiohang = await lavenderContext.Chitietgiohang.SingleOrDefaultAsync(x => (x.Magiohang == int.Parse(json.GetString("magiohang"))
+            && x.Masanpham == int.Parse(json.GetString("masanpham"))
+            && x.Dungluong==json.GetString("dungluong")
+            && x.Mausac==json.GetString("mausac")));
             if (chitietgiohang == null) return StatusCode(404);
             chitietgiohang.Soluong = int.Parse(json.GetString("soluong"));
             await lavenderContext.SaveChangesAsync();

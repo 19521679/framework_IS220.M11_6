@@ -7,9 +7,17 @@ import PropTypes from "prop-types";
 import * as cartApi from "../apis/cart";
 import * as myToast from "../../Common/helper/toastHelper";
 import * as detailCartApi from "../apis/detailCart";
-
+import * as detailProductApi from "../apis/detailProduct";
+import AddVoucherModal from "./AddVoucherModal";
 class index extends Component {
-  state = { cart: undefined, detailCarts: [] };
+  state = {
+    cart: undefined,
+    detailCarts: [],
+    tongtien: 0,
+    tongcong: 0,
+    voucherModalIsOpen: false,
+  };
+
   pushProduct() {
     let result = null;
     result = this.state.detailCarts.map((value, key) => {
@@ -17,7 +25,8 @@ class index extends Component {
         <Product
           detailCart={value}
           key={key}
-          reload={this.reload.bind(this)}
+          changeQuantity={this.changeQuantity.bind(this)}
+          changeSelect={this.changeSelect.bind(this)}
         ></Product>
       );
     });
@@ -26,6 +35,9 @@ class index extends Component {
 
   async loadCart() {
     let cart = undefined;
+    if (this.props.customer.makhachhang === undefined) {
+      this.props.history.push("/login");
+    }
     await cartApi
       .loadCart(this.props.customer.makhachhang)
       .then((success) => {
@@ -34,13 +46,11 @@ class index extends Component {
         }
       })
       .catch((error) => {
-        myToast.toastError("Tải giỏ hàng thất bại");
         console.error(error);
       });
 
-    if (cart === undefined || cart.lenght === 0) 
-    {
-      this.setState({cart:{}});
+    if (cart === undefined || cart.lenght === 0) {
+      this.setState({ cart: {} });
       return;
     }
     let detailCarts = undefined;
@@ -54,27 +64,90 @@ class index extends Component {
       })
       .catch((error) => {
         console.error(error);
-        myToast.toastError("Tải giỏ hàng thất bại");
       });
-    if (detailCarts === undefined) 
-    {
-      this.setState({detailCarts:[]});
+    if (detailCarts === undefined) {
+      this.setState({ detailCarts: [] });
       return;
     }
-    this.setState({ cart: cart, detailCarts: detailCarts });
+
+    var carttemp = [];
+    for (var i = 0; i < detailCarts.length; i++) {
+      var tien = 0;
+      await detailProductApi
+        .xemgiatheodungluongmausacmasanpham(
+          detailCarts[i].masanpham,
+          detailCarts[i].dungluong,
+          detailCarts[i].mausac
+        )
+        .then((success) => {
+          tien = success.data.value;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      var temp = { ...detailCarts[i], chon: false, tien: tien };
+      carttemp.push(temp);
+    }
+
+    await this.setState({ cart: cart, detailCarts: carttemp });
   }
 
-  async reload() {
-    await this.loadCart();
+  async changeQuantity(masanpham, dungluong, mausac, quantity) {
+    let detailCartsTemp = this.state.detailCarts;
+    for (let i = 0; i < detailCartsTemp.length; i++) {
+      if (
+        detailCartsTemp[i].masanpham === masanpham &&
+        detailCartsTemp[i].dungluong === dungluong &&
+        detailCartsTemp[i].mausac === mausac
+      ) {
+        detailCartsTemp[i].soluong = quantity;
+        await this.setState({ detailCarts: detailCartsTemp });
+        break;
+      }
+    }
+    await this.tinhTien();
+  }
+
+  changeSelect(masanpham, dungluong, mausac) {
+    var detailcartstemp = this.state.detailCarts;
+    for (var i = 0; i < detailcartstemp.length; i++) {
+      if (
+        detailcartstemp[i].masanpham === masanpham &&
+        detailcartstemp[i].dungluong === dungluong &&
+        detailcartstemp[i].mausac === mausac
+      ) {
+        detailcartstemp[i].chon = !detailcartstemp[i].chon;
+        this.setState({ detailCarts: detailcartstemp });
+      }
+    }
+    this.tinhTien();
+  }
+
+  async tinhTien() {
+    var tongtien = 0;
+    var detailcartstemp = this.state.detailCarts;
+    for (var i = 0; i < detailcartstemp.length; i++) {
+      if (detailcartstemp[i].chon) {
+        tongtien += detailcartstemp[i].tien * detailcartstemp[i].soluong;
+      }
+    }
+    this.setState({ tongtien: tongtien });
   }
 
   async componentDidMount() {
     await this.loadCart();
   }
+
+  openVoucherModal() {
+    this.setState({ voucherModalIsOpen: true });
+  }
+
+  closeVoucherModal() {
+    this.setState({ voucherModalIsOpen: false });
+  }
   render() {
     return (
       <section>
-        {/* {() => window.location.reload()} */}
         <div className="cart">
           <div className="container">
             <div className="row">
@@ -114,20 +187,6 @@ class index extends Component {
                               <div className="pustProduct">
                                 {this.pushProduct()}
                               </div>
-                              <div className="styles__StyledSellerDiscount-sc-rbk7cj-0 hIODeW">
-                                <div
-                                  className="wrapper"
-                                  data-view-id="cart_seller.coupon_view.all"
-                                >
-                                  <div className="description">
-                                    Shop Khuyến Mãi
-                                  </div>
-                                  <div className="small-coupon-list" />
-                                  <span className="seller-coupon__note">
-                                    Vui lòng chọn sản phẩm trước
-                                  </span>
-                                </div>
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -151,15 +210,31 @@ class index extends Component {
                         </span>
                       </p>
                       <p className="title">
-                        <b className="name">Lê Mai Duy Khánh</b>
-                        <b className="phone">0914630145</b>
+                        <b className="name">
+                          {this.props.customer.makhachhangNavigation !==
+                            undefined &&
+                            this.props.customer.makhachhangNavigation
+                              .tenkhachhang}
+                        </b>
+                        <b className="phone">
+                          {this.props.customer.makhachhangNavigation !==
+                            undefined &&
+                            this.props.customer.makhachhangNavigation
+                              .sodienthoai}
+                        </b>
                       </p>
                       <p className="address">
-                        47A Mọ Kọ, tổ 14, Thị trấn Di Linh, Huyện Di Linh, Lâm
-                        Đồng
+                        {this.props.customer.makhachhangNavigation !==
+                          undefined &&
+                          this.props.customer.makhachhangNavigation.diachi}
                       </p>
                     </div>
                     <div className="styles__StyledWrapCoupons-sc-1d6idyr-0 ekRzNN box-shadow">
+                      <AddVoucherModal
+                        modalIsOpen={this.state.voucherModalIsOpen}
+                        customer={this.props.customer}
+                        closeModal={this.closeVoucherModal.bind(this)}
+                      ></AddVoucherModal>
                       <div className="styles__StyledCouponBox-sc-1ibe03g-0 jmylnB">
                         <div className="title-usage">
                           <p className="coupon-title">Tiki khuyến mãi</p>
@@ -179,6 +254,7 @@ class index extends Component {
                         <div
                           data-view-id="platform_coupon.cart_coupon_view.all"
                           className="show-more"
+                          onClick={this.openVoucherModal.bind(this)}
                         >
                           <img
                             alt=""
@@ -193,7 +269,9 @@ class index extends Component {
                         <ul className="prices__items">
                           <li className="prices__item">
                             <span className="prices__text">Tạm tính</span>
-                            <span className="prices__value">0đ</span>
+                            <span className="prices__value">
+                              {this.state.tongtien}đ
+                            </span>
                           </li>
                           <li className="prices__item">
                             <span className="prices__text">Giảm giá</span>
@@ -204,7 +282,9 @@ class index extends Component {
                           <span className="prices__text">Tổng cộng</span>
                           <div className="prices__content">
                             <div className="prices__value prices__value--empty">
-                              Vui lòng chọn sản phẩm
+                              {this.state.tongtien === 0
+                                ? "Vui lòng chọn sản phẩm"
+                                : this.state.tongcong}
                             </div>
                             <span className="prices__value--noted">
                               (Đã bao gồm VAT nếu có)

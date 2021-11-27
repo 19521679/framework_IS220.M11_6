@@ -15,6 +15,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0",
+    "react-button": "^1.2.1",
     "react-dom": "^17.0.2",
     "react-modal": "^3.14.4",
     "react-redux": "^7.2.5",
@@ -22,6 +23,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "^4.0.3",
     "react-toastify": "^8.0.3",
+    "reactjs-popup": "^2.0.5",
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
     "web-vitals": "^1.1.2"

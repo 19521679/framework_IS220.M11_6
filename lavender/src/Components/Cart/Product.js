@@ -5,58 +5,79 @@ import * as productApi from "../apis/product";
 import * as detailCartApi from "../apis/detailCart";
 
 class Product extends Component {
-
-  state={product:{}};
+  state = { product: {}, checked: false };
   deleteProduct() {
     // eslint-disable-next-line no-restricted-globals
     var r = confirm("Bạn có chắc chắn muốn xoá không?");
-    if (r===false) return;
-    detailCartApi.deleteDetailCart(this.props.detailCart.magiohang, this.props.detailCart.masanpham)
-    .then(success=>{
-      if(success.status ===200) this.props.reload();
-    })
-    .catch(error=>{
-      console.error(error);
-    })
+    if (r === false) return;
+    detailCartApi
+      .deleteDetailCart(
+        this.props.detailCart.magiohang,
+        this.props.detailCart.masanpham
+      )
+      .then((success) => {
+        if (success.status === 200) this.props.reload();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
   setValue(quantity) {
-    detailCartApi.setQuantityForDetailCart({...this.props.detailCart, soluong:this.props.detailCart.soluong+quantity})
-    .then(success => {
-      if (success.status===200) {this.props.reload();}
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    let soluong = 0; 
+    soluong= this.props.detailCart.soluong + quantity
+    detailCartApi
+      .setQuantityForDetailCart({
+        ...this.props.detailCart,
+        soluong: this.props.detailCart.soluong + quantity,
+      })
+      .then((success) => {
+        if (success.status === 200) {
+          this.props.changeQuantity(this.props.detailCart.masanpham, this.props.detailCart.dungluong, this.props.detailCart.mausac, soluong);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
-  
+
   async componentDidMount() {
-    await productApi.findProductById(this.props.detailCart.masanpham)
-    .then((success) => {
-      this.setState({product:success.data.value});
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    await productApi
+      .findProductById(this.props.detailCart.masanpham)
+      .then((success) => {
+        this.setState({ product: success.data.value });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  changeCheck() {
+    this.setState({ checked: !this.state.checked });
+    this.props.changeSelect(this.props.detailCart.masanpham, this.props.detailCart.dungluong, this.props.detailCart.mausac);
   }
   render() {
     return (
       <div className="styles__StyledIntended-sc-1dwh2vk-1 bQOXDC">
         <div>
           <div className="styles__StyledIntendedProduct-sc-1idi3y3-0 glclPp">
-            <div className="row">
+            <div className="row" >
               <div className="col-1">
-                <div className="intended__images false">
-                  <div className="intended__checkbox">
-                    <label className="styles__StyledCheckbox-sc-kvz5pc-0 hNjxWW">
-                      <input
-                        type="checkbox"
-                        data-teliew-id
-                        data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
-                      />
-                      <span className="checkbox-fake" />
+                <div className="intended__images ">
+                  <div className="uUhc_B" >
+                    <label className="stardust-checkbox">
+                      {
+                        this.props.detailCart.tien!==0&&(<input
+                          className="checkbox-fake border rounded"
+                          type="checkbox"
+                          onClick={this.changeCheck.bind(this)}
+                          
+                        />)
+                      }
+                      
                     </label>
                   </div>
+
                   <a
+                    href={() => false}
                     className="intended__img"
                     data-view-id="cart_main_product"
                     data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
@@ -68,8 +89,9 @@ class Product extends Component {
                   </a>
                   <div className="intended__content">
                     <a
+                      href={() => false}
                       className="intended__name"
-                      target="_blank"
+                      target="blank"
                       data-view-id="cart_main_product"
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                     >
@@ -87,7 +109,7 @@ class Product extends Component {
               </div>
               <div className="col-2">
                 <span className="intended__real-prices">
-                  {this.state.product.dongia}₫
+                  {this.props.detailCart.tien===0?"Hết hàng":<p>{this.props.detailCart.tien}₫</p>}
                 </span>
               </div>
               <div className="col-3">
@@ -104,7 +126,7 @@ class Product extends Component {
                         alt="decrease"
                       />
                     </span>
-                    <a className="qty-input" id="quantity">
+                    <a href={() => false} className="qty-input" id="quantity">
                       {this.props.detailCart.soluong}
                     </a>
                     <span
@@ -126,12 +148,11 @@ class Product extends Component {
                   className="intended__delete"
                   data-view-id="cart_main_remove.product"
                   data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
-                  onClick={()=>this.deleteProduct()}
+                  onClick={() => this.deleteProduct()}
                 >
                   <img
                     src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/trash.svg"
                     alt="deleted"
-                    
                   />
                 </span>
               </div>
@@ -144,4 +165,4 @@ class Product extends Component {
   }
 }
 
-export default (Product);
+export default Product;

@@ -9,10 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Back.Common;
+
 using Back.Models;
-using Back.Models.Account;
-using Microsoft.AspNetCore.Authentication;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -23,7 +22,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Back.Controllers
 {
-    
+
     // [EnableCors(origins: "*", headers: "accept,content-type,origin,x-my-header", methods: "*")]
     [ApiController]
 
@@ -40,9 +39,53 @@ namespace Back.Controllers
             _env = env;
             this.lavenderContext = lavenderContext;
         }
+
+        [Route("/danhsachyeuthich")]
+        [HttpGet]
+        public async Task<IActionResult> Danhsachyeuthich()
+        {
+            var favorites = await (from d in lavenderContext.Danhsachyeuthich
+                                   select d).ToListAsync();
+            return StatusCode(200, Json(favorites));
+        }
+
+        [Route("/kiemtrayeuthich")]
+        [HttpGet]
+        public async Task<IActionResult> Kiemtrayeuthich(int makhachhang, int masanpham)
+        {
+            var favorites = await (from d in lavenderContext.Danhsachyeuthich
+                                   where d.Masanpham == masanpham
+                                   && d.Makhachhang == makhachhang
+                                   select d).FirstAsync();
+            Boolean liked = false;
+            if (favorites != null) liked = true;
+            return StatusCode(200, Json(new { liked = liked }));
+        }
+
+        [Route("/yeuthich")]
+        [HttpGet]
+        public async Task<IActionResult> Themyeuthich(int makhachhang, int masanpham)
+        {
+            var favorite = new Danhsachyeuthich();
+            favorite.Makhachhang = makhachhang;
+            favorite.Masanpham = makhachhang;
+            await lavenderContext.AddAsync(favorite);
+            await lavenderContext.SaveChangesAsync();
+            return StatusCode(200);
+        }
+
+        [Route("/boyeuthich")]
+        [HttpGet]
+        public async Task<IActionResult> Boyeuthich(int makhachhang, int masanpham)
+        {
+            var favorite = await lavenderContext.Danhsachyeuthich.SingleOrDefaultAsync(x => x.Makhachhang == makhachhang && x.Masanpham == masanpham);
+            if (favorite == null) return StatusCode(404);
+            lavenderContext.Remove(favorite);
+            await lavenderContext.SaveChangesAsync();
+            return StatusCode(200);
+        }
     }
 
 }
-
 
 

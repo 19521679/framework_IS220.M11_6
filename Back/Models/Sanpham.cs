@@ -29,6 +29,8 @@ namespace Back.Models
         public virtual Loaisanpham MaloaiNavigation { get; set; }
         public virtual Thuonghieu MathuonghieuNavigation { get; set; }
         [JsonIgnore]
+        public virtual ICollection<Danhsachyeuthich> Danhsachyeuthichs { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Chitietgiohang> Chitietgiohangs { get; set; }
         [JsonIgnore]
         public virtual ICollection<Chitietsanpham> Chitietsanphams { get; set; }

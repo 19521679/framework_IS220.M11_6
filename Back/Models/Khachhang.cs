@@ -10,7 +10,7 @@ namespace Back.Models
     {
         public Khachhang()
         {
-            Danhgia = new HashSet<Danhgia>();
+            Danhgias = new HashSet<Danhgia>();
             Giohangs = new HashSet<Giohang>();
             Hoadons = new HashSet<Hoadon>();
             Taikhoankhachhangs = new HashSet<Taikhoankhachhang>();
@@ -24,8 +24,11 @@ namespace Back.Models
         public DateTime? Ngaysinh { get; set; }
         public string Loaikhachhang { get; set; }
 
+        public virtual ICollection<Danhsachyeuthich> Danhsachyeuthichs { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Danhgia> Danhgia { get; set; }
+        public virtual ICollection<Khuyenmaicuatoi> Khuyenmaicuatois { get; set; }
+        [JsonIgnore]    
+        public virtual ICollection<Danhgia> Danhgias { get; set; }
         [JsonIgnore]
         public virtual ICollection<Giohang> Giohangs { get; set; }
         [JsonIgnore]

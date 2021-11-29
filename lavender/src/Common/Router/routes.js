@@ -29,6 +29,8 @@ import QuanLyDonHang from "../../Components/Accounts/QuanLyDonHang";
 import SoDiaChi from "../../Components/Accounts/SoDiaChi";
 import SanPhamYeuThich from "../../Components/Accounts/SanPhamYeuThich";
 import AddCustomer from "../../Components/Admin/CustomerDashboard/AddCustomer.js";
+import AddTrademark from "../../Components/Admin/TrademarkDashboard/AddTrademark.js";
+import AddGuarantee from "../../Components/Admin/GuaranteeDashboard/AddGuarantee.js";
 
 const routes = [
   {
@@ -158,6 +160,17 @@ const routes = [
     exact: true,
     main: () => <AddCustomer></AddCustomer>
   },
+  {
+    path: "/admin/trademark/add",
+    exact: true,
+    main: () => <AddTrademark></AddTrademark>
+  },
+  {
+    path: "/admin/guarantee/add",
+    exact: true,
+    main: () => <AddGuarantee></AddGuarantee>
+  },
+
   {
     path: "/lmember",
     exact: true,

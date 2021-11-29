@@ -85,3 +85,5 @@
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/bin/Debug/netcoreapp3.1/runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/bin/Debug/netcoreapp3.1/runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.pdb
 /Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll
+F:\Do_an_frame\framework_IS220.M11_6\Back\obj\Debug\netcoreapp3.1\Back.dll
+F:\Do_an_frame\framework_IS220.M11_6\Back\obj\Debug\netcoreapp3.1\Back.pdb

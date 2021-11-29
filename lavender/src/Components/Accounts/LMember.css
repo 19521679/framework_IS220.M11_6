@@ -1,9 +1,9 @@
 .leftmember{
-    max-width: 260px;
+    max-width: 100px;
     display:grid;
 }
 .rightmember{
-    max-width: 975px;
+    max-width: 1000px;
     display:grid;
 }
 .dLDnti{

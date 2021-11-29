@@ -40,7 +40,7 @@ namespace Back.Controllers
             _env = env;
             this.lavenderContext = lavenderContext;
         }
-
+        /*
         [Route("/thuonghieu")]
         [HttpGet]
         public async Task<IActionResult> AllTrademark(string loai)
@@ -66,6 +66,16 @@ namespace Back.Controllers
             var thuonghieus = await (from t in lavenderContext.Thuonghieu
                                      where t.Mathuonghieu == sanphamtemp.Mathuonghieu
                                      select t).ToListAsync();
+            return StatusCode(200, Json(thuonghieus));
+        }
+        */
+        [Route("/thuonghieu")]
+        [HttpGet]
+        public async Task<IActionResult> AllTrademark()
+        {
+             var thuonghieus = await (from t in lavenderContext.Thuonghieu
+                                     select t).ToListAsync();
+            if (thuonghieus == null || thuonghieus.Count() == 0) return StatusCode(404);
             return StatusCode(200, Json(thuonghieus));
         }
     }

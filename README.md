@@ -4,11 +4,20 @@ Dự án demo
 ## Hình ảnh demo về dự án
 ![Ảnh demo](https://cdn.tgdd.vn/hoi-dap/651567/y-nghia-logo-cua-the-gioi-di-dong-la-gi2-800x450.jpg)
 
-##Link demo online của dự án
+## Link demo online của dự án
 [Click vào đây để xem online](https://www.youtube.com/watch?v=Zzn9-ATB9aU)
 
 ### Hướng dẫn tải và cài đặt
 
+> Đây là một đoạn note
+> Đây là một đoạn note
+> Đây là một đoạn note
+> Đây là một đoạn note
+> Đây là một đoạn note
+> Đây là một đoạn note
+> Đây là một đoạn note
+> Đây là một đoạn note
+> Đây là một đoạn note
 > Đây là một đoạn note
 # Lavender
 # Hướng dẫn cài đặt 
@@ -79,5 +88,9 @@ Dự án demo
 - Sang 
 - Xịn 
 - Mịn
+
+
+
+
 
 

@@ -10,15 +10,6 @@ Dự án demo
 ### Hướng dẫn tải và cài đặt
 
 > Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
-> Đây là một đoạn note
 # Lavender
 # Hướng dẫn cài đặt 
 ## **Bước 1: Chạy file Database Lavender.sql bằng MySQL** 
@@ -89,8 +80,24 @@ Dự án demo
 - Xịn 
 - Mịn
 
+| words              | transform to | keepUpperCase is false | keepUpperCase is true |  
+|--------------------|--------------|------------------------|-----------------------|  
+| "XML HTTP request" | pascalCase   | `XmlHttpRequest`       | `XMLHTTPRequest`      |  
+| "new customer ID"  | camelCase    | `newCustomerId`        | `newCustomerID`       |  
 
 
+<!-- TABLE_GENERATE_START -->
 
+<<<<<<< HEAD
+=======
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+<!-- TABLE_GENERATE_END -->
+
+
+>>>>>>> d1ff970e6d0a12d50a32d5c65ffff35ac2300bba
 
 

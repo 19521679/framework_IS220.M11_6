@@ -376,7 +376,7 @@ namespace Back.Controllers
             s.Image = path;
             await lavenderContext.SaveChangesAsync();
 
-            if (image != null && image.Length != 0)
+            if (image != null && image.Length != 0 && OldDir!= NewDir)
             {
                 MyDataHandler.MoveDir(OldDir, NewDir);
             }
@@ -384,7 +384,6 @@ namespace Back.Controllers
             {
                 return StatusCode(200, Json(s));
             }
-
             if (!Directory.Exists(NewDir))
             {
                 // Create the directory.

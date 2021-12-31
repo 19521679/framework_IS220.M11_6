@@ -72,7 +72,17 @@ namespace Back.Controllers
             int fCount = 0;
             if (product != null)
             {
-                fCount = Directory.GetFiles($"{_env.ContentRootPath}/wwwroot/{loai}/{hang}/{dong}/{sanpham}", "*", SearchOption.TopDirectoryOnly).Length;
+                string dirFullPath = ($"{_env.ContentRootPath}/wwwroot/{loai}/{hang}/{dong}/{sanpham}");
+                string[] files;
+  
+                files = System.IO.Directory.GetFiles(dirFullPath);
+                foreach(var i in files)
+                {
+                    if (i.ToLower().Contains("jpeg")|| i.ToLower().Contains("jpg")|| i.ToLower().Contains("png"))
+                    {
+                        fCount++;
+                    }
+                }
                 return StatusCode(200, Json(product, new { sohinhanh = fCount }));
             }
             return StatusCode(404);

@@ -91,7 +91,7 @@ export default function ItemDangxuly(props) {
       <div>
         <hr></hr>
         <tr>
-          <td> Số HD: {props.bill.sohoadon}</td>
+          <td>Số HD: {props.bill.sohoadon}</td>
           <td>Ngày HD: {props.bill.ngayhoadon}</td>
           <td>Mã KM: {props.bill.makhuyenmai}</td>
           <td><strong>Thành tiền: {numberWithCommas(props.bill.tongtien)} đ</strong> </td>

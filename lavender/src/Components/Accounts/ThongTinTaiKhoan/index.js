@@ -245,7 +245,7 @@ class index extends Component {
                     <span />
                     <Link
                       to="/lmember/thongtintaikhoan/sdt"
-                      className="btn btn-primary "  style={{marginLeft: "29px"}}
+                      className="btn btn-primary "  
                     >
                       Sửa
                     </Link>

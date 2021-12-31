@@ -1,9 +1,7 @@
 import Home from "../../Components/Home.js";
 import NotFoundPage from "./NotFoundPage.js";
 import Mobile from "../../Components/Mobile";
-import Computer from "../../Components/Computer";
-import ExDevice from "../../Components/ExDevice";
-import Blog from "../../Components/Blog";
+import Laptop from "../../Components/Laptop";
 import Cart from "../../Components/Cart";
 import Login from "../../Components/Accounts/Login.js";
 import Register from "../../Components/Accounts/Register.js";
@@ -16,20 +14,28 @@ import BillingDashboard from "../../Components/Admin/BillingDashboard";
 import StaffDashboard from "../../Components/Admin/StaffDashboard";
 import StaffAccountDashboard from "../../Components/Admin/StaffAccountDashboard";
 import SuplierDashboard from "../../Components/Admin/SuplierDashboard";
+import ProductDetailDashboard from "../../Components/Admin/ProductDetailDashboard";
 import PromotionDashboard from "../../Components/Admin/PromotionDashboard";
-import CustomerAccountDashboard from "../../Components/Admin/CustomerAccountDashboard"
-import ProductTypeDashboard from "../../Components/Admin/ProductTypeDashboard"
+import CustomerAccountDashboard from "../../Components/Admin/CustomerAccountDashboard";
+import ArticleDashboard from "../../Components/Admin/ArticleDashboard";
 import GuaranteeDashboard from "../../Components/Admin/GuaranteeDashboard"
 import TrademarkDashboard from "../../Components/Admin/TrademarkDashboard"
-
+import MyAccountDashboard from "../../Components/Admin/MyAccountDashboard"
+import Article from "../../Components/Article/index"
+import ArticleDetail from "../../Components/Article/ArticleDetail"
+import AddArticle from "../../Components/Article/addArticle"
+import Promotion from "../../Components/Promotion";
+import ForgotPassword from "../../Components/Accounts/ForgotPassword"
 import LMember from "../../Components/Accounts/LMember.js";
-import AddCustomer from "../../Components/Admin/CustomerDashboard/AddCustomer.js";
+import Privacy from "../../Components/Privacy"
+import ThayDoiSDT from "../../Components/Accounts/ThongTinTaiKhoan/ThayDoiSDT";
+import ThayDoiEmail from "../../Components/Accounts/ThongTinTaiKhoan/ThayDoiEmail";
 
 const routes = [
   {
     path: "/",
     exact: true,
-    main: () => <Home></Home>,
+    main: () => <Home ></Home>,
   },
   {
     path: "/:loai/:hang/:dong/:sanpham",
@@ -37,30 +43,29 @@ const routes = [
     main: ({ match }) => <Product match={match}></Product>,
   },
   {
-    path: "/mobile/:trademark",
+    path: "/article",
+    exact: true,
+    main: () => <Article ></Article>,
+  },
+  {
+    path: "/articledetail/:mabaiviet",
+    exact: true,
+    main: () => <ArticleDetail></ArticleDetail >
+  },
+  {
+    path: "/addArticle",
     exact: false,
-    main: ({match}) => <Mobile match={match} ></Mobile>,
+    main: () => <AddArticle></AddArticle>,
   },
   {
     path: "/mobile",
     exact: false,
-    main: () => <Mobile ></Mobile>,
-  },
-
-  {
-    path: "/computer",
-    exact: false,
-    main: () => <Computer></Computer>,
+    main: ({ match, location }) => <Mobile match={match} location={location}></Mobile>,
   },
   {
-    path: "/exdevice",
+    path: "/laptop",
     exact: false,
-    main: () => <ExDevice></ExDevice>,
-  },
-  {
-    path: "/blog",
-    exact: false,
-    main: () => <Blog></Blog>,
+    main: ({ match, location }) => <Laptop match={match} location={location}></Laptop>,
   },
   {
     path: "/cart",
@@ -68,9 +73,19 @@ const routes = [
     main: () => <Cart></Cart>,
   },
   {
+    path: "/promotion",
+    exact: false,
+    main: () => <Promotion></Promotion>,
+  },
+  {
     path: "/guarantee",
     exact: false,
     main: () => <Guarantee></Guarantee>
+  },
+  {
+    path: "/privacy",
+    exact: false,
+    main: () => <Privacy></Privacy>
   },
   {
     path: "/login",
@@ -80,7 +95,7 @@ const routes = [
   {
     path: "/register",
     exact: false,
-    main: () => <Register></Register>,
+    main: ({ location }) => <Register location={location}></Register>,
   },
   {
     path: "/mobile/:productname/product",
@@ -96,6 +111,11 @@ const routes = [
     path: "/admin/product",
     exact: true,
     main: () => <ProductDashboard></ProductDashboard>
+  },
+  {
+    path: "/admin/article",
+    exact: true,
+    main: () => <ArticleDashboard></ArticleDashboard>
   },
   {
     path: "/admin/customer",
@@ -118,6 +138,11 @@ const routes = [
     main: () => <SuplierDashboard></SuplierDashboard>
   },
   {
+    path: "/admin/productdetail",
+    exact: true,
+    main: () => <ProductDetailDashboard></ProductDetailDashboard>
+  },
+  {
     path: "/admin/staffaccount",
     exact: true,
     main: () => <StaffAccountDashboard></StaffAccountDashboard>
@@ -133,11 +158,6 @@ const routes = [
     main: () => <CustomerAccountDashboard></CustomerAccountDashboard>
   },
   {
-    path: "/admin/producttype",
-    exact: true,
-    main: () => <ProductTypeDashboard></ProductTypeDashboard>
-  },
-  {
     path: "/admin/guarantee",
     exact: true,
     main: () => <GuaranteeDashboard></GuaranteeDashboard>
@@ -147,11 +167,20 @@ const routes = [
     exact: true,
     main: () => <TrademarkDashboard></TrademarkDashboard>
   },
-
   {
-    path: "/admin/customer/add",
+    path: "/admin/myaccount",
     exact: true,
-    main: () => <AddCustomer></AddCustomer>
+    main: () => <MyAccountDashboard></MyAccountDashboard>
+  },
+  {
+    path: "/lmember/thongtintaikhoan/sdt",
+    exact: true,
+    main: () => <ThayDoiSDT></ThayDoiSDT>
+  },
+  {
+    path: "/lmember/thongtintaikhoan/email",
+    exact: true,
+    main: () => <ThayDoiEmail></ThayDoiEmail>
   },
   {
     path: "/lmember",
@@ -159,14 +188,16 @@ const routes = [
     main: () => <LMember></LMember>
   },
   {
-    path: "/",
+    path: "/forgotpassword",
     exact: true,
-    main: () => <Home></Home>,
+    main: () => <ForgotPassword></ForgotPassword>
   },
   {
     path: "",
     exact: false,
     main: () => <NotFoundPage></NotFoundPage>,
   },
+
+
 ];
 export default routes;

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import Dangxuly from './Dangxuly';
 import Danggiao from './Danggiao';
 import Dahuy from './Dahuy';
-import { numberWithCommas } from '../../../Common/helper/numberHelper';
+
 
 
 class index extends Component {

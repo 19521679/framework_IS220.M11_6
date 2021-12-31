@@ -70,7 +70,7 @@ export default function ItemDanggiao(props) {
       <div>
         <hr></hr>
         <tr>
-          <th scope="row"> Số HD: {props.bill.sohoadon}</th>
+          <td> Số HD: {props.bill.sohoadon}</td>
           <td>Ngày HD: {props.bill.ngayhoadon}</td>
           <td>Mã KM: {props.bill.makhuyenmai}</td>
           <td> <strong>Thành tiền: {numberWithCommas(props.bill.tongtien)} đ</strong> </td>

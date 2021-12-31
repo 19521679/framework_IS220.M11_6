@@ -5,7 +5,7 @@ import AddBill from "./AddBill";
 import DeleteBill from "./DeleteBill";
 import Cookies from "universal-cookie";
 import * as transportApi from "../../apis/transport";
-
+import { numberWithCommas } from "../../../Common/helper/numberHelper";
 const cookie = new Cookies();
 
 export default class BillItem extends Component {
@@ -128,7 +128,7 @@ export default class BillItem extends Component {
             <span className=" mt-2 text-xs">
               Tổng tiền:{" "}
               <span className="text-dark ms-sm-2 font-weight-bold">
-                {this.props.bill.tongtien}
+                {numberWithCommas(this.props.bill.tongtien)}
               </span>
             </span>
           </div>

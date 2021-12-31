@@ -8,20 +8,6 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
-body {
-  font-family: "Open Sans", sans-serif;
-  color: #444444;
-}
-
-a {
-  color: #2487ce;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #469fdf;
-  text-decoration: none;
-}
 
 /*--------------------------------------------------------------
   # Sections General
@@ -86,7 +72,7 @@ box-title a.box-title__title > h2 {
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 22px;
-  color: #444444;
+  color: yellow !important;
 }
 .box-related-tag .list-related-tag {
   padding-top: 0;
@@ -158,9 +144,6 @@ section.cps-section
   border-radius: 4px;
 }
 /*Laptop nổi bật*/
-.laptopnoibat{
-  margin-top:100px;
-}
 /** Phần từng item sản phẩm */
 
 /*Các thương hiệu*/
@@ -201,6 +184,7 @@ section.cps-section
   flex-wrap: wrap;
   overflow-x: auto;
   overflow-y: hidden;
+
 }
 .brands .brand-body .brand-items .brch-row,
 .brands .brand-body .brand-items .brch-row-page {
@@ -233,6 +217,7 @@ section.cps-section
 }
 .brands .brand-body .brand-items .brch-row .brand-item img,
 .brands .brand-body .brand-items .brch-row-page .brand-item img {
+  height:65px;
   width: 100%;
   margin: 0 auto;
 }
@@ -245,4 +230,88 @@ section.cps-section
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   box-shadow: rgba(60, 64, 67, 0.1) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+.promotion1 .promotion-carousel{
+  border-radius: 10px;
+}
+.item-banner-right{
+  width: 33%;
+}
+
+
+.maincard {
+  position: absolute;
+  width: 220px;
+  height: 89px
+ 
+}
+
+.thecard {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: all 0.8s ease
+}
+
+.thecard:hover {
+  transform: rotateY(180deg)
+}
+
+.thefront {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: hidden;
+  background: #fff;
+  color: #3D087B;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid #eee;
+  box-shadow: 5px 6px 6px 2px #e9ecef;
+  padding: 10px
+}
+
+.theback {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-color: hidden;
+  background: #3D087B;
+  color: #fff;
+  border-radius: 10px;
+  transform: rotateY(180deg);
+  border: 1px solid #eee;
+  box-shadow: 5px 6px 6px 2px #e9ecef;
+  padding: 10px
+}
+
+
+.about {
+  font-size: 10px
+}
+.promotion4{
+  margin-top: 20px;
+}
+.promotion4 img{
+  border-radius: 10px;
+
+}
+.homewallpaper{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -61px;
+}
+.section-home{
+  margin-top: 720px;
+}
+
+.titlehome{
+  position: absolute;
+  left: 27%;
+  top: 300px;
+  width: calc(47vw);
+  z-index: 99;
 }

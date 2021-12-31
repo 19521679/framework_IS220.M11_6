@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 #nullable disable
@@ -15,7 +17,7 @@ namespace Back.Models
             Hoadons = new HashSet<Hoadon>();
             Taikhoankhachhangs = new HashSet<Taikhoankhachhang>();
         }
-
+  
         public int Makhachhang { get; set; }
         public string Tenkhachhang { get; set; }
         public string Email { get; set; }
@@ -23,6 +25,9 @@ namespace Back.Models
         public string Diachi { get; set; }
         public DateTime? Ngaysinh { get; set; }
         public string Loaikhachhang { get; set; }
+        public string Image { get; set; }
+        public string Cccd { get; set; }
+        public DateTime Ngaydangky { get; set; }
 
         public virtual ICollection<Danhsachyeuthich> Danhsachyeuthichs { get; set; }
         [JsonIgnore]
@@ -35,6 +40,8 @@ namespace Back.Models
         public virtual ICollection<Hoadon> Hoadons { get; set; }
         [JsonIgnore]
         public virtual ICollection<Taikhoankhachhang> Taikhoankhachhangs { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Khachhangdangnhap> Khachhangdangnhaps { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

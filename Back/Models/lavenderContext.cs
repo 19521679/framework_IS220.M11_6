@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
@@ -15,8 +16,9 @@ namespace Back.Models
         public lavenderContext(DbContextOptions<lavenderContext> options)
             : base(options)
         {
-        }
 
+        }
+        public virtual DbSet<Baiviet> Baiviets { get; set; }
         public virtual DbSet<Baohanh> Baohanhs { get; set; }
         public virtual DbSet<Chitietgiohang> Chitietgiohang { get; set; }
         public virtual DbSet<Chitiethoadon> Chitiethoadon { get; set; }
@@ -38,11 +40,55 @@ namespace Back.Models
         public virtual DbSet<Taikhoannhanvien> Taikhoannhanvien { get; set; }
         public virtual DbSet<Thuonghieu> Thuonghieu { get; set; }
         public virtual DbSet<Vanchuyen> Vanchuyen { get; set; }
+        public virtual DbSet<Khachhangdangnhap> Khachhangdangnhap { get; set; }
+        public virtual DbSet<Nhanviendangnhap> Nhanviendangnhap { get; set; }
+        public virtual DbSet<Thongsokithuat> Thongsokithuat { get; set; }
+        public virtual DbSet<Truycapandanh> Truycapandanh { get; set; }
+
+        private const string connectionString = @"Server=lavender-uit-webshop-database.mysql.database.azure.com; Port=3306; Database=lavender; Uid=bongdungyeuem27; Pwd=0914630145kK@; SslMode=Preferred;";
+
+        // Phương thức OnConfiguring gọi mỗi khi một đối tượng DbContext được tạo
+        // Nạp chồng nó để thiết lập các cấu hình, như thiết lập chuỗi kết nối
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseMySQL(connectionString);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+            modelBuilder.Entity<Baiviet>(entity =>
+            {
+                entity.HasKey(e => e.mabaiviet)
+                      .IsClustered(false);
+
+                entity.ToTable("BAIVIET");
+
+                entity.Property(e => e.mabaiviet).HasColumnName("MABAIVIET");
+
+
+                entity.Property(e => e.tieude)
+                    .HasColumnType("text")
+                    .HasColumnName("TIEUDE");
+
+
+                entity.Property(e => e.mota)
+                    .HasColumnType("text")
+                    .HasColumnName("MOTA");
+
+                entity.Property(e => e.noidung)
+                    .HasColumnType("text")
+                    .HasColumnName("NOIDUNG");
+
+                entity.Property(e => e.thumnail)
+                .HasColumnType("text")
+                .HasColumnName("THUMNAIL");
+
+                entity.Property(e => e.xacnhan)
+                .HasColumnName("XACNHAN");
+            });
             modelBuilder.Entity<Baohanh>(entity =>
             {
                 entity.HasKey(e => e.Mabaohanh)
@@ -107,7 +153,7 @@ namespace Back.Models
                     .HasForeignKey(d => d.Magiohang)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CHITIETG_REFERENCE_GIOHANG");
-
+                
                 entity.HasOne(d => d.MasanphamNavigation)
                     .WithMany(p => p.Chitietgiohangs)
                     .HasForeignKey(d => d.Masanpham)
@@ -166,7 +212,7 @@ namespace Back.Models
                 entity.Property(e => e.Tinhtrang)
                     .IsRequired()
                     .HasMaxLength(30)
-                    .IsUnicode(false)
+                    .IsUnicode(true)
                     .HasColumnName("TINHTRANG");
 
                 entity.Property(e => e.Mausac)
@@ -183,7 +229,7 @@ namespace Back.Models
                     .HasColumnName("GIAMOI");
 
                 entity.Property(e => e.Image)
-                    .HasMaxLength(45)
+                    .HasMaxLength(400)
                     .IsUnicode(false)
                     .HasColumnName("IMAGE");
 
@@ -236,9 +282,9 @@ namespace Back.Models
 
                 entity.ToTable("DANHSACHYEUTHICH");
 
-                entity.Property(e => e.Makhachhang).HasColumnName("MAKHACHHANG");
+                entity.Property(e => e.Makhachhang).HasColumnName("MAKHACHHANG").IsRequired();
 
-                entity.Property(e => e.Masanpham).HasColumnName("MASANPHAM");
+                entity.Property(e => e.Masanpham).HasColumnName("MASANPHAM").IsRequired();
 
 
                 entity.HasOne(d => d.MakhachhangNavigation)
@@ -392,20 +438,31 @@ namespace Back.Models
                 entity.Property(e => e.Makhachhang).HasColumnName("MAKHACHHANG");
 
                 entity.Property(e => e.Diachi)
-                    .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("DIACHI");
+
+                entity.Property(e => e.Cccd)
+                   .HasMaxLength(20)
+                   .IsUnicode(false)
+                   .HasColumnName("CCCD");
+                entity.HasIndex(e => e.Cccd).IsUnique();
+
+                entity.Property(e => e.Image)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false)
+                    .HasColumnName("IMAGE");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
+                entity.HasIndex(e => e.Email).IsUnique();
 
                 entity.Property(e => e.Loaikhachhang)
                     .HasMaxLength(30)
-                    .IsUnicode(false)
+                    .IsUnicode(true)
                     .HasColumnName("LOAIKHACHHANG");
 
                 entity.Property(e => e.Ngaysinh)
@@ -413,16 +470,20 @@ namespace Back.Models
                     .HasColumnName("NGAYSINH");
 
                 entity.Property(e => e.Sodienthoai)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("SODIENTHOAI");
+                entity.HasIndex(e => e.Sodienthoai).IsUnique();
 
                 entity.Property(e => e.Tenkhachhang)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("TENKHACHHANG");
+
+                entity.Property(e => e.Ngaydangky)
+                .HasColumnType("datetime")
+                .HasColumnName("NGAYDANGKY");
+
             });
 
             modelBuilder.Entity<Khuyenmai>(entity =>
@@ -487,17 +548,25 @@ namespace Back.Models
                     .IsUnicode(false)
                     .HasColumnName("DIACHI");
 
+
+                entity.Property(e => e.Image)
+                    .HasMaxLength(45)
+                    .IsUnicode(false)
+                    .HasColumnName("IMAGE");
+
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
+                entity.HasIndex(e => e.Email).IsUnique();
 
                 entity.Property(e => e.Sodienthoai)
                     .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("SODIENTHOAI");
+                entity.HasIndex(e => e.Sodienthoai).IsUnique();
 
                 entity.Property(e => e.Tennhacungcap)
                     .IsRequired()
@@ -520,6 +589,11 @@ namespace Back.Models
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("CCCD");
+                entity.HasIndex(e => e.Cccd).IsUnique();
+
+                entity.Property(e => e.Image)
+                    .HasColumnType("text")
+                    .HasColumnName("IMAGE");
 
                 entity.Property(e => e.Chucvu)
                     .IsRequired()
@@ -538,6 +612,7 @@ namespace Back.Models
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
+                entity.HasIndex(e => e.Email).IsUnique();
 
                 entity.Property(e => e.Ngaysinh)
                     .HasColumnType("datetime")
@@ -552,6 +627,7 @@ namespace Back.Models
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("SODIENTHOAI");
+                entity.HasIndex(e => e.Sodienthoai).IsUnique();
 
                 entity.Property(e => e.Tennhanvien)
                     .IsRequired()
@@ -619,8 +695,6 @@ namespace Back.Models
                     .HasColumnType("text")
                     .HasColumnName("MOTA");
 
-                entity.Property(e => e.Soluongton).HasColumnName("SOLUONGTON");
-
                 entity.Property(e => e.Dongia).HasColumnName("DONGIA");
 
                 entity.Property(e => e.Tensanpham)
@@ -632,6 +706,8 @@ namespace Back.Models
                 entity.Property(e => e.Thoidiemramat)
                     .HasColumnType("datetime")
                     .HasColumnName("THOIDIEMRAMAT");
+
+                 entity.Property(e => e.Thoigianbaohanh).HasColumnName("THOIGIANBAOHANH");
 
                 entity.HasOne(d => d.MaloaiNavigation)
                     .WithMany(p => p.Sanphams)
@@ -648,7 +724,7 @@ namespace Back.Models
 
             modelBuilder.Entity<Taikhoankhachhang>(entity =>
             {
-                entity.HasKey(e => e.Username)
+                entity.HasKey(e => e.Makhachhang)
                     .IsClustered(false);
 
                 entity.ToTable("TAIKHOANKHACHHANG");
@@ -657,14 +733,27 @@ namespace Back.Models
                     .HasMaxLength(300)
                     .IsUnicode(false)
                     .HasColumnName("USERNAME");
-
-                entity.Property(e => e.Makhachhang).HasColumnName("MAKHACHHANG");
+                entity.HasIndex(e => e.Username).IsUnique();
 
                 entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(20)
+                 .HasMaxLength(300)
+                 .IsUnicode(false)
+                 .HasColumnName("PASSWORD");
+
+                entity.Property(e => e.Makhachhang).HasColumnName("MAKHACHHANG");
+                entity.HasIndex(e => e.Makhachhang).IsUnique();
+
+                entity.Property(e => e.Tokenemail)
+                    .HasMaxLength(4000)
                     .IsUnicode(false)
-                    .HasColumnName("PASSWORD");
+                    .HasColumnName("TOKENEMAIL");
+
+                entity.Property(e => e.Googleid)
+                  .HasMaxLength(300)
+                  .IsUnicode(false)
+                  .HasColumnName("GOOGLEID");
+
+                entity.Property(e => e.Kichhoat).HasColumnName("KICHHOAT");
 
                 entity.HasOne(d => d.MakhachhangNavigation)
                     .WithMany(p => p.Taikhoankhachhangs)
@@ -684,8 +773,10 @@ namespace Back.Models
                     .HasMaxLength(300)
                     .IsUnicode(false)
                     .HasColumnName("USERNAME");
+                entity.HasIndex(e => e.Username).IsUnique();
 
                 entity.Property(e => e.Manhanvien).HasColumnName("MANHANVIEN");
+                entity.HasIndex(e => e.Manhanvien).IsUnique();
 
                 entity.Property(e => e.Password)
                     .IsRequired()
@@ -719,6 +810,11 @@ namespace Back.Models
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("XUATXU");
+
+                entity.Property(e => e.Image)
+                  .HasMaxLength(45)
+                  .IsUnicode(false)
+                  .HasColumnName("IMAGE");
             });
 
             modelBuilder.Entity<Vanchuyen>(entity =>
@@ -744,9 +840,135 @@ namespace Back.Models
                     .HasConstraintName("FK_VANCHUYE_REFERENCE_HOADON");
             });
 
+
+            modelBuilder.Entity<Khachhangdangnhap>(entity =>
+            {
+                entity.HasKey(e => e.Refreshtoken)
+                    .IsClustered(false);
+
+                entity.ToTable("KHACHHANGDANGNHAP");
+
+                entity.Property(e => e.Makhachhang).HasColumnName("MAKHACHHANG");
+
+                entity.Property(e => e.Refreshtoken)
+                     .HasMaxLength(1000)
+                   .IsUnicode(false)
+                    .HasColumnName("REFRESHTOKEN");
+
+                entity.Property(e => e.Ip)
+                   .HasMaxLength(45)
+                   .IsUnicode(false)
+                   .HasColumnName("IP");
+
+                entity.Property(e => e.Thoidiem)
+                   .HasColumnType("datetime")
+                   .HasColumnName("THOIDIEM");
+
+                entity.Property(e => e.Location)
+                 .HasMaxLength(1024)
+                 .IsUnicode(false)
+                 .HasColumnName("LOCATION");
+
+                entity.HasOne(d => d.MakhachhangNavigation)
+                 .WithMany(p => p.Khachhangdangnhaps)
+                 .HasForeignKey(d => d.Makhachhang)
+                 .OnDelete(DeleteBehavior.ClientSetNull)
+                 .HasConstraintName("FK_KHACHHANGDANGNHAP_KHACHHANG");
+
+            });
+
+
+            modelBuilder.Entity<Nhanviendangnhap>(entity =>
+            {
+                entity.HasKey(e => e.Refreshtoken)
+                    .IsClustered(false);
+
+                entity.ToTable("NHANVIENDANGNHAP");
+
+
+                entity.Property(e => e.Manhanvien).HasColumnName("MANHANVIEN");
+
+                entity.Property(e => e.Refreshtoken)
+                    .HasMaxLength(1000)
+                   .IsUnicode(false)
+                    .HasColumnName("REFRESHTOKEN");
+
+                entity.Property(e => e.Ip)
+                   .HasMaxLength(45)
+                   .IsUnicode(false)
+                   .HasColumnName("IP");
+
+                entity.Property(e => e.Thoidiem)
+                    .HasColumnType("datetime")
+                    .HasColumnName("THOIDIEM");
+
+                entity.Property(e => e.Location)
+                 .HasMaxLength(1024)
+                 .IsUnicode(false)
+                 .HasColumnName("LOCATION");
+
+                entity.HasOne(d => d.ManhanvienNavigation)
+                .WithMany(p => p.Nhanviendangnhaps)
+                .HasForeignKey(d => d.Manhanvien)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NHANVIENDANGNHAP_NHANVIEN");
+            });
+
+
+            modelBuilder.Entity<Thongsokithuat>(entity =>
+            {
+                entity.HasKey(e => e.Mathongso)
+                    .IsClustered(false);
+
+                entity.ToTable("THONGSOKITHUAT");
+
+                entity.Property(e => e.Mathongso).HasColumnName("MATHONGSO");
+
+                entity.Property(e => e.Masanpham).HasColumnName("MASANPHAM");
+
+                entity.Property(e => e.Ten)
+                        .HasMaxLength(45)
+                 .IsUnicode(true)
+                 .HasColumnName("TEN");
+
+                entity.Property(e => e.Noidung)
+                       .HasMaxLength(500)
+                .IsUnicode(true)
+                .HasColumnName("NOIDUNG");
+
+                entity.HasOne(d => d.MasanphamNavigation)
+                    .WithMany(p => p.Thongsokithuats)
+                    .HasForeignKey(d => d.Masanpham)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_THONGSOKITHUAT_SANPHAMM");
+            });
+
+            modelBuilder.Entity<Truycapandanh>(entity =>
+            {
+                entity.HasKey(e => e.Matruycap)
+                    .IsClustered(false);
+
+                entity.ToTable("TRUYCAPANDANH");
+
+                entity.Property(e => e.Matruycap).HasColumnName("MATRUYCAP");
+
+                entity.Property(e => e.Ip)
+                        .HasMaxLength(45)
+                 .IsUnicode(false)
+                 .HasColumnName("IP");
+
+                entity.Property(e => e.Thoidiem)
+                    .HasColumnType("datetime")
+                    .HasColumnName("THOIDIEM");
+
+            });
+
+
             OnModelCreatingPartial(modelBuilder);
+
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
     }
 }

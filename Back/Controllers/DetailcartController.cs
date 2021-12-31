@@ -12,8 +12,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Back.Common;
 using Back.Models;
-using Back.Models.Account;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -24,7 +24,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Back.Controllers
 {
-    
+
     // [EnableCors(origins: "*", headers: "accept,content-type,origin,x-my-header", methods: "*")]
     [ApiController]
 
@@ -41,19 +41,11 @@ namespace Back.Controllers
             _env = env;
             this.lavenderContext = lavenderContext;
         }
-        /* GET  /chitietgiohang-bang-magiohang?magiohang=1
-         * POST 
-         * 
-         * {
-         *  magiohang: 1,
-         *  tengiohang: a
-         *
-         * }
-         * A
-         * */
+
         [Route("/chitietgiohang-bang-magiohang")]
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> LoadDetailCartByCartId([FromQuery]int magiohang)
+        public async Task<IActionResult> LoadDetailCartByCartId([FromQuery] int magiohang)
         {
             var chitietgiohangs = await (from c in lavenderContext.Chitietgiohang
                                          where c.Magiohang == magiohang
@@ -63,13 +55,18 @@ namespace Back.Controllers
         }
 
         [Route("dat-soluong-cho-chitietgiohang")]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> SetQuantityForDetailCart(JsonElement json)
         {
-            var chitietgiohang = await lavenderContext.Chitietgiohang.SingleOrDefaultAsync(x => (x.Magiohang == int.Parse(json.GetString("magiohang"))
-            && x.Masanpham == int.Parse(json.GetString("masanpham"))
-            && x.Dungluong==json.GetString("dungluong")
-            && x.Mausac==json.GetString("mausac")));
+            Console.WriteLine(json);
+            var chitietgiohang = await (from x in lavenderContext.Chitietgiohang
+                                        where x.Magiohang == int.Parse(json.GetString("magiohang"))
+                                                    && x.Masanpham == int.Parse(json.GetString("masanpham"))
+            && x.Dungluong == json.GetString("dungluong")
+            && x.Mausac == json.GetString("mausac")
+                                        select x).FirstOrDefaultAsync();
+
             if (chitietgiohang == null) return StatusCode(404);
             chitietgiohang.Soluong = int.Parse(json.GetString("soluong"));
             await lavenderContext.SaveChangesAsync();
@@ -77,6 +74,7 @@ namespace Back.Controllers
         }
 
         [Route("/xoa-chitietgiohang")]
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> deleteDetailCart(int magiohang, int masanpham)
         {
@@ -87,6 +85,20 @@ namespace Back.Controllers
 
             if (chitietgiohang == null) return StatusCode(404);
             lavenderContext.Remove(chitietgiohang);
+            await lavenderContext.SaveChangesAsync();
+            return StatusCode(200);
+        }
+
+        [Route("/xoa-tatca-chitietgiohang")]
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> deleteAllDetailCart(int magiohang)
+        {
+            var chitietgiohangs = await (from c in lavenderContext.Chitietgiohang
+                                         where c.Magiohang == magiohang
+                                         select c).ToListAsync();
+            if (chitietgiohangs == null || chitietgiohangs.Count() == 0) return StatusCode(404);
+            lavenderContext.RemoveRange(chitietgiohangs);
             await lavenderContext.SaveChangesAsync();
             return StatusCode(200);
         }

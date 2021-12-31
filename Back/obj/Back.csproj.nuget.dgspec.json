@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj": {}
+    "d:\\UIT\\Framework\\Đồ án\\lavender\\Back\\Back.csproj": {}
   },
   "projects": {
-    "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj": {
+    "d:\\UIT\\Framework\\Đồ án\\lavender\\Back\\Back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj",
+        "projectUniqueName": "d:\\UIT\\Framework\\Đồ án\\lavender\\Back\\Back.csproj",
         "projectName": "Back",
-        "projectPath": "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj",
-        "packagesPath": "/Users/khanhle/.nuget/packages/",
-        "outputPath": "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/obj/",
+        "projectPath": "d:\\UIT\\Framework\\Đồ án\\lavender\\Back\\Back.csproj",
+        "packagesPath": "C:\\Users\\NBZ\\.nuget\\packages\\",
+        "outputPath": "d:\\UIT\\Framework\\Đồ án\\lavender\\Back\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/khanhle/.config/NuGet/NuGet.Config"
+          "C:\\Users\\NBZ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,7 +44,51 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AspNetCore.Email": {
+              "target": "Package",
+              "version": "[2.1.403, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "ExcelNumberFormat": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "GemBox.Spreadsheet": {
+              "target": "Package",
+              "version": "[47.0.1345, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Certificate": {
+              "target": "Package",
+              "version": "[3.1.22, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Microsoft.AspNetCore.Authorization": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.Mvc.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Session": {
               "target": "Package",
               "version": "[2.2.0, )"
             },
@@ -62,6 +112,10 @@
               "target": "Package",
               "version": "[2.0.3, )"
             },
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[6.0.0, )"
@@ -78,9 +132,33 @@
               "target": "Package",
               "version": "[13.0.1, )"
             },
+            "Swashbuckle.AspNetCore.Swagger": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.3, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "System.IO.FileSystem": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.15.0, )"
+            },
+            "runtime.osx.10.10-x64.CoreCompat.System.Drawing": {
+              "target": "Package",
+              "version": "[5.8.64, )"
             }
           },
           "imports": [
@@ -101,7 +179,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.100/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

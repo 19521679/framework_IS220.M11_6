@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 using Back.Models;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -42,9 +42,10 @@ namespace Back.Controllers
 
         [Route("/danhsachyeuthich")]
         [HttpGet]
-        public async Task<IActionResult> Danhsachyeuthich()
+        public async Task<IActionResult> Danhsachyeuthich(int makhachhang)
         {
             var favorites = await (from d in lavenderContext.Danhsachyeuthich
+                                   where d.Makhachhang==makhachhang
                                    select d).ToListAsync();
             return StatusCode(200, Json(favorites));
         }
@@ -56,19 +57,21 @@ namespace Back.Controllers
             var favorites = await (from d in lavenderContext.Danhsachyeuthich
                                    where d.Masanpham == masanpham
                                    && d.Makhachhang == makhachhang
-                                   select d).FirstAsync();
+                                   select d).FirstOrDefaultAsync();
+
             Boolean liked = false;
             if (favorites != null) liked = true;
             return StatusCode(200, Json(new { liked = liked }));
         }
 
         [Route("/yeuthich")]
+
         [HttpGet]
         public async Task<IActionResult> Themyeuthich(int makhachhang, int masanpham)
         {
             var favorite = new Danhsachyeuthich();
             favorite.Makhachhang = makhachhang;
-            favorite.Masanpham = makhachhang;
+            favorite.Masanpham = masanpham;
             await lavenderContext.AddAsync(favorite);
             await lavenderContext.SaveChangesAsync();
             return StatusCode(200);
@@ -78,9 +81,13 @@ namespace Back.Controllers
         [HttpGet]
         public async Task<IActionResult> Boyeuthich(int makhachhang, int masanpham)
         {
-            var favorite = await lavenderContext.Danhsachyeuthich.SingleOrDefaultAsync(x => x.Makhachhang == makhachhang && x.Masanpham == masanpham);
+            Danhsachyeuthich favorite = await (from x in lavenderContext.Danhsachyeuthich
+                                  where x.Makhachhang == makhachhang
+                                  && x.Masanpham == masanpham
+                                  select x).FirstOrDefaultAsync();
             if (favorite == null) return StatusCode(404);
-            lavenderContext.Remove(favorite);
+            lavenderContext.Entry(favorite).State = EntityState.Deleted;
+            //lavenderContext.Danhsachyeuthich.Remove(favorite);
             await lavenderContext.SaveChangesAsync();
             return StatusCode(200);
         }

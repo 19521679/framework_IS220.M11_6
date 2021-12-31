@@ -16,6 +16,11 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Back.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Back.Services;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 namespace Back
 {
@@ -34,20 +39,52 @@ namespace Back
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddAuthentication(
+                CertificateAuthenticationDefaults.AuthenticationScheme)
+                .AddCertificate();
+            services.AddDistributedMemoryCache();
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtSecurityKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    // ValidAudience = Configuration["JwtAudience"],
+                    // ValidIssuer = Configuration["JwtIssuer"],
+                };
+            });
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddSingleton<IEmailSender, SendMailService>();
+
             services.AddControllersWithViews();
 
+            services.AddCors();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+             {
+                 builder.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader()
+                     ;
+             }));
 
-            services.AddDbContext<lavenderContext>(options =>
-            {
-                string connectstring = Configuration.GetConnectionString("AppMvcConnectionString");
-                options.UseMySQL(connectstring);
-            });
+            //services.AddDbContext<lavenderContext>(options =>
+            //{
+            //    string connectstring = Configuration.GetConnectionString("AppMvcConnectionString");
+            //    options.UseMySQL(connectstring);
+
+            //}, ServiceLifetime.Transient);
+            services.AddTransient<lavenderContext, lavenderContext>();
             services.AddControllers(options =>
             {
                 options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
@@ -56,30 +93,11 @@ namespace Back
                     ReferenceHandler = ReferenceHandler.Preserve,
                 }));
             });
-
-            services
-            .AddMvc(options =>
+            services.AddSession(x =>
             {
-                options.InputFormatters.Insert(0, new RawJsonBodyInputFormatter());
+                x.Cookie.Name = "khanhzum";
+                x.IdleTimeout = new TimeSpan(0, 30, 0);
             });
-
-            // Cấu hình Cookie
-            services.ConfigureApplicationCookie(options =>
-            {
-                // options.Cookie.HttpOnly = true;  
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.LoginPath = $"/login/";                                 // Url đến trang đăng nhập
-                options.LogoutPath = $"/logout/";
-                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";   // Trang khi User bị cấm truy cập
-            });
-            //         services.Configure<SecurityStampValidatorOptions>(options =>
-            //         {
-            // // Trên 5 giây truy cập lại sẽ nạp lại thông tin User (Role)
-            // // SecurityStamp trong bảng User đổi -> nạp lại thông tinn Security
-            // options.ValidationInterval = TimeSpan.FromSeconds(5);
-            //         });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +105,9 @@ namespace Back
         {
             if (env.IsDevelopment())
             {
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication6 v1"));
+
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -96,6 +117,15 @@ namespace Back
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseCors(x => x
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .SetIsOriginAllowed(origin => true) // allow any origin
+           .AllowCredentials()); // allow credentials
+            app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
                 ServeUnknownFileTypes = true,
@@ -110,36 +140,26 @@ namespace Back
                     corsService.ApplyResult(corsResult, ctx.Context.Response);
                 }
             });
-            // app.UseCors("MyPolicy");
-            // app.UseCors(builder => builder
-            //     .AllowAnyOrigin()
-            //     .AllowAnyMethod()
-            //     .AllowAnyHeader()
-            //     .AllowCredentials());
+            app.UseSession();
             app.UseCors("MyPolicy");
-            app.UseRouting();
-
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                 endpoints.MapControllerRoute(
-                     // name: "login",
-                     name: "account",
-                     pattern: "{url}/{id?}",
-                     defaults: new
-                     {
-                         controller = "Account",
-                         action = "Login"
-                     },
-                     //IRouteConstraint
-                     constraints: new
-                     {
-                         url = new StringRouteConstraint("login"),
-                         //id = new RangeRouteConstraint(2, 4)
-                     }).RequireCors("MyPolicy");
+                //endpoints.MapControllerRoute(
+                //    // name: "login",
+                //    name: "account",
+                //    pattern: "{url}/{id?}",
+                //    defaults: new
+                //    {
+                //        controller = "Account",
+                //        action = "Login"
+                //    },
+                //    //IRouteConstraint
+                //    constraints: new
+                //    {
+                //        url = new StringRouteConstraint("login"),
+                //        //id = new RangeRouteConstraint(2, 4)
+                //    }).RequireCors("MyPolicy");
 
                 endpoints.MapControllerRoute(
                     name: "default",

@@ -20,11 +20,12 @@ namespace Back.Models
         public string Tensanpham { get; set; }
         public int Maloai { get; set; }
         public int Mathuonghieu { get; set; }
-        public int Soluongton { get; set; }
         public string Mota { get; set; }
         public string Image { get; set; }
         public DateTime? Thoidiemramat { get; set; }
-        public float Dongia { get; set; }
+
+        public float Dongia { get; set; }  
+        public int Thoigianbaohanh {get; set; }
 
         public virtual Loaisanpham MaloaiNavigation { get; set; }
         public virtual Thuonghieu MathuonghieuNavigation { get; set; }
@@ -38,6 +39,8 @@ namespace Back.Models
         public virtual ICollection<Danhgia> Danhgia { get; set; }
         [JsonIgnore]
         public virtual ICollection<Phieunhapsanpham> Phieunhapsanphams { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Thongsokithuat> Thongsokithuats { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

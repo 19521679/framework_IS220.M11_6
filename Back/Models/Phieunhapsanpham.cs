@@ -8,7 +8,7 @@ namespace Back.Models
 {
     public partial class Phieunhapsanpham
     {
-        public int Maphieunhap { get; set; }
+        public int? Maphieunhap { get; set; }
         public int Masanpham { get; set; }
         public int Manhacungcap { get; set; }
         public int Soluongnhap { get; set; }

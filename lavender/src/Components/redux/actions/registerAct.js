@@ -34,6 +34,7 @@ export const postRegisterReport = (res) => {
         else dispatch(postRegisterFailed(res));
       })
       .catch((error) => {
+        // console.log(error)
         dispatch(postRegisterFailed(error));
       });
   };

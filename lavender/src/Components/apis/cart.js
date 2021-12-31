@@ -1,20 +1,88 @@
 import axiosServices from "./axiosServices";
 import { API_ENDPOINT } from "../../Common/constants/index";
+import { refreshToken } from "../service/refreshtoken";
 
-export const loadCart = (makhachhang) => {
+export const loadCart = async (makhachhang, token, refreshtoken) => {
   const url = "/cart";
-  return axiosServices.get(`${API_ENDPOINT}${url}?makhachhang=${makhachhang}`);
+  var newtoken = undefined;
+  var connect = await axiosServices
+    .get(`${API_ENDPOINT}${url}?makhachhang=${makhachhang}`, { headers: { Authorization: `Bearer ${token}`}})
+    .catch((error) => {
+      
+      if (error.response.status === 401) {
+        
+        newtoken = refreshToken(refreshtoken);
+       
+        return error;
+      }
+    });
+  if (newtoken !== undefined) {
+    return await axiosServices
+    .get(`${API_ENDPOINT}${url}?makhachhang=${makhachhang}`, { headers: { Authorization: `Bearer ${newtoken}`}});
+  }
+  return connect;
 };
-export const addToCart = (data) => {
-    const url="/add-to-cart";
-    console.log("addtocart"+JSON.stringify(data));
-  return axiosServices.post(API_ENDPOINT + url, data);
-};
-export const updateCart = (data) => {
-  const url="/update-cart";
-return axiosServices.post(API_ENDPOINT + url, data);
-};
-export const deleteProduct = (data) => {
-return axiosServices.delete(API_ENDPOINT + "/cart/"+data.customerid+"/delete?productid="+ data.productid);
-};
+export const addToCart = async (data, token, refreshtoken) => {
+  const url = "/add-to-cart";
 
+  var newtoken = undefined;
+  var connect = await axiosServices
+    .post(API_ENDPOINT + url, data, { headers: { Authorization: `Bearer ${token}`}})
+    .catch((error) => {
+      
+      if (error.response.status === 401) {
+        
+        newtoken = refreshToken(refreshtoken);
+       
+        return error;
+      }
+    });
+  if (newtoken !== undefined) {
+    return await axiosServices
+    .post(API_ENDPOINT + url, data, { headers: { Authorization: `Bearer ${newtoken}`}});
+  }
+  return connect;
+};
+export const updateCart = async (data, token, refreshtoken) => {
+  const url = "/update-cart";
+
+  var newtoken = undefined;
+  var connect = await axiosServices
+    .get(API_ENDPOINT + url, data, { headers: { Authorization: `Bearer ${token}`}})
+    .catch((error) => {
+      
+      if (error.response.status === 401) {
+        
+        newtoken = refreshToken(refreshtoken);
+       
+        return error;
+      }
+    });
+  if (newtoken !== undefined) {
+    return await axiosServices
+    .get(API_ENDPOINT + url, data, { headers: { Authorization: `Bearer ${newtoken}`}});
+  }
+  return connect;
+};
+export const deleteProduct =  async (makhachhang, masanpham, token, refreshtoken) => {
+
+  var url = "/cart/" +makhachhang + "/delete?productid=" + masanpham;
+
+  var newtoken = undefined;
+  var connect = await axiosServices
+    .get(API_ENDPOINT + url, { headers: { Authorization: `Bearer ${token}`}})
+    .catch((error) => {
+      
+      if (error.response.status === 401) {
+        
+        newtoken = refreshToken(refreshtoken);
+       
+        return error;
+      }
+    });
+  if (newtoken !== undefined) {
+    return await axiosServices
+    .get(API_ENDPOINT + url, { headers: { Authorization: `Bearer ${newtoken}`}});
+  }
+  return connect;
+};

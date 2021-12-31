@@ -3,17 +3,35 @@ import "./Product.css";
 import * as imageApi from "../apis/image";
 import * as productApi from "../apis/product";
 import * as detailCartApi from "../apis/detailCart";
+import DeleteDetailCartModal from "./DeleteDetailCartModal";
+import Cookies from "universal-cookie";
+import logo from "../../Common/images/logo.png";
+import * as trademarkApi from "../apis/trademark";
+
+const cookie = new Cookies();
 
 class Product extends Component {
-  state = { product: {}, checked: false };
-  deleteProduct() {
-    // eslint-disable-next-line no-restricted-globals
-    var r = confirm("Bạn có chắc chắn muốn xoá không?");
-    if (r === false) return;
+  state = {
+    product: {},
+    checked: false,
+    showModal: false,
+    thuonghieu: undefined,
+  };
+  showModal() {
+    this.setState({ showModal: true });
+  }
+  closeModal() {
+    this.setState({ showModal: false });
+  }
+  async deleteProduct() {
+    var token = cookie.get("token");
+    var refreshtoken = cookie.get("refreshtoken");
     detailCartApi
       .deleteDetailCart(
         this.props.detailCart.magiohang,
-        this.props.detailCart.masanpham
+        this.props.detailCart.masanpham,
+        token,
+        refreshtoken
       )
       .then((success) => {
         if (success.status === 200) this.props.reload();
@@ -23,16 +41,32 @@ class Product extends Component {
       });
   }
   setValue(quantity) {
-    let soluong = 0; 
-    soluong= this.props.detailCart.soluong + quantity
+
+    let soluong = 0;
+    var token = cookie.get("token");
+    var refreshtoken = cookie.get("refreshtoken");
+    soluong = this.props.detailCart.soluong + quantity;
+    if (soluong < 1) {
+      return;
+    }
     detailCartApi
-      .setQuantityForDetailCart({
-        ...this.props.detailCart,
-        soluong: this.props.detailCart.soluong + quantity,
-      })
+      .setQuantityForDetailCart(
+        this.props.detailCart.magiohang,
+        this.props.detailCart.masanpham,
+        this.props.detailCart.dungluong,
+        this.props.detailCart.mausac,
+        this.props.detailCart.soluong + quantity,
+        token,
+        refreshtoken
+      )
       .then((success) => {
         if (success.status === 200) {
-          this.props.changeQuantity(this.props.detailCart.masanpham, this.props.detailCart.dungluong, this.props.detailCart.mausac, soluong);
+          this.props.changeQuantity(
+            this.props.detailCart.masanpham,
+            this.props.detailCart.dungluong,
+            this.props.detailCart.mausac,
+            soluong
+          );
         }
       })
       .catch((error) => {
@@ -41,38 +75,66 @@ class Product extends Component {
   }
 
   async componentDidMount() {
+    var token = cookie.get("token");
+    var refreshtoken = cookie.get("refreshtoken");
+    var product = undefined;
     await productApi
-      .findProductById(this.props.detailCart.masanpham)
+      .findProductById(this.props.detailCart.masanpham, token, refreshtoken)
       .then((success) => {
+        product = success.data.value;
         this.setState({ product: success.data.value });
       })
       .catch((error) => {
         console.error(error);
       });
+    await trademarkApi
+      .TimThuonghieuBangMathuonghieu(product.mathuonghieu)
+      .then((success) => {
+        if (success.status === 200) {
+          this.setState({ thuonghieu: success.data.value });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
-  changeCheck() {
-    this.setState({ checked: !this.state.checked });
-    this.props.changeSelect(this.props.detailCart.masanpham, this.props.detailCart.dungluong, this.props.detailCart.mausac);
+  changeCheck(checked) {
+    this.setState({ checked: checked });
+    this.props.changeSelect(
+      this.props.detailCart.masanpham,
+      this.props.detailCart.dungluong,
+      this.props.detailCart.mausac,
+      checked
+    );
+  }
+  static getDerivedStateFromProps(props) {
+    return {
+      checked: props.detailCart.chon,
+    };
   }
   render() {
     return (
       <div className="styles__StyledIntended-sc-1dwh2vk-1 bQOXDC">
         <div>
+          <DeleteDetailCartModal
+            showModal={this.state.showModal}
+            closeModal={this.closeModal.bind(this)}
+            deleteProduct={this.deleteProduct.bind(this)}
+          ></DeleteDetailCartModal>
           <div className="styles__StyledIntendedProduct-sc-1idi3y3-0 glclPp">
-            <div className="row" >
+            <div className="row">
               <div className="col-1">
                 <div className="intended__images ">
-                  <div className="uUhc_B" >
+                  <div className="uUhc_B">
                     <label className="stardust-checkbox">
-                      {
-                        this.props.detailCart.tien!==0&&(<input
-                          className="checkbox-fake border rounded"
+
+                        <input
+                          className="form-check-input"
                           type="checkbox"
-                          onClick={this.changeCheck.bind(this)}
-                          
-                        />)
-                      }
-                      
+                          onChange={(e) => this.changeCheck(e.target.checked)}
+                          checked={this.state.checked}
+                        />
+
                     </label>
                   </div>
 
@@ -96,12 +158,16 @@ class Product extends Component {
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
                     >
                       <img
-                        src="https://salt.tikicdn.com/ts/upload/2a/47/46/0e038f5927f3af308b4500e5b243bcf6.png"
+                        src={logo}
                         alt="tiki-fast"
                         className="intended__icon intended__icon--fast"
                       />
-                      <div className="product-name">
-                        {this.state.product.tensanpham}
+                      <div className="product-name text-muted">
+                        {this.state.thuonghieu !== undefined &&
+                          this.state.thuonghieu.tenthuonghieu}
+                        {""} {this.state.product.tensanpham} -{" "}
+                        {this.props.detailCart.dungluong} -{" "}
+                        {this.props.detailCart.mausac}
                       </div>
                     </a>
                   </div>
@@ -109,7 +175,13 @@ class Product extends Component {
               </div>
               <div className="col-2">
                 <span className="intended__real-prices">
-                  {this.props.detailCart.tien===0?"Hết hàng":<p>{this.props.detailCart.tien}₫</p>}
+                  {this.props.detailCart.tien === 0 ? (
+                    "Hết hàng"
+                  ) : (
+                    <p>
+                      <>{this.props.detailCart.tien} ₫</>
+                    </p>
+                  )}
                 </span>
               </div>
               <div className="col-3">
@@ -126,9 +198,9 @@ class Product extends Component {
                         alt="decrease"
                       />
                     </span>
-                    <a href={() => false} className="qty-input" id="quantity">
+                    <span className="qty-input" id="quantity">
                       {this.props.detailCart.soluong}
-                    </a>
+                    </span>
                     <span
                       data-view-id="cart_main_quantity.increase"
                       data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
@@ -148,7 +220,7 @@ class Product extends Component {
                   className="intended__delete"
                   data-view-id="cart_main_remove.product"
                   data-view-index="d7159dd0-3bda-11ec-a1bf-f256c406ec5c"
-                  onClick={() => this.deleteProduct()}
+                  onClick={this.showModal.bind(this)}
                 >
                   <img
                     src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/trash.svg"

@@ -1,17 +1,91 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./LMember.css";
 import routes from "./routes";
-import { Redirect } from 'react-router';
+import { Redirect } from "react-router-dom";
 import { Route, Switch, BrowserRouter, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "universal-cookie/es6";
+import { withRouter } from "react-router-dom";
+import * as loginAct from "../redux/actions/loginAct";
+import { useGoogleLogout } from "react-google-login";
+import * as myConst from "../../Common/constants/index";
+import * as imageApi from "../apis/image";
+import * as customerApi from "../apis/customer";
+import logopink from "../../Asset/logo/logopink.png";
 
-export default class index extends Component {
-  render() {
-    return (
-      <section>
-        <BrowserRouter>
-          <div className="container">
+const cookie = new Cookies();
+
+function Lmember(props) {
+  const makhachhang = useSelector((state) => state.login.makhachhang);
+  const dispatch = useDispatch();
+  const clientId = myConst.CLIENT_ID;
+  const [khachhang, setKhachhang] = useState();
+
+  useEffect(() => {
+    customerApi
+      .findCustomerByCustomerId(makhachhang)
+      .then((success) => {
+        if (success.status === 200) {
+          setKhachhang(success.data.value);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [makhachhang]);
+  const logout = async () => {
+    await dispatch(
+      await loginAct.postLogoutReport(
+        makhachhang,
+        "khachhang",
+        cookie.get("token"),
+        cookie.get("refreshtoken")
+      )
+    );
+    signOut();
+  };
+  const onLogoutSuccess = () => {
+    console.log("logout google");
+  };
+  const onFailure = () => {
+    console.log("google logout failure");
+  };
+  const { signOut } = useGoogleLogout({
+    clientId,
+    onLogoutSuccess,
+    onFailure,
+    isSignedIn: false,
+    disabled: false,
+  });
+  const showContentMenus = (routes) => {
+    var result = null;
+    if (routes.length) {
+      result = routes.map((value, key) => {
+        let keyRan = key;
+        if (value.path === "/cart") keyRan = Date.now();
+        return (
+          <Route
+            path={value.path}
+            exact={value.exact}
+            component={value.main}
+            keyProp={key}
+            key={keyRan}
+          ></Route>
+        );
+      });
+    }
+    return <Switch>{result}</Switch>;
+  };
+  return (
+    <section>
+      {makhachhang === undefined && <Redirect to="/login"></Redirect>}
+      <BrowserRouter>
+        {makhachhang !== undefined && (
+          <Redirect to="/lmember/thongtintaikhoan" />
+        )}
+        <div className="container">
           <div className="row">
-          <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
               <div className="leftmember">
                 <div className="Container-sc-itwfbd-0 hfMLFx">
                   <div className="Account__StyledAccountLayout-sc-1d5h8iz-0 dLDnti">
@@ -19,12 +93,17 @@ export default class index extends Component {
                       <div className="Account__StyledAvatar-sc-1d5h8iz-3 jIFHQL">
                         <img
                           src={
-                            "https://salt.tikicdn.com/desktop/img/avatar.png"
+                            khachhang !== undefined &&
+                            (khachhang.image === undefined
+                              ? logopink
+                              : khachhang.image === "/khachhang"
+                              ? imageApi.image(khachhang.image, makhachhang)
+                              : khachhang.image)
                           }
                           alt=""
                         />
                         <div className="info">
-                          Tài khoản của<strong>Khánh Duy Lê</strong>
+                          <strong> Tài khoản của tôi </strong>
                         </div>
                       </div>
                       <ul className="Account__StyledNav-sc-1d5h8iz-4 fAkTRM">
@@ -94,6 +173,19 @@ export default class index extends Component {
                             <span>Sản phẩm yêu thích</span>
                           </Link>
                         </li>
+                        <li>
+                          <a
+                            href={() => false}
+                            className="text-light btn btn-success"
+                            to="/lmember/sanphamyeuthich"
+                            onClick={logout}
+                          >
+                            <span>
+                              <i class="fas fa-sign-out-alt btn-logout-lmember-logo"></i>
+                              Đăng xuất
+                            </span>
+                          </a>
+                        </li>
                       </ul>
                     </aside>
                   </div>
@@ -102,33 +194,13 @@ export default class index extends Component {
             </div>
 
             <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-              <div className="rightmember">{this.showContentMenus(routes)}</div>
-            </div>
-            <Redirect to="/lmember/thongtintaikhoan"/>
-
+              <div className="rightmember">{showContentMenus(routes)}</div>
             </div>
           </div>
-        </BrowserRouter>
-      </section>
-    );
-  }
-  showContentMenus = (routes) => {
-    var result = null;
-    if (routes.length) {
-      result = routes.map((value, key) => {
-        let keyRan = key;
-        if (value.path === "/cart") keyRan = Date.now();
-        return (
-          <Route
-            path={value.path}
-            exact={value.exact}
-            component={value.main}
-            keyProp={key}
-            key={keyRan}
-          ></Route>
-        );
-      });
-    }
-    return <Switch>{result}</Switch>;
-  };
+        </div>
+      </BrowserRouter>
+    </section>
+  );
 }
+
+export default withRouter(Lmember);

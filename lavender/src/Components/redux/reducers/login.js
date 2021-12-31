@@ -1,37 +1,121 @@
 import * as loginConst from "../constrants/loginConst";
-// import * as myToast from "../../../Common/helper/toastHelper";
+import * as myToast from "../../../Common/helper/toastHelper";
+import Cookies from "universal-cookie";
 
+const cookie = new Cookies();
 const initialState = {
-  hasLogined: false,
-  email: "",
-  password: "",
-  customer:{}
+  makhachhang: undefined,
+  manhanvien: undefined,
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case loginConst.POST_LOGIN: {
-      return { ...state, hasLogined: false, email: "", password: "", customer:{} };
+      return {
+        ...state,
+        makhachhang: action.payload.data.value.makhachhang,
+        manhanvien: action.payload.data.value.manhanvien,
+      };
     }
     case loginConst.POST_LOGIN_SUCCESS: {
       const { data } = action.payload;
-      const username=  data.username;
-      const password =  data.password;
-      localStorage.setItem("hasLogined", true);
-      localStorage.setItem("email", username);
-      localStorage.setItem("password", password);
-      // myToast.toastSucces("Đăng nhập thành công");
+      if (data.value.token === undefined) {
+        cookie.remove("token");
+      } else {
+        let dtoken = new Date();
+        dtoken.setTime(dtoken.getTime() + 60 * 60 * 1000);
+        cookie.set("token", data.value.token, {
+          expires: dtoken,
+          // httpOnly: false,
+          // secure: true,
+          // sameSite: true,
+        });
+      }
+      if (data.value.refreshtoken === undefined) {
+        cookie.remove("refreshtoken");
+      } else {
+        let drefresh = new Date();
+        drefresh.setTime(drefresh.getTime() + 10 * 24 * 60 * 60 * 1000);
+        cookie.set("refreshtoken", data.value.refreshtoken, {
+          expires: drefresh,
+          // httpOnly: false,
+          // secure: true,
+          // sameSite: true,
+        });
+      }
+
       return {
         ...state,
-        hasLogined: true,
-        email: data.email,
-        password: data.password,
-        customer:data
+        makhachhang: action.payload.data.value.makhachhang,
+        manhanvien: action.payload.data.value.manhanvien,
       };
     }
     case loginConst.POST_LOGIN_FAILED: {
-      // myToast.toastError("Đăng nhập thất bại");
-      localStorage.setItem("hasLogined", false);
-      return { ...state, hasLogined: false, email: "", password: "" , customer:{}};
+      myToast.toastError("Đăng nhập thất bại");
+      return {
+        ...state,
+      };
+    }
+    /* Refresh*/
+    case loginConst.POST_REFRESH: {
+      return {
+        ...state,
+        makhachhang: action.payload.data.value.makhachhang,
+        manhanvien: action.payload.data.value.manhanvien,
+      };
+    }
+    case loginConst.POST_REFRESH_SUCCESS: {
+      const { data } = action.payload;
+      let dtoken = new Date();
+      dtoken.setTime(dtoken.getTime() + 60 * 60 * 1000);
+      cookie.set("token", data.value.token, {
+        expires: dtoken,
+        // httpOnly: false,
+        // secure: true,
+        // sameSite: true,
+      });
+
+      let drefresh = new Date();
+      drefresh.setTime(drefresh.getTime() + 10 * 24 * 60 * 60 * 1000);
+      cookie.set("refreshtoken", data.value.refreshtoken, {
+        expires: drefresh,
+        // httpOnly: false,
+        // secure: true,
+        // sameSite: true,
+      });
+      return {
+        ...state,
+        makhachhang: action.payload.data.value.makhachhang,
+        manhanvien: action.payload.data.value.manhanvien,
+      };
+    }
+    case loginConst.POST_REFRESH_FAILED: {
+      cookie.remove("token");
+      cookie.remove("refreshtoken");
+      return {
+        ...state,
+      };
+    }
+    //Logout
+    case loginConst.POST_LOGOUT: {
+      return {
+        ...state,
+      };
+    }
+    case loginConst.POST_LOGOUT_SUCCESS: {
+      console.log("logout redux");
+      cookie.remove("token");
+      cookie.remove("refreshtoken");
+      return {
+        ...state,
+        makhachhang: undefined,
+        manhanvien: undefined,
+      };
+    }
+    case loginConst.POST_LOGOUT_FAILED: {
+      myToast.toastError("Đăng xuất thất bại");
+      return {
+        ...state,
+      };
     }
     default:
       return state;

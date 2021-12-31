@@ -1,5 +1,10 @@
 import * as cartApi from "../../apis/cart";
 import * as cartConst from "../constrants/cartConst";
+import Cookies from "universal-cookie";
+
+const cookie = new Cookies();
+const token = cookie.get('token');
+const refreshtoken = cookie.get('refreshtoken');
 
 export const addToCart = (history) => {
   return {
@@ -26,22 +31,11 @@ export const addToCartFailed = (error) => {
   };
 };
 
-export const addToLogin = () => {
-  return {
-    type: cartConst.ADD_TO_LOGIN,
-    payload: {},
-  };
-};
 
-export const addToCartReport = (req, history) => {
-  if (localStorage.setItem("hasLogined", false))
-    return (dispatch) => {
-      dispatch(addToLogin(history));
-    };
-  else {
+export const addToCartReport = (req, token, refreshtoken) => {
     return (dispatch) => {
       cartApi
-        .addToCart(req)
+        .addToCart(req, token, refreshtoken)
         .then((success) => {
           if (success.status === 200) dispatch(addToCartSuccess(success.data));
           else dispatch(addToCartFailed(success));
@@ -50,7 +44,7 @@ export const addToCartReport = (req, history) => {
           dispatch(addToCartFailed(error));
         });
     };
-  }
+  
 };
 
 /* Xem gio hang */
@@ -79,10 +73,11 @@ export const loadCartFailed = (error) => {
 };
 
 export const loadCartReport = (customerid) => {
+
   let request = { makhachhang:customerid };
   return (dispatch) => {
     cartApi
-      .loadCart(request)
+      .loadCart(request, token, refreshtoken)
       .then((success) => {
         if (success.status === 200) {
           dispatch(loadCartSuccess(success.data));
@@ -124,11 +119,10 @@ export const deleteProductFailed = (error) => {
   };
 };
 
-export const deleteProductReport = (customerid, productid) => {
-  let request = { customerid:customerid, productid:productid };
+export const deleteProductReport = (makhachhang, masanpham) => {
   return (dispatch) => {
     cartApi
-      .deleteProduct(request)
+      .deleteProduct(makhachhang, masanpham, token, refreshtoken)
       .then((res) => {
         if (res.status === 200) 
         {

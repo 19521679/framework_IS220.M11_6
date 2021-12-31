@@ -1,36 +1,139 @@
 import React, { Component } from 'react'
-
+import HoadonDagiao from './HoadonDagiao';
 import "./QuanLyDonHang.css";
-export default class index extends Component {
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Dangxuly from './Dangxuly';
+import Danggiao from './Danggiao';
+import Dahuy from './Dahuy';
+import { numberWithCommas } from '../../../Common/helper/numberHelper';
+
+
+class index extends Component {
+  state = { active: 0}
+  renderTab(n) {
+    switch (n) {
+      case 0:
+        return <i className="">Đang xử lý</i>;
+      case 1:
+        return <i className="">Đang giao</i>;
+      case 2:
+        return <i className="">Đã giao</i>;
+      case 3: 
+        return<i className="">Đã hủy</i>;
+      default:
+        return;
+    }
+  }
+  click = (n) => {
+    this.setState({ active: n });
+  };
+  renderItem(n) {
+    switch (n) {
+      case 0:
+        return (<Dangxuly></Dangxuly>);
+      case 1:
+        return (<Danggiao></Danggiao>);
+      case 2:
+        return (<HoadonDagiao makhachhang={this.props.makhachhang}></HoadonDagiao>);
+      case 3:
+          return (<Dahuy></Dahuy>);
+      default:
+        return;
+    }
+  }
     render() {
         return (
-            <div className="Account__StyledAccountLayoutInner-sc-1d5h8iz-1 jXurFV">
-        <div className="styles__StyledAccountListOrder-sc-6t66uv-0 iOhDoD">
-          <div className="heading">Đơn hàng của tôi</div>
-          <div className="inner">
-            <table>
-              <thead>
-                <tr>
-                  <th>Mã đơn hàng</th>
-                  <th>Ngày mua</th>
-                  <th>Sản phẩm</th>
-                  <th>Tổng tiền</th>
-                  <th>Trạng thái đơn hàng</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><a href="/sales/order/view/458675753">458675753</a></td>
-                  <td>14/11/2021</td>
-                  <td>[Giao Nhanh 2H] Trái Ôliu Xanh Hiệu Latino Bella 235G</td>
-                  <td>217.000 ₫</td>
-                  <td>Đã hủy</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="row">
+          <div className="col-md-12">
+            {/* Tabs with icons on Card */}
+            <div className="card card-nav-tabs">
+              <div className="card-header card-header-primary">
+                {/* colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" */}
+                <div className="nav-tabs-navigation">
+                  <div className="nav-tabs-wrapper">
+                    <ul className="nav nav-tabs" data-tabs="tabs">
+                      {function () {
+                        var result = [];
+                        for (var i = 0; i < 4; i++) {
+                          if (i === this.state.active) {
+                            result.push(
+                              <li
+                                className="nav-item"
+                                onClick={this.click.bind(this, i)}
+                              >
+                                <a
+                                  href={() => false}
+                                  className="nav-link active"
+                                  id="nav-link"
+                                  data-toggle="tab"
+                                >
+                                  {this.renderTab(i)}
+                                </a>
+                              </li>
+                            );
+                          } else {
+                            result.push(
+                              <li
+                                className="nav-item"
+                                onClick={this.click.bind(this, i)}
+                              >
+                                <a
+                                  href={() => false}
+                                  className="nav-link"
+                                  id="nav-link"
+                                  data-toggle="tab"
+                                >
+                                  {this.renderTab(i)}
+                                </a>
+                              </li>
+                            );
+                          }
+                        }
+                        return result;
+                      }.bind(this)()}
+                    </ul>
+                  </div>
+                </div>                 
+              </div>
+              <div className="card-body ">
+                <div className="tab-content text-center">
+                  {function () {
+                    var result = [];
+                    for (var i = 0; i < 4; i++) {
+                      if (i === this.state.active) {
+                        result.push(
+                          <div className="tab-pane active" id="tab-pane">
+                            {this.renderItem(i)}
+                          </div>
+                        );
+                      } else {
+                        result.push(
+                          <div className="tab-pane" id="tab-pane">
+                            {this.renderItem(i)}
+                          </div>
+                        );
+                      }
+                    }
+                    return result;
+                  }.bind(this)()}
+                </div>
+              </div>
+            </div>
+            {/* End Tabs with icons on Card dsd */}
           </div>
-        </div>
         </div>
         )
     }
 }
+index.propTypes = {
+  makhachhang: PropTypes.object,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    makhachhang: state.login.makhachhang,
+  };
+};
+
+export default connect(mapStateToProps)(index);

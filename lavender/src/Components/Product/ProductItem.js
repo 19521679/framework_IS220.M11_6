@@ -1,90 +1,181 @@
-import React, { Component } from "react";
+import React, {useEffect, useState} from "react";
 import "./ProductItem.css";
 import * as imageApi from "../apis/image.js";
-import { Link } from "react-router-dom";
 import * as detailProductapi from "../apis/detailProduct";
+import * as evalueteApi from "../apis/evaluete";
+import * as productApi from "../apis/product";
+// import { CLIENT_ENDPOINT } from "../../Common/constants";
+import * as trademarkApi from "../apis/trademark";
+import * as numberHelper from "../../Common/helper/numberHelper";
+import { Link } from "react-router-dom";
 
-export default class ProductItem extends Component {
-  state = { giamoi: 0 };
-  componentDidMount() {
-    detailProductapi
-      .xemgiamoitheomasanpham(this.props.product.masanpham)
+export default function ProductItem (props) {
+
+  const [sosao, setSosao] = useState(0);
+  const [sodanhgia, setSodanhgia] = useState(0);
+  const [thongsokithuat, setThongsokithuat] = useState([]);
+
+
+  useEffect(() =>{
+    evalueteApi
+      .evalueteByProductId(props.product.masanpham)
       .then((success) => {
-        this.setState({ giamoi: success.data.value });
+        if (success.status === 200) {
+         setSosao(success.data.value.trungbinh)
+            setSodanhgia(success.data.value.sodanhgia)
+        }
       })
       .catch((error) => {
         console.error(error);
       });
-  }
-  // state = { resposeImage: {} };
-  // componentDidMount() {
-  //   var { product } = this.props;
-  //   imageApi
-  //     .image(product.image)
-  //     .then((success) => {
-  //       this.setState({ resposeImage: window.URL.createObjectURL(new Blob([success.data])) });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-  render() {
+
+    productApi
+      .thongsokithuatBangMasanpham(props.product.masanpham)
+      .then((success) => {
+        setThongsokithuat(success.data.value.$values)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  },[props.product])
     return (
-      <div
-        className="col-lg-3 col-md-4 d-flex align-items-stretch col-lg-2 product-item"
-        data-aos="zoom-in"
-        data-aos-delay={100}
-      >
+      <div className="product-item " data-aos="zoom-in" data-aos-delay={100}>
         <div className="icon-box iconbox-blue">
-          {function () {
-            if (this.state.giamoi !== this.props.product.dongia)
-              return (
-                <div className="box-item-sticker-percent">
-                  <p>
-                    Giảm{" "}
-                    {(
-                      100 -
-                      (this.state.giamoi / this.props.product.dongia) * 100
-                    ).toFixed(0)}
-                    %
-                  </p>
-                </div>
-              );
-          }.bind(this)()}
-
-          <Link to={this.props.product.image} className="box-click">
-            <div className="icon">
-              <img
-                alt="img"
-                src={imageApi.image(this.props.product.image)}
-              ></img>
-              <i className="bx bxl-dribbble" />
-            </div>
-            <h4>
-              <a href={() => false} className="product-name">
-                {this.props.product.tensanpham}
-              </a>
-            </h4>
-          </Link>
-
-          <div className="product-price">
+          <div className="row">
             {function () {
-              var result = [];
-              if (this.state.giamoi !== this.props.product.dongia) {
-                result.push(
-                  <p className="old-price">{this.props.product.dongia}₫</p>
+              if (props.product.giamoi === 0) return;
+              if (props.product.giamoi  < props.product.dongia)
+                return (
+                  <div className="box-item-sticker-percent">
+                    <p>
+                      Giảm{""}
+                      {(
+                        100 -
+                        (props.product.giamoi  / props.product.dongia) * 100
+                      ).toFixed(0)}
+                      %
+                    </p>
+                  </div>
                 );
-              }
-              result.push(<a href={() => false}>{this.state.giamoi} ₫</a>);
-              return result;
-            }.bind(this)()}
+            }()}
+
+            <Link
+              // href={() => false}
+              // onClick={() => {
+              //   var url = CLIENT_ENDPOINT + props.product.image;
+              //   window.location.href = `${url}`;
+              // }}
+              to={props.product.image}
+              className="box-click"
+            >
+              <div className="icon">
+                <img
+                  alt=""
+                  src={imageApi.image(props.product.image)}
+                ></img>
+                <i className="bx bxl-dribbble" />
+              </div>
+              <div>
+                <h5 className="product-name text-dark">
+                    {props.product.tenthuonghieu}{" "}
+                  {props.product.tensanpham}
+                </h5>
+              </div>
+            </Link>
+            <div className="row product-price">
+              <div className="">
+                {function () {
+                  var result = [];
+                  if (props.product.giamoi  !== props.product.dongia) {
+                    result.push(
+                      <p className="old-price">
+                        {numberHelper.numberWithCommas(
+                          props.product.dongia
+                        )}
+                        ₫
+                      </p>
+                    );
+                  }
+                  result.push(
+                    <a href={() => false}>
+                      {props.product.giamoi  === 0
+                        ? "Hết hàng"
+                        : numberHelper.numberWithCommas(props.product.giamoi) +
+                          "₫"}{" "}
+                    </a>
+                  );
+                  return result;
+                }()}
+              </div>
+              <div className="item-product__box-raiting mt-4 ">
+                <i
+                  className={
+                    sosao < 1 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    sosao < 2 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    sosao < 3 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    sosao < 4 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    sosao < 5 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                &nbsp;{sodanhgia} đánh giá
+              </div>
+            </div>
           </div>
-          <div className="product-info">
-            {" "}
-            molestias excepturi asaasdasdasdasdasdasdasdasdasd
+
+          <div className="product-info row">
+            <p className="">
+              {(() => {
+                var x = thongsokithuat.find((obj) => {
+                  return obj.ten === "cpu" || obj.ten === "chip";
+                });
+                if (x !== undefined) {
+                  return "Cpu : " + x.noidung;
+                }
+              })()}
+            </p>
+            <p>
+              {(() => {
+                var x = thongsokithuat.find((obj) => {
+                  return obj.ten === "ram" || obj.ten === "dung lượng";
+                });
+                if (x !== undefined) {
+                  return "Bộ nhớ : " + x.noidung;
+                }
+              })()}
+            </p>
+            <p>
+              {(() => {
+                var x = thongsokithuat.find((obj) => {
+                  return (
+                    obj.ten === "ssd" ||
+                    obj.ten === "bộ nhớ" ||
+                    obj.ten === "hdd"
+                  );
+                });
+                if (x !== undefined) {
+                  return "Dung lượng : " + x.noidung;
+                }
+              })()}
+            </p>
           </div>
         </div>
       </div>
     );
-  }
 }

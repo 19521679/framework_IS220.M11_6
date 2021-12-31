@@ -1,4 +1,4 @@
-
+/* trang điện thoại */
 
 .recommend-item {
   height: 34px;
@@ -22,7 +22,7 @@
   font-weight: 700;
   text-transform: uppercase;
   text-decoration: none !important;
-  color: #444444;
+  color: black !important;
   overflow: hidden;
   position: relative;
 }

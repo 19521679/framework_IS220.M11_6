@@ -1,142 +1,194 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Trademark from "../Trademark";
 import "./style.css";
 import Carousel from "react-bootstrap/Carousel";
 import ProductItem from "../Product/ProductItem.js";
 import * as mobileApi from "../apis/mobile";
+import _ from "lodash";
+import LoadingContainer from "../../Common/helper/loading/LoadingContainer";
 
-export default class index extends Component {
-  state = { hang: "", data: [] };
-
-  renderList() {
-    var result = null;
-    result= this.state.data.map((value, key)=>{
-      return (<ProductItem product={value} key={key}></ProductItem>);
-    });
-
+export default function Index(props) {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectMode, setSelectMode] = useState(0);
+  const [dataTemp, setDataTemp] = useState();
+  function renderList() {
+    var result = [];
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].masanpham !== undefined)
+        result.push(<ProductItem product={data[i]} key={i}></ProductItem>);
+    }
     return result;
   }
 
-  async componentDidMount() {
-    console.log(this.props.match);
-    let hang = this.props.match!==undefined&& this.props.match.params.trademark;
-    let data = null;
+  useEffect(() => {
+    select();
+  }, []);
+  useEffect(() => {
+    if (data === undefined || data.length === 0) return;
+    reduceData([...dataTemp]);
+  }, [props.location]);
+
+  function reduceData(list) {
+    const params = new URLSearchParams(props.location.search);
+    const hang = params.get("hang");
+    var temp = list;
+    if (hang !== undefined && hang !== null && hang !== "null") {
+      _.remove(temp, function (n) {
+        return !n.tenthuonghieu.toString().toLowerCase().includes(hang);
+      });
+      setData([...temp]);
+      return;
+    }
+    setData([...list]);
+  }
+
+  async function loadData() {
+    var temp = undefined;
     await mobileApi
-      .mobile()
+      .mobileWithNewPrice()
       .then((success) => {
-        data=success.data.value.$values ;
+        temp = success.data.value.$values;
+        reduceData([...temp]);
+        setDataTemp([...temp]);
       })
       .catch((error) => {
         console.log(error);
       });
-      this.setState({ data: data, hang: hang });
   }
 
-  render() {
-    return (
-      <div className="container" id="mobile">
-        <section>
-          <div className="row carousel-container">
-            <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-              <Carousel  className="mobile-carousel">
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/11t-pro-595x100_1_.png"
-                    alt="First slide"
-                  />
-                  <Carousel.Caption></Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/ip13-xx-595x100_9_.png"
-                    alt="Second slide"
-                  />
-                  <Carousel.Caption></Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/zs-595-100-max.png"
-                    alt="Third slide"
-                  />
-                  <Carousel.Caption></Carousel.Caption>
-                </Carousel.Item>
-              </Carousel>
-            </div>
+  async function select(i) {
+    setLoading(true);
+    if (selectMode === i) {
+      i = 0;
+    }
+    setSelectMode(i);
+    switch (i) {
+      case 0:
+        setData([...dataTemp]);
+        break;
+      case 1:
+        var temp1 = data;
+        temp1.sort((a, b) => parseFloat(b.giamoi) - parseFloat(a.giamoi));
+        setData(temp1);
+        break;
+      case 2:
+        var temp2 = data;
+        temp2.sort((a, b) => parseFloat(a.giamoi) - parseFloat(b.giamoi));
+        setData(temp2);
+        break;
+      case 3:
+        var temp3 = data;
+        temp3.sort(
+          (a, b) => new Date(b.thoidiemramat) - new Date(a.thoidiemramat)
+        );
+        setData(temp3);
+        break;
+      default:
+        await loadData();
+        break;
+    }
+    if (i === undefined) i = 0;
+    setLoading(false);
+  }
 
-            <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-              <Carousel className="mobile-carousel">
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/oppo-595-100-max_1_a-a.png"
-                    alt="First slide"
-                  />
-                  <Carousel.Caption></Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/sw-595-100-max.png"
-                    alt="Second slide"
-                  />
-                  <Carousel.Caption></Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/apple-2021-590-100-max.png"
-                    alt="Third slide"
-                  />
-                  <Carousel.Caption></Carousel.Caption>
-                </Carousel.Item>
-              </Carousel>
-            </div>
+  return (
+    <div className="container" id="mobile">
+      <section className="section-mobile">
+        <LoadingContainer loading={loading}></LoadingContainer>
+        <div className="row carousel-container">
+          <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <Carousel className="mobile-carousel">
+              <Carousel.Item>
+                <img
+                  className="d-block w-100 border rounded"
+                  src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/11t-pro-595x100_1_.png"
+                  alt="First slide"
+                />
+                <Carousel.Caption></Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100 border rounded"
+                  src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/ip13-xx-595x100_9_.png"
+                  alt="Second slide"
+                />
+                <Carousel.Caption></Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100 border rounded"
+                  src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/zs-595-100-max.png"
+                  alt="Third slide"
+                />
+                <Carousel.Caption></Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
           </div>
 
-          {this.state.sapxep}
-          <div className="row">
-            <div className="mt-3">
-              <Trademark type={"mobile"} hang = {this.state.hang}></Trademark>
-            </div>
+          <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <Carousel className="mobile-carousel">
+              <Carousel.Item>
+                <img
+                  className="d-block w-100  border rounded"
+                  src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/oppo-595-100-max_1_a-a.png"
+                  alt="First slide"
+                />
+                <Carousel.Caption></Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100 border rounded"
+                  src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/sw-595-100-max.png"
+                  alt="Second slide"
+                />
+                <Carousel.Caption></Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100 border rounded"
+                  src="https://cdn.cellphones.com.vn/media/resized//ltsoft/promotioncategory/apple-2021-590-100-max.png"
+                  alt="Third slide"
+                />
+                <Carousel.Caption></Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
           </div>
-          <div className="row">
-            <div>
-              <a   className="recommend-item">Điện thoại phổ thông</a>
-              <a  className="recommend-item">Mới ra mắt</a>
-            </div>
-          </div>
+        </div>
 
+        <div className="row">
+          <div className="mt-3">
+            <Trademark
+              type="mobile"
+              hang={new URLSearchParams(props.location.search).get("hang")}
+            ></Trademark>
+          </div>
+        </div>
+        {/* <div className="row">
+          <div>
+            <a href={() => false} className="recommend-item">
+              Điện thoại phổ thông
+            </a>
+            <a href={() => false} className="recommend-item">
+              Mới ra mắt
+            </a>
+          </div>
+        </div> */}
+        {data !== undefined && (
           <div className="row">
             <div className="block-filter">
-              <div className="">
-                <p className="box-title">Chọn theo tiêu chí</p>
-              </div>
-              <div className="list-filter">
-                <div className="cps-select item-filter">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="15"
-                    viewBox="0 0 15 15"
-                  >
-                    <path
-                      id="filter"
-                      d="M7.5,0C3.358,0,0,1.05,0,2.344V3.75L5.625,9.375v4.688c0,.518.84.938,1.875.938s1.875-.42,1.875-.937V9.375L15,3.75V2.344C15,1.05,11.642,0,7.5,0ZM1.383,2.033a6.355,6.355,0,0,1,1.425-.549A18.5,18.5,0,0,1,7.5.937a18.478,18.478,0,0,1,4.693.547,6.4,6.4,0,0,1,1.425.549,1.61,1.61,0,0,1,.414.31,1.641,1.641,0,0,1-.414.31,6.364,6.364,0,0,1-1.425.549A18.5,18.5,0,0,1,7.5,3.75,18.478,18.478,0,0,1,2.808,3.2a6.41,6.41,0,0,1-1.425-.549,1.621,1.621,0,0,1-.414-.31,1.641,1.641,0,0,1,.414-.31Z"
-                      fill="#111827"
-                    ></path>
-                  </svg>
-                  Bộ lọc
-                </div>
-              </div>
-
               <div className="">
                 <p className="box-title">Sắp xếp theo</p>
               </div>
               <div className="list-filter">
-                <div className="cps-select item-filter">
+                <div
+                  className={
+                    selectMode === 1
+                      ? "cps-select item-filter trademark-selected"
+                      : "cps-select item-filter"
+                  }
+                  onClick={() => select(1)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -150,7 +202,14 @@ export default class index extends Component {
                   Giá cao
                 </div>
 
-                <div className="cps-select item-filter">
+                <div
+                  className={
+                    selectMode === 2
+                      ? "cps-select item-filter trademark-selected"
+                      : "cps-select item-filter"
+                  }
+                  onClick={() => select(2)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -164,7 +223,15 @@ export default class index extends Component {
                   Giá thấp
                 </div>
 
-                <div className="cps-select item-filter">
+                <div
+                  style={{ width: "150px" }}
+                  className={
+                    selectMode === 3
+                      ? "cps-select item-filter trademark-selected"
+                      : "cps-select item-filter"
+                  }
+                  onClick={() => select(3)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -176,23 +243,23 @@ export default class index extends Component {
                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                   </svg>
-                  Xem nhiều
+                  Mới ra mắt
                 </div>
               </div>
             </div>
           </div>
-          {/* list-item */}
+        )}
 
-          <div id="highlight" className="highlight section-bg">
-            <div className="container list-item " data-aos="fade-up">
-              <div className="row row-item">{this.renderList()}</div>
-              {/* <ul>
-              {this.renderList()}
-              </ul> */}
+        {/* list-item */}
+
+        <div id="highlight" className="highlight section-bg">
+          <div className="container list-item " data-aos="fade-up">
+            <div className="row row-item">
+              {data !== undefined && renderList()}
             </div>
           </div>
-        </section>
-      </div>
-    );
-  }
+        </div>
+      </section>
+    </div>
+  );
 }

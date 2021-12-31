@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./style.css";
 import SlideShow from "../SlideShow";
-import * as mobileApi from "../apis/mobile";
+import * as laptopApi from "../apis/laptop";
 import * as detailProductApi from "../apis/detailProduct";
 import * as imageApi from "../apis/image";
 import { bindActionCreators } from "redux";
@@ -9,21 +9,18 @@ import { connect } from "react-redux";
 import * as cartAct from "../redux/actions/cartAct";
 import PropTypes from "prop-types";
 import * as favoriteApi from "../apis/favorite";
-import * as myToast from "../../Common/helper/toastHelper";
-// import { indexOf } from "lodash";
+import Article from "./Article";
 import { withRouter } from "react-router-dom";
+import LoadingContainer from "../../Common/helper/loading/LoadingContainer";
+import Evaluete from "../Evaluete";
+import * as evalueteApi from "../apis/evaluete";
+import Specifications from "./Specifications";
+import * as myToast from "../../Common/helper/toastHelper";
 
-function Mota(props) {
-  return <h1>Mô tả</h1>;
-}
+import Cookies from "universal-cookie";
+import * as numberHelper from "../../Common/helper/numberHelper";
 
-function Thongso(props) {
-  return <h1>Thông số kỹ thuật</h1>;
-}
-
-function Danhgia(props) {
-  return <h1>Đánh giá</h1>;
-}
+const cookie = new Cookies();
 
 class index extends Component {
   state = {
@@ -31,20 +28,23 @@ class index extends Component {
     product: {},
     sohinhanh: 0,
     active: 0,
-    dongia: 0,
+    dongia: undefined,
     dungluong: [],
     mausac: [],
     chondungluong: "-1",
     chonmausac: "-1",
+    loading: true,
+    sosao: 0,
+    sodanhgia: 0,
   };
   renderTab(n) {
     switch (n) {
       case 0:
-        return <i className="material-icons">Mô tả</i>;
+        return <h6 className="">Bài viết</h6>;
       case 1:
-        return <i className="material-icons">Thông số kỹ thuật</i>;
+        return <h6 className="">Thông số kỹ thuật</h6>;
       case 2:
-        return <i className="material-icons">Đánh giá</i>;
+        return <h6 className="">Đánh giá</h6>;
       default:
         return;
     }
@@ -55,24 +55,34 @@ class index extends Component {
   renderItem(n) {
     switch (n) {
       case 0:
-        return <Mota></Mota>;
+        return <Article product={this.state.product}></Article>;
+      
       case 1:
-        return <Thongso></Thongso>;
+        return <Specifications product={this.state.product}></Specifications>;
       case 2:
-        return <Danhgia></Danhgia>;
+        return (
+          <Evaluete
+            product={this.state.product}
+            customer={this.props}
+          ></Evaluete>
+        );
       default:
         return;
     }
   }
 
   changeLike() {
-    if (this.props.customer === undefined) {
+    if (this.props === undefined) {
+      this.props.history.push("/login");
+      return;
+    }
+    if (this.props.makhachhang === undefined) {
       this.props.history.push("/login");
       return;
     }
     if (this.state.liked) {
       favoriteApi
-        .unlike(this.props.customer.makhachhang, this.state.product.masanpham)
+        .unlike(this.props.makhachhang, this.state.product.masanpham)
         .then((success) => {
           if (success.status === 200) {
             this.setState({ liked: false });
@@ -85,7 +95,7 @@ class index extends Component {
     }
 
     favoriteApi
-      .like(this.props.customer.makhachhang, this.state.product.masanpham)
+      .like(this.props.makhachhang, this.state.product.masanpham)
       .then((success) => {
         if (success.status === 200) {
           this.setState({ liked: true });
@@ -102,7 +112,52 @@ class index extends Component {
     var { dong } = this.props.match.params;
     var { sanpham } = this.props.match.params;
 
-    var request = {
+    if (this.state.chondungluong === "-1" && this.state.chonmausac === "-1") {
+      var request1 = {
+        loai: loai,
+        hang: hang,
+        dong: dong,
+        sanpham: sanpham,
+        dungluong: "-1",
+        mausac: "-1",
+      };
+      this.loadDungluong();
+      this.loadMausac();
+      detailProductApi
+        .xemgiatheodungluongvamausac(request1)
+        .then((success) => {
+          if (success.status === 200) {
+            this.setState({
+              dongia: success.data.value,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      return;
+    }
+    if (this.state.chondungluong === "-1") {
+      this.setState({ dongia: -1 });
+      this.loadDungluong();
+      return;
+    }
+
+    if (this.state.chonmausac === "-1") {
+      this.setState({ dongia: -2 });
+      this.loadMausac();
+      return;
+    }
+
+    if (this.state.chondungluong !== "-1") {
+      this.loadMausac();
+    }
+
+    if (this.state.chonmausac !== "-1") {
+      this.loadDungluong();
+    }
+
+    var request2 = {
       loai: loai,
       hang: hang,
       dong: dong,
@@ -112,7 +167,7 @@ class index extends Component {
     };
 
     detailProductApi
-      .xemgiatheodungluongvamausac(request)
+      .xemgiatheodungluongvamausac(request2)
       .then((success) => {
         if (success.status === 200) {
           this.setState({
@@ -125,14 +180,14 @@ class index extends Component {
       });
   }
 
-  async loadDungluong() {
+  loadDungluong() {
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
     var { sanpham } = this.props.match.params;
     var query;
     query = `/${loai}/${hang}/${dong}/${sanpham}/dungluong?mausac=${this.state.chonmausac}`;
-    await detailProductApi
+    detailProductApi
       .dungluong(query)
       .then((success) => {
         if (success.status === 200) {
@@ -144,14 +199,14 @@ class index extends Component {
       });
   }
 
-  async loadMausac() {
+  loadMausac() {
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
     var { sanpham } = this.props.match.params;
     var query;
     query = `/${loai}/${hang}/${dong}/${sanpham}/mausac?dungluong=${this.state.chondungluong}`;
-    await detailProductApi
+    detailProductApi
       .mausac(query)
       .then((success) => {
         if (success.status === 200) {
@@ -164,11 +219,14 @@ class index extends Component {
   }
 
   async checked() {
-    if (this.props.customer === undefined) return;
-    await favoriteApi
-      .checklike(this.props.customer.makhachhang, this.state.product.masanpham)
+    if (this.props === undefined) return;
+    if (this.props.makhachhang === undefined) {
+      return;
+    }
+    favoriteApi
+      .checklike(this.props.makhachhang, this.state.product.masanpham)
       .then((success) => {
-        if (success.status === 200) {
+        if (success.status === 200 && success.data.value.liked) {
           this.setState({ liked: true });
         }
       })
@@ -178,68 +236,119 @@ class index extends Component {
   }
 
   async componentDidMount() {
-    var { loai } = this.props.match.params;
-    var { hang } = this.props.match.params;
-    var { dong } = this.props.match.params;
-    var { sanpham } = this.props.match.params;
+    this.setState({loading:true});
+    var task1 = () => {
+      var { loai } = this.props.match.params;
+      var { hang } = this.props.match.params;
+      var { dong } = this.props.match.params;
+      var { sanpham } = this.props.match.params;
 
-    this.loadDungluong();
-    this.loadMausac();
+      var query = `/${loai}/${hang}/${dong}/${sanpham}`;
+      laptopApi
+        .laptopInfo(query)
+        .then((success) => {
+          if (success.status === 200) {
+            this.setState({
+              product: success.data.value,
+              sohinhanh: success.data.serializerSettings.sohinhanh,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("error" + error);
+        });
+    };
 
-    var query = `/${loai}/${hang}/${dong}/${sanpham}`;
-    await mobileApi
-      .mobileInfo(query)
-      .then((success) => {
-        if (success.status === 200) {
-          this.setState({
-            product: success.data.value,
-            sohinhanh: success.data.serializerSettings.sohinhanh - 1,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("error" + error);
-      });
-    await this.xemGia();
-    await this.checked();
+    await Promise.allSettled([
+      task1(),
+      this.loadDungluong(),
+      this.loadMausac(),
+      this.xemGia(),
+      this.checked(),
+      this.xemdanhgia(),
+    ]);
+    this.setState({ loading: false });
   }
   addToCart = () => {
+    if (this.props.makhachhang === undefined) {
+      this.props.history.push("/login");
+      return;
+    }
     let { product } = this.state;
     let { cartActionCreators } = this.props;
-    if (this.state.chondungluong==="-1") {
+    if (this.state.chondungluong === "-1") {
       myToast.toastError("Bạn cần chọn dung lượng");
       return;
     }
-    if (this.state.chonmausac==="-1") {
+    if (this.state.chonmausac === "-1") {
       myToast.toastError("Bạn cần chọn màu sắc");
       return;
     }
+    var token = cookie.get("token");
+    var refreshtoken = cookie.get("refreshtoken");
     cartActionCreators.addToCartReport(
       {
-        makhachhang: this.props.customer.makhachhangNavigation.makhachhang,
+        makhachhang: this.props.makhachhang,
         masanpham: product.masanpham,
         dungluong: this.state.chondungluong,
         mausac: this.state.chonmausac,
       },
-      this.props.history
+      token,
+      refreshtoken
     );
+  };
+  xemdanhgia = async () => {
+    evalueteApi
+      .evalueteByProductId(this.state.product.masanpham)
+      .then((success) => {
+        if (success.status === 200) {
+          this.setState({
+            sosao: success.data.value.trungbinh,
+            sodanhgia: success.data.value.sodanhgia,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   render() {
     return (
       <section>
+        <LoadingContainer loading={this.state.loading}></LoadingContainer>
         <div className="container">
           <div className="detail-product__box-name">
             <div className="cps-container">
               <div className="box-name__box-product-name">
-                <h1>{this.state.product.tensanpham} </h1>
+                <h1>{this.props.match.params.hang} {this.props.match.params.dong!=="sub"&&this.props.match.params.dong+" "}{this.props.match.params.sanpham} </h1>
               </div>
               <div className="box-name__box-raiting">
-                <i className="fas fa-star checked" />
-                <i className="fas fa-star checked" />
-                <i className="fas fa-star checked" />
-                <i className="fas fa-star checked" />
-                <i className="fas fa-star checked" />
-                &nbsp;14 đánh giá
+                <i
+                  className={
+                    this.state.sosao < 1 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    this.state.sosao < 2 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    this.state.sosao < 3 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    this.state.sosao < 4 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                <i
+                  className={
+                    this.state.sosao < 5 ? "fas fa-star" : "fas fa-star checked"
+                  }
+                />
+                &nbsp;{this.state.sodanhgia} đánh giá
               </div>
             </div>
           </div>
@@ -254,7 +363,14 @@ class index extends Component {
               </div>
               <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <div id="price" className="price mt-5">
-                  {this.state.dongia}₫
+                  {this.state.dongia !== undefined &&
+                    (this.state.dongia === 0
+                      ? "Hết hàng"
+                      : this.state.dongia === -1
+                      ? "Vui lòng chọn dung lượng"
+                      : this.state.dongia === -2
+                      ? "Vui lòng chọn màu sắc"
+                      : numberHelper.numberWithCommas(this.state.dongia) + "₫")}
                 </div>
                 <div className="box-linked">
                   <div className="box-title">
@@ -300,16 +416,12 @@ class index extends Component {
                                 })()
                               ) {
                                 await this.setState({ chondungluong: "-1" });
-                                if (this.state.chonmausac === "-1")
-                                  this.xemGia();
-                              } else
+                              } else {
                                 await this.setState({
                                   chondungluong:
                                     this.state.dungluong[key].dungluong,
                                 });
-                              this.loadMausac();
-                              if (this.state.chonmausac === "-1") return;
-
+                              }
                               this.xemGia();
                             }}
                           >
@@ -336,6 +448,7 @@ class index extends Component {
                             <li
                               key={key}
                               id="option161"
+                              role="button"
                               className={
                                 key ===
                                 (() => {
@@ -356,7 +469,7 @@ class index extends Component {
                               <a
                                 name="b-c"
                                 id="swatch161"
-                                className="swatch-link swatch-link-80"
+                                className=""
                                 title={value.mausac}
                                 href={() => false}
                                 alt={value.mausac}
@@ -380,20 +493,17 @@ class index extends Component {
                                     })()
                                   ) {
                                     await this.setState({ chonmausac: "-1" });
-                                    if (this.state.chondungluong === "-1")
-                                      this.xemGia();
-                                  } else
+                                  } else {
                                     await this.setState({
                                       chonmausac: this.state.mausac[key].mausac,
                                     });
-                                  this.loadDungluong();
-                                  if (this.state.chondungluong === "-1") return;
+                                  }
                                   this.xemGia();
                                 }}
                               >
                                 <img
                                   className="cpslazy loaded"
-                                  alt={value.mausac}
+                                  alt=""
                                   title={value.mausac}
                                   data-ll-status="loaded"
                                   src={imageApi.image(value.image)}
@@ -437,13 +547,11 @@ class index extends Component {
                           Giảm 1 triệu khi thanh toán qua ví Moca, thẻ tín dụng
                           ACB, BIDV, Sacombank, mPOS, Shinhan, Standard Charter
                           (số lượng có hạn)&nbsp;
-                          <span className="color-red">(xem chi tiết)</span>
                         </a>
                       </li>
                       <li className="item-promotion general-promotion">
                         <a href={() => false}>
                           Thu cũ lên đời - Trợ giá 1 triệu&nbsp;
-                          <span className="color-red">(xem chi tiết)</span>
                         </a>
                       </li>
                     </ul>
@@ -477,21 +585,21 @@ class index extends Component {
                     <strong>MUA NGAY</strong>
                     <span>(Giao tận nơi hoặc lấy tại cửa hàng)</span>
                   </a>
+                  <div
+                    class="fb-like"
+                    data-href={window.location.href}
+                    data-width=""
+                    data-layout="standard"
+                    data-action="like"
+                    data-size="large"
+                    data-share="true"
+                  ></div>
+                  {/* <div class="fb-share-button" data-href={window.location.href} data-layout="button_count" data-size="large">
+                          Share
+                        </div> */}
+
                   <div className="group-button mb-5">
                     <div className="styles__ProductActionV2Container-sc-1l4uvuo-0 iVoRpG">
-                      <div className="styles__Text-sc-1l4uvuo-1 iBQIpk">
-                        Chia sẻ:
-                      </div>
-                      <img
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-facebook.svg"
-                        alt="social-facebook"
-                        className="styles__Icon-sc-1l4uvuo-2 hUSuHV left"
-                      />
-                      <img
-                        src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-messenger.svg"
-                        alt="social-messenger"
-                        className="styles__Icon-sc-1l4uvuo-2 hUSuHV"
-                      />
                       <img
                         src="https://frontend.tikicdn.com/_desktop-next/static/img/pdp_revamp_v2/social-pinterest.svg"
                         alt="social-pinterest"
@@ -611,13 +719,13 @@ class index extends Component {
                         if (i === this.state.active) {
                           result.push(
                             <div className="tab-pane active" id="tab-pane">
-                              {this.renderTab(i)}
+                              {this.renderItem(i)}
                             </div>
                           );
                         } else {
                           result.push(
                             <div className="tab-pane" id="tab-pane">
-                              {this.renderTab(i)}
+                              {this.renderItem(i)}
                             </div>
                           );
                         }
@@ -627,7 +735,15 @@ class index extends Component {
                   </div>
                 </div>
               </div>
-              {/* End Tabs with icons on Card */}
+              <div className="col-9">
+                <div
+                  class="fb-comments"
+                  data-href={window.location.href}
+                  data-width="100%"
+                  data-numposts="5"
+                ></div>
+                {/* End Tabs with icons on Card */}
+              </div>
             </div>
           </div>
         </div>
@@ -639,12 +755,12 @@ index.propTypes = {
   cartActionCreators: PropTypes.shape({
     addToCartReport: PropTypes.func,
   }),
-  password: PropTypes.string,
+  makhachhang: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
   return {
-    customer: state.login.customer,
+    makhachhang: state.login.makhachhang,
   };
 };
 const mapDispatchToProps = (dispatch) => {

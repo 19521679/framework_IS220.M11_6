@@ -1,11 +1,14 @@
 .register {
   background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-  margin-top: 2%;
-  margin-bottom: -4%;
-
-   /* Add this */
-    top:0;
-    left:0;
+  margin-top: 50px;
+  position: absolute;
+  padding-bottom : 467px;
+  top:0;
+  left:0;
+  right: 0;
+}
+.section-register{
+  height:1000px;
 }
 .register-left {
   text-align: center;
@@ -26,8 +29,6 @@
 }
 .register-right {
   background: -webkit-linear-gradient(left, #f8f8f8, #dae9f0);
-  border-top-left-radius: 10% 50%;
-  border-bottom-left-radius: 10% 50%;
   margin-bottom: -2%;
 }
 .register-left img {

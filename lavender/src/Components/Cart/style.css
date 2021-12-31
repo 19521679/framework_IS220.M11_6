@@ -7,7 +7,7 @@
   margin-bottom: 100px;
 }
 .cart-inner {
-  /* margin-right: 13px; */
+  min-width: 757px;
 }
 .dioUnE {
   position: relative;
@@ -26,12 +26,11 @@
   text-transform: uppercase;
 }
 .dioUnE .productsV2-heading {
-  background: rgb(255 236 236);
   padding: 9px 16px;
   border-radius: 4px;
-  color: rgb(36, 36, 36);
+  color: rgb(62, 61, 61);
   font-weight: 400;
-  font-size: 13px;
+  /* font-size: 13px; */
   margin-bottom: 12px;
   position: sticky;
   top: 20px;
@@ -46,17 +45,17 @@
   margin: 0px -15px;
 }
 .dioUnE .col-1 {
-  width: 365px !important;
-  padding: 0px 15px;
+  width: 410px !important;
+  padding: 0px 0px;
 }
 .dioUnE .col-2 {
-  width: 100px;
-  padding: 0px 15px;
+  width: 138px;
+  padding: 0px 0px 0px 22px;
 }
 .dioUnE .col-3 {
-  width: 130px;
-  margin: auto ;
-  padding: 0px 15px;
+  width: 117px;
+  margin: auto;
+  padding: 0px 3px;
 }
 .dioUnE .col-4 {
   width: 120px;
@@ -71,9 +70,8 @@
   position: relative;
   cursor: pointer;
   border-radius: 4px;
-  background: rgb(255, 255, 255);
   color: rgb(36, 36, 36);
-  z-index: 2;
+
 }
 .hNjxWW {
   display: inline-block;
@@ -147,7 +145,7 @@ input[type="checkbox" i] {
   vertical-align: middle;
   margin: 0px 12px 0px 0px;
   position: relative;
-  z-index: 1;
+
   color: rgb(196, 196, 207);
   background: transparent;
   cursor: pointer;
@@ -200,6 +198,7 @@ input[type="checkbox" i] {
 /* Khu vực tổng tiền */
 .cart-total-prices {
   margin-top: 41px;
+  margin-left: 36px;
 }
 .ljbDGD .cart-total-prices {
   width: calc(100% - 925px);
@@ -224,7 +223,7 @@ input[type="checkbox" i] {
 }
 .juqUnC .text {
   display: inline-block;
-  font-size: 14px;
+  /* font-size: 14px; */
   color: rgb(36, 36, 36);
   font-weight: 500;
 }

@@ -1,34 +1,26 @@
 import * as registerConst from "../constrants/registerConst";
 import * as myToast from "../../../Common/helper/toastHelper"
 const initialState = {
-  hasLogined: false,
-  email: "",
-  password: "",
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case registerConst.POST_REGISTER: {
-      return { ...state, hasLogined: false, email: "", password: "" };
+      return { ...state};
     }
-    case registerConst.POST_REGISTER_SUCCESS: {
-       
-      const { data } = action.payload.data;
-      localStorage.setItem("hasLogined", true);
-      localStorage.setItem("email",data.email);
-      localStorage.setItem("password",data.password);
-    
-      myToast.toastSucces("Đăng ký thành công");
+    case registerConst.POST_REGISTER_SUCCESS: {  
+      myToast.toastSucces("Đăng ký thành công, vui lòng kiểm tra email để xác thực");
             return {
-        ...state,
-        hasLogined: true,
-        email: data.email,
-        password: data.password,
+        ...state
       };
     }
     case registerConst.POST_REGISTER_FAILED: {
-      myToast.toastError("Đăng ký thất bại");
-        localStorage.setItem("hasLogined", false);
-      return { ...state, hasLogined: false, email: "", password: "" };
+      if (action.payload.error.response.data.value!==undefined) {
+        myToast.toastError(action.payload.error.response.data.value);
+      }
+      else{
+        myToast.toastError("Đăng ký thất bại");
+      }
+      return { ...state};
     }
     default:
       return state;

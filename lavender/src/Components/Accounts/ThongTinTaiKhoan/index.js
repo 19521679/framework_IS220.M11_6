@@ -5,7 +5,13 @@ import * as myToast from "../../../Common/helper/toastHelper";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as khachhangApi from "../../apis/customer";
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
+import LoadingContainer from "../../../Common/helper/loading/LoadingContainer";
+import * as imageApi from "../../apis/image";
+import * as customerAccountApi from "../../apis/customeraccount";
+
+const cookie = new Cookies();
 
 class index extends Component {
   state = {
@@ -14,20 +20,34 @@ class index extends Component {
     ngaysinh: new Date(),
     sdt: "",
     email: "",
-    sdt: "",
-    email: "",
+    loaikhachhang: "",
+    cccd: "",
+    loading: true,
+    image: undefined,
+    imageView: undefined,
+    tendangnhap: "",
+    password: "",
+    newpassword: "",
+    repeatnewpassword: "",
+    doimatkhau: false,
   };
   luuThayDoi() {
-    var request = null;
+    const fd = new FormData();
+    fd.append("makhachhang", this.props.makhachhang);
+    fd.append("tenkhachhang", this.state.hovaten);
+    fd.append("diachi", this.state.diachi);
+    fd.append("cccd", this.state.cccd);
+    fd.append(
+      "ngaysinh",
+      new Date(this.state.ngaysinh).toISOString().split("T")[0]
+    );
+    if (this.state.imageView !== undefined)
+      fd.append("imageview", this.state.imageView);
 
-    request = {
-      makhachhang: this.props.customer.makhachhang,
-      hovaten: this.state.hovaten,
-      diachi: this.state.diachi,
-      ngaysinh: new Date(this.state.ngaysinh),
-    };
+    const token = cookie.get("token");
+    const refreshtoken = cookie.get("refreshtoken");
     customerApi
-      .thayDoiThongTin(request)
+      .thayDoiThongTin(fd, token, refreshtoken)
       .then((success) => {
         if (success.status === 200) {
           myToast.toastSucces("Thay đổi thông tin thành công");
@@ -39,36 +59,53 @@ class index extends Component {
       });
   }
   async componentDidMount() {
-    let hovaten = "";
-    let diachi = "";
-    let ngaysinh = new Date();
-    let sdt = "";
-    let email = "";
     await khachhangApi
-      .findCustomerByCustomerId(this.props.customer.makhachhang)
+      .findCustomerByCustomerId(this.props.makhachhang)
       .then((success) => {
         if (success.status === 200) {
-          hovaten = success.data.value.tenkhachhang;
-          diachi = success.data.value.diachi;
-          ngaysinh = new Date(success.data.value.ngaysinh);
-          sdt = success.data.value.sodienthoai;
-          email = success.data.value.email;
+          this.setState({
+            hovaten: success.data.value.tenkhachhang,
+            diachi: success.data.value.diachi,
+            ngaysinh: new Date(success.data.value.ngaysinh),
+            email: success.data.value.email,
+            sdt: success.data.value.sodienthoai,
+            cccd: success.data.value.cccd,
+            loaikhachhang: success.data.value.loaikhachhang,
+            image: success.data.value.image,
+          });
         }
       })
       .catch((error) => {
         console.error(error);
       });
-    this.setState({
-      hovaten: hovaten,
-      diachi: diachi,
-      ngaysinh: ngaysinh,
-      email: email,
-      sdt: sdt,
-    });
+    this.setState({ loading: false });
+  }
+
+  changePassword() {
+    myToast.toastLoading();
+    const fd = new FormData();
+    fd.append("makhachhang", this.props.makhachhang);
+    fd.append("username", this.state.tendangnhap);
+    fd.append("password", this.state.password);
+    fd.append("newpassword", this.state.newpassword);
+    var token = cookie.get("token");
+    var refreshtoken = cookie.get("refreshtoken");
+    customerAccountApi
+      .changePassword(fd, token, refreshtoken)
+      .then((success) => {
+        if (success.status === 200) {
+          myToast.toastSucces("Đổi mật khẩu thành công");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        myToast.toastError("Đổi mật khẩu thất bại");
+      });
   }
   render() {
     return (
       <div className="Account__StyledAccountLayoutInner-sc-1d5h8iz-1 jXurFV">
+        <LoadingContainer loading={this.state.loading}></LoadingContainer>
         <div className="styles__StyledHeading-sc-s5c7xj-0 geNdhL">
           Thông tin tài khoản
         </div>
@@ -76,72 +113,115 @@ class index extends Component {
           <div className="info">
             <div className="info-left">
               <span className="info-title">Thông tin cá nhân</span>
-              <div className="styles__StyledAccountInfo-sc-s5c7xj-2 ">
-                <div>
-                  <div className="form-control">
-                    <div className="mb-3 row">
-                      <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-form-label">
-                        Họ &amp; Tên
-                      </div>
-                      <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <input
-                          className="form-control-plaintext border rounded p-1"
-                          type="search"
-                          name="hovaten"
-                          maxLength={200}
-                          placeholder="Thêm họ tên"
-                          value = {this.state.hovaten}
-                          onChange={(e) =>
-                            this.setState({ hovaten: e.target.value })
-                          }
-                        />
-                      </div>
-                    </div>
 
-                    <div className="mb-3 row">
-                      <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-form-label">
-                        Địa chỉ
-                      </div>
-                      <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <input
-                          className="form-control-plaintext border rounded p-1"
-                          type="address"
-                          name="address"
-                          onChange={(e) =>
-                            this.setState({ diachi: e.target.value })
-                          }
-                          maxLength={200}
-                          placeholder=""
-                          value = {this.state.diachi}
-                        />
-                      </div>
-                    </div>
+              <div className=" border-right">
+                <div className="d-flex flex-column align-items-center text-center p-3">
+                  <img
+                    alt="không có avatar"
+                    className="rounded-circle"
+                    width="150px"
+                    src={
+                      this.state.imageView === undefined
+                        ? this.state.image === "/khachhang"
+                          ? imageApi.image(
+                              this.state.image,
+                              this.props.makhachhang
+                            )
+                          : this.state.image
+                        : URL.createObjectURL(this.state.imageView)
+                    }
+                  />
 
-                    <div className="mb-3 row">
-                      <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-form-label">
-                        Ngày sinh
-                      </div>
-
-                      <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9"></div>
+                  <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center mt-2 ">
+                    <input
+                      className="form-control border"
+                      type="file"
+                      placeholder=""
+                      onChange={(e) =>
+                        this.setState({ imageView: e.target.files[0] })
+                      }
+                    ></input>
+                  </div>
+                </div>
+              </div>
+              <div className=" border-right">
+                <div className="p-3 py-5">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h4 className="text-right">Thông tin nhân viên</h4>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col-md-6">
+                      <label className="labels">Họ và tên</label>
                       <input
-                        className="form-control-plaintext border w-30 rounded p-1"
+                        type="text"
+                        className="form-control border"
+                        defaultValue
+                        value={this.state.hovaten}
+                        onChange={(e) =>
+                          this.setState({ hovaten: e.target.value })
+                        }
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="labels">Ngày sinh</label>
+                      <input
                         type="date"
-                        id="ngayhoadon"
-                        name="trip-start"
+                        className="form-control border"
+                        defaultValue
                         onChange={(e) => {
                           this.setState({ ngaysinh: new Date(e.target.value) });
                         }}
                         value={this.state.ngaysinh.toISOString().split("T")[0]}
-                      ></input>
+                      />
                     </div>
                   </div>
 
-                  <button
-                    className="btn btn-primary"
-                    onClick={this.luuThayDoi.bind(this)}
-                  >
-                    Lưu thay đổi
-                  </button>
+                  <div className="col-md-12">
+                    <label className="labels">CCCD</label>
+                    <input
+                      type="text"
+                      className="form-control border"
+                      defaultValue
+                      onChange={(e) => {
+                        this.setState({ cccd: e.target.value });
+                      }}
+                      value={this.state.cccd}
+                    />
+                  </div>
+
+                  <div className="col-md-12">
+                    <label className="labels">Địa chỉ</label>
+                    <input
+                      type="text"
+                      className="form-control border"
+                      defaultValue
+                      onChange={(e) => {
+                        this.setState({ diachi: e.target.value });
+                      }}
+                      value={this.state.diachi}
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <label className="labels">Loại khách hàng</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      disabled
+                      value={this.state.loaikhachhang}
+                      defaultValue
+                    />
+                  </div>
+
+                  <div className="mt-5 text-center">
+                    <button
+                      className="btn btn-primary profile-button"
+                      type="button"
+                      onClick={this.luuThayDoi.bind(this)}
+                    >
+                      Lưu thay đổi
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -161,9 +241,14 @@ class index extends Component {
                       <span>{this.state.sdt}</span>
                     </div>
                   </div>
-                  <div className="status">
+                  <div className="status" >
                     <span />
-                    <Link to ="/lmember/thongtintaikhoan/sdt" className="btn btn-primary">Cập nhật</Link>
+                    <Link
+                      to="/lmember/thongtintaikhoan/sdt"
+                      className="btn btn-primary "  style={{marginLeft: "29px"}}
+                    >
+                      Sửa
+                    </Link>
                   </div>
                 </div>
 
@@ -181,70 +266,109 @@ class index extends Component {
                   </div>
                   <div className="status">
                     <span />
-                    <Link to ="/lmember/thongtintaikhoan/email" className="btn btn-primary">Cập nhật</Link>
+                    <Link
+                      to="/lmember/thongtintaikhoan/email"
+                      className="btn btn-primary"
+                    >
+                      Sửa
+                    </Link>
                   </div>
                 </div>
               </div>
               <span className="info-title">Bảo mật</span>
-              <div className="styles__StyledListItem-sc-s5c7xj-4 lCUBE">
-                <div className="list-item">
-                  <div>
-                    <img
-                      src="https://frontend.tikicdn.com/_desktop-next/static/img/account/lock.png"
-                      className="icon"
-                      alt=""
-                    />
-                    <span>Đổi mật khẩu</span>
+              <div className="">
+                <div className="p-3 py-5">
+                  <div className="d-flex justify-content-between align-items-center ">
+                    <span>Tài khoản</span>
+                    <span
+                      className="border rounded px-3 p-1 row"
+                      onClick={() =>
+                        this.setState({ doimatkhau: !this.state.doimatkhau })
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
+                      <i class="fas fa-edit"></i>
+                      &nbsp;Đổi mật khẩu
+                    </span>
                   </div>
-                  <div className="status">
-                    <span />
-                    <button className="button active">Cập nhật</button>
-                  </div>
-                </div>
-              </div>
-              <span className="info-title">Liên kết mạng xã hội</span>
-              <div className="styles__StyledListItem-sc-s5c7xj-4 lCUBE">
-                <div className="list-item">
-                  <div>
-                    <img
-                    alt="zalo"
-                      src="https://frontend.tikicdn.com/_desktop-next/static/img/account/zalo.png"
-                      className="icon"
-                    />
-                    <span>Zalo</span>
-                  </div>
-                  <div className="status">
-                    <span />
-                    <button className="button active">Liên kết</button>
-                  </div>
-                </div>
-                <div className="list-item">
-                  <div>
-                    <img
-                    alt="facebook"
-                      src="https://frontend.tikicdn.com/_desktop-next/static/img/account/facebook.png"
-                      className="icon"
-                    />
-                    <span>Facebook</span>
-                  </div>
-                  <div className="status">
-                    <span />
-                    <button className="button active">Liên kết</button>
-                  </div>
-                </div>
-                <div className="list-item">
-                  <div>
-                    <img
-                    alt="google"
-                      src="https://frontend.tikicdn.com/_desktop-next/static/img/account/google.png"
-                      className="icon"
-                    />
-                    <span>Google</span>
-                  </div>
-                  <div className="status">
-                    <span />
-                    <button className="button active">Liên kết</button>
-                  </div>
+                  <br />
+
+                  {this.state.doimatkhau && (
+                    <>
+                      <br />
+                      <div className="col-md-12">
+                        <label className="labels">Tên đăng nhập</label>
+                        <input
+                          type="text"
+                          className="form-control border"
+                          placeholder=""
+                          defaultValue
+                          value={this.state.tendangnhap}
+                          onChange={(e) =>
+                            this.setState({ tendangnhap: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-12">
+                        <label className="labels">Mật khẩu</label>
+                        <input
+                          type="password"
+                          className="form-control border"
+                          placeholder=""
+                          defaultValue
+                          value={this.state.password}
+                          onChange={(e) =>
+                            this.setState({ password: e.target.value })
+                          }
+                        ></input>
+                      </div>
+
+                      <div className="col-md-12">
+                        <label className="labels">Mật khẩu mới</label>
+                        <input
+                          type="password"
+                          className="form-control border"
+                          placeholder=""
+                          defaultValue
+                          value={this.state.newpassword}
+                          onChange={(e) =>
+                            this.setState({ newpassword: e.target.value })
+                          }
+                        ></input>
+                      </div>
+                      <div className="col-md-12">
+                        <label className="labels">Nhập lại mật khẩu</label>
+
+                        <input
+                          type="password"
+                          className="form-control border"
+                          placeholder=""
+                          defaultValue
+                          value={this.state.repeatnewpassword}
+                          onChange={(e) => {
+                            this.setState({
+                              repeatnewpassword: e.target.value,
+                            });
+                          }}
+                        ></input>
+                        {this.state.newpassword !==
+                          this.state.repeatnewpassword && (
+                          <label className="labels mx-1 row text-danger">
+                            Mật khẩu không khớp
+                          </label>
+                        )}
+                      </div>
+                      <div className=" text-center">
+                        {" "}
+                        <button
+                          className="btn btn-info mt-4"
+                          onClick={this.changePassword.bind(this)}
+                        >
+                          Đổi mật khẩu
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -255,12 +379,12 @@ class index extends Component {
   }
 }
 index.propTypes = {
-  customer: PropTypes.object,
+  makhachhang: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
   return {
-    customer: state.login.customer,
+    makhachhang: state.login.makhachhang,
   };
 };
 

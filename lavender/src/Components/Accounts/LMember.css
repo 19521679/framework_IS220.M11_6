@@ -2,9 +2,13 @@
     max-width: 260px;
     display:grid;
 }
+.lmember{
+    min-height: 800px;
+}
 .rightmember{
-    max-width: 975px;
-    display:grid;
+    min-width: 836px;
+    min-height: 558px;
+    display: grid;
 }
 .dLDnti{
     display: flex;
@@ -12,6 +16,7 @@
     margin: 0px auto 20px;
     flex-wrap: wrap;
 }
+
 .bhbbJ{
     width: 250px;
     margin-right: 17px;
@@ -108,4 +113,9 @@
 .dfHeIP .info-vertical{
     border-left: 1px solid rgb(235, 235, 240);
     margin: 16px 0px;
+}
+.btn-logout-lmember-logo{
+    padding-right: 23px;
+    padding-left: 6px;
+    font-size: 16px;
 }

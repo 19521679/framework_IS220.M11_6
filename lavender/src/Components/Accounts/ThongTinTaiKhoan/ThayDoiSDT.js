@@ -3,12 +3,15 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as khachhangApi from "../../apis/customer";
 import * as myToast from "../../../Common/helper/toastHelper";
+import Cookies from "universal-cookie";
+
+const cookie = new Cookies();
 
 class ThayDoiSDT extends Component {
   state = { sdt: "" };
   async componentDidMount() {
     await khachhangApi
-      .findCustomerByCustomerId(this.props.customer.makhachhang)
+      .findCustomerByCustomerId(this.props.makhachhang)
       .then((success) => {
         if (success.status === 200) {
           this.setState({ sdt: success.data.value.sodienthoai });
@@ -19,11 +22,14 @@ class ThayDoiSDT extends Component {
       });
   }
   luuThayDoi() {
+    var token = cookie.get('token');
+    var refreshtoken = cookie.get('refreshtoken');
     khachhangApi
-      .thayDoiSDT({
-        makhachhang: this.props.customer.makhachhang,
-        sdt: this.state.sdt,
-      })
+      .thayDoiSDT(
+        this.props.makhachhang,
+        this.state.sdt,
+        token, refreshtoken
+      )
       .then((success) => {
         if (success.status === 200) {
           myToast.toastSucces("Thay đổi số điện thoại thành công");
@@ -75,12 +81,12 @@ class ThayDoiSDT extends Component {
   }
 }
 ThayDoiSDT.propTypes = {
-  customer: PropTypes.object,
+  makhachhang: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
-    customer: state.login.customer,
+    makhachhang: state.login.makhachhang,
   };
 };
 export default connect(mapStateToProps)(ThayDoiSDT);

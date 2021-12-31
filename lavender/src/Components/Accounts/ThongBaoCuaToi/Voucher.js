@@ -1,58 +1,61 @@
-import React, { Component } from "react";
+import React, { useState , useEffect } from "react";
 import * as myVoucherApi from "../../apis/myvoucher";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import VoucherItem from "./VoucherItem";
+import Cookies from "universal-cookie"
 
-class Voucher extends Component {
-  state = { listVoucher: [] };
-  componentDidMount() {
-    this.loadListVoucher();
-  }
-  loadListVoucher() {
+const cookie = new Cookies();
+
+function Voucher(props) {
+  const [listVoucher, setListVoucher]= useState([]);
+  useEffect(() => {
+    loadListVoucher();
+  }, [])
+  function loadListVoucher() {
+    var token = cookie.get("token");
+    var refreshtoken = cookie.get("refreshtoken");
     myVoucherApi
-      .myVoucher(this.props.customer.makhachhang)
+      .myVoucher(props.makhachhang, token, refreshtoken)
       .then((success) => {
         if (success.status === 200) {
-          this.setState({ listVoucher: success.data.value.$values });
+          setListVoucher(success.data.value.$values);
         }
       })
       .catch((error) => {
         console.error(error);
       });
   }
-  async deleteVoucher() {
-    await this.loadListVoucher();
-    this.forceUpdate();
+  async function deleteVoucher() {
+     loadListVoucher();
   }
-  render() {
-    return (
-      <div className="list">
-        {function () {
-          var result = null;
-          result = this.state.listVoucher.map((value, key) => {
-            return (
-              <VoucherItem
-                key={key}
-                myvoucher={value}
-                makhachhang={this.props.customer.makhachhang}
-                deleteMyVoucher={this.deleteVoucher.bind(this)}
-              ></VoucherItem>
-            );
-          });
-          return result;
-        }.bind(this)()}
-      </div>
-    );
-  }
+  return (
+    <div className="list">
+    {function () {
+      var result = null;
+      result = listVoucher.map((value, key) => {
+        return (
+          <VoucherItem
+            key={key}
+            myvoucher={value}
+            makhachhang={props.makhachhang}
+            deleteMyVoucher={deleteVoucher}
+          ></VoucherItem>
+        );
+      });
+      return result;
+    }()}
+  </div>
+  )
 }
+
 Voucher.propTypes = {
-  customer: PropTypes.object,
+  makhachhang: PropTypes.number,
 };
 
 const mapStateToProps = (state) => {
   return {
-    customer: state.login.customer,
+    makhachhang: state.login.makhachhang,
   };
 };
 

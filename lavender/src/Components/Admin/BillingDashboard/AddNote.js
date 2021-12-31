@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import Modal from "../MyModal/index";
 import * as noteApi from "../../apis/note";
 import * as myToast from "../../../Common/helper/toastHelper";
+import Cookies from "universal-cookie";
+
+const cookie = new Cookies();
 
 export default class AddNote extends Component {
     constructor(props) {
@@ -35,7 +38,9 @@ export default class AddNote extends Component {
           ghichu: this.state.ghichu,
         };
         let hadDone = false;
-        await noteApi.addOrUpdateNote(phieunhap)
+        var token = cookie.get("token");
+        var refreshtoken = cookie.get("refreshtoken");
+        await noteApi.addOrUpdateNote(phieunhap, token, refreshtoken)
         .then((success) => {
          
           if (success.status ===200) {
@@ -79,7 +84,7 @@ export default class AddNote extends Component {
                   placeholder=""
                   onChange={((e) => {
                     this.setState({ masanpham: e.target.value });
-                  }).bind(this)}
+                  })}
                   value={this.state.masanpham}
                 ></input>
               </div>
@@ -95,7 +100,7 @@ export default class AddNote extends Component {
                   placeholder=""
                   onChange={((e) => {
                     this.setState({ manhacungcap: e.target.value });
-                  }).bind(this)}
+                  })}
                   value={this.state.manhacungcap}
                 ></input>
               </div>
@@ -111,7 +116,7 @@ export default class AddNote extends Component {
                   placeholder=""
                   onChange={((e) => {
                     this.setState({ soluongnhap: e.target.value });
-                  }).bind(this)}
+                  })}
                   value={this.state.soluongnhap}
                 ></input>
               </div>
@@ -128,7 +133,7 @@ export default class AddNote extends Component {
                   name="trip-start"
                   onChange={((e) => {
                     this.setState({ ngaynhap: new Date(e.target.value) });
-                  }).bind(this)}
+                  })}
                   value={(this.state.ngaynhap).toISOString().split('T')[0]}
                 ></input>
               </div>
@@ -144,7 +149,7 @@ export default class AddNote extends Component {
                   placeholder=""
                   onChange={((e) => {
                     this.setState({ tiennhap: e.target.value });
-                  }).bind(this)}
+                  })}
                   value={this.state.tiennhap}
                 ></input>
               </div>
@@ -158,7 +163,7 @@ export default class AddNote extends Component {
                   placeholder=""
                   onChange={((e) => {
                     this.setState({ ghichu: e.target.value });
-                  }).bind(this)}
+                  })}
                   value={this.state.ghichu}
                 ></input>
               </div>

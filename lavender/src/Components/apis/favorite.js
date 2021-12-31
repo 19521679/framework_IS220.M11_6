@@ -1,8 +1,8 @@
 import axiosServices from "./axiosServices";
 import { API_ENDPOINT } from "../../Common/constants/index";
 
-export const favorite = () => {
-  return axiosServices.get(`${API_ENDPOINT}/danhsachyeuthich`);
+export const favorite = (makhachhang) => {
+  return axiosServices.get(`${API_ENDPOINT}/danhsachyeuthich?makhachhang=${makhachhang}`);
 };
 
 export const checklike = (makhachhang, masanpham) => {

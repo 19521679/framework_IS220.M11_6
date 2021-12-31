@@ -3,12 +3,15 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as khachhangApi from "../../apis/customer";
 import * as myToast from "../../../Common/helper/toastHelper";
+import Cookies from "universal-cookie";
+
+const cookie = new Cookies();
 
 class ThayDoiEmail extends Component {
   state = { email: "" };
   async componentDidMount() {
     await khachhangApi
-      .findCustomerByCustomerId(this.props.customer.makhachhang)
+      .findCustomerByCustomerId(this.props.makhachhang)
       .then((success) => {
         if (success.status === 200) {
           this.setState({ email: success.data.value.email });
@@ -19,11 +22,15 @@ class ThayDoiEmail extends Component {
       });
   }
   luuThayDoi() {
+    var token = cookie.get("token");
+    var refreshtoken = cookie.get("refreshtoken");
     khachhangApi
-      .thayDoiEmail({
-        makhachhang: this.props.customer.makhachhang,
-        email: this.state.email,
-      })
+      .thayDoiEmail(
+        this.props.makhachhang,
+        this.state.email,
+        token,
+        refreshtoken
+      )
       .then((success) => {
         if (success.status === 200) {
           myToast.toastSucces("Thay đổi email thành công");
@@ -75,12 +82,12 @@ class ThayDoiEmail extends Component {
   }
 }
 ThayDoiEmail.propTypes = {
-  customer: PropTypes.object,
+  makhachhang: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
-    customer: state.login.customer,
+    makhachhang: state.login.makhachhang,
   };
 };
 export default connect(mapStateToProps)(ThayDoiEmail);

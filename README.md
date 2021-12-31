@@ -1,3 +1,15 @@
+# Dự án Website cửa hàng bán điện thoại laptop
+Dự án demo
+
+## Hình ảnh demo về dự án
+![Ảnh demo](https://cdn.tgdd.vn/hoi-dap/651567/y-nghia-logo-cua-the-gioi-di-dong-la-gi2-800x450.jpg)
+
+##Link demo online của dự án
+[Click vào đây để xem online](https://www.youtube.com/watch?v=Zzn9-ATB9aU)
+
+### Hướng dẫn tải và cài đặt
+
+> Đây là một đoạn note
 # Lavender
 # Hướng dẫn cài đặt 
 ## **Bước 1: Chạy file Database Lavender.sql bằng MySQL** 
@@ -30,3 +42,42 @@
 - Cài đặt các thư viện có trong project: yarn
 
 - Khởi động server: yarn start
+
+
+### Cấu hình kết nối database
+```php
+<div className="_1cxKtp">
+                    <div>
+                      <div className="_1xHDVY">
+                        <span className="_30COVM text-info">
+                          {item.tensanpham}
+                        </span>
+                        <span className="_30COVM text-info imei" style={{paddingLeft:"40px"}}>
+                          Imei: {props.product.imei}
+                        </span>
+                      </div>
+                      <div className="_1kvNGb text-warning">
+                        <div>
+                          Đơn giá:{" "}
+                          <span >{numberWithCommas(item.dongia)}₫</span>
+                        </div>
+                      </div>
+                      <div className="_1kvNGb text-secondary">
+                        <div>
+                          <span className="">{props.product.mausac} - {props.product.dungluong}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+<div className="_3tEHtP" />
+```
+
+### Các ưu điểm của dự án
+- Sang 
+- Xịn 
+- Mịn
+
+

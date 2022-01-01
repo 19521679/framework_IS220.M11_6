@@ -1,21 +1,15 @@
 # Dự án Website cửa hàng Lavender chuyên bán điện thoại, laptop
 ## Mô tả về đồ án
-> Dự án Website được xây dựng nhằm để bán điện thoai, laptop trực tuyến, đem đến những trải nghiệm mới lạ, tuyệt vời
-> và đầy tiện lợi cho khách hàng cũng như đội ngũ nhân viên, giám đốc khi sử dụng. Website có nhiều chức năng nổi bật
-> dành cho khách hàng như là hiển danh sách các sản phẩm đầy sinh động, thêm vào giỏ hàng, mua hàng, theo dõi tình trạng
-> đơn hàng từ lúc mua đến lúc đã nhận và đánh giá sản phẩm đã mua. Ngoài ra còn có một số chức năng khác như là đăng ký 
-> tài khoản, đăng và xem bài viết, theo dõi bảo hành sản phẩm đã mua (đang phát triển),... Về phía giám đốc có các chức 
-> năng hỗ trợ quản lý tuyệt vời như theo dõi tổng quan tình hình doanh thu của công ty trong tháng, có thể xuất báo cáo 
-> bằng file excel, theo dõi các thông tin về hóa đơn, sản phẩm, phiếu nhập kho, khách hàng...
+ Dự án Website được xây dựng nhằm để bán điện thoai, laptop trực tuyến, đem đến những trải nghiệm mới lạ, tuyệt vời và đầy tiện lợi cho khách hàng cũng như đội ngũ nhân viên, giám đốc khi sử dụng. Website có nhiều chức năng nổi bật dành cho khách hàng như là hiển danh sách các sản phẩm đầy sinh động, thêm vào giỏ hàng, mua hàng, theo dõi tình trạng đơn hàng từ lúc mua đến lúc đã nhận và đánh giá sản phẩm đã mua. Ngoài ra còn có một số chức năng khác như là đăng ký tài khoản, đăng và xem bài viết, theo dõi bảo hành sản phẩm đã mua (đang phát triển),... Về phía giám đốc có các chức năng hỗ trợ quản lý tuyệt vời như theo dõi tổng quan tình hình doanh thu của công ty trong tháng, có thể xuất báo cáo bằng file excel, theo dõi các thông tin về hóa đơn, sản phẩm, phiếu nhập kho, khách hàng...
 
 ## Các công nghệ mới sử dụng trong đồ án
-> Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT Token, API,...
+Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT Token, API,...
 
 ## Giới thiệu thành viên nhóm
 |       Họ tên       |     MSSV     |    Địa chỉ Facebook    |     Số điện thoại     |       Nhiệm vụ                                     |Hoàn thành|
 |--------------------|--------------|------------------------|-----------------------|----------------------------------------------------|----------|  
-| "Lê Mai Duy Khánh" |   19521679   |[Link](https://www.facebook.com/bii.nhok.1)   | `XMLHTTPRequest`      |                                                    |          |
-| "new customer ID"  | camelCase    | `newCustomerId`        | `newCustomerID`       |                                                    |          |
+| Lê Mai Duy Khánh   |   19521679   |[Link](https://www.facebook.com/bii.nhok.1)| 0914630145 |Phụ trách trang chủ,trang admin, giỏ hàng, bài viết, đăng ký, đăng nhập, thiết kế cơ sở dữ liệu| 100% |                                       |          |
+
 
 ## Hình ảnh demo về dự án
 ![Ảnh demo](https://cdn.tgdd.vn/hoi-dap/651567/y-nghia-logo-cua-the-gioi-di-dong-la-gi2-800x450.jpg)

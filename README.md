@@ -15,7 +15,7 @@ Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT
 
 
 ## Hình ảnh trang chủ của Website
-![Ảnh trang chủ](https://drive.google.com/file/d/1ekEDYjFB6Qhq8506Plvg36bYrywri0fX/view?usp=sharing)
+![Ảnh trang chủ](https://scontent.fdad1-1.fna.fbcdn.net/v/t39.30808-6/270046390_3044287319179166_6035350275120142555_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=dbeb18&_nc_ohc=Y36YsiJJgfsAX9yW2pq&_nc_ht=scontent.fdad1-1.fna&oh=00_AT8P9J99-6iBZp6VX3KjWy25rXgEFh5IoBB1eas8-LJq9g&oe=61D3EF75)
 
 ## Link Deloy website của dự án
 [Click vào đây để đến với website](https://lavender-uit-webshop.web.app/)

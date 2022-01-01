@@ -6,25 +6,25 @@
 Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT Token, API,...
 
 ## Giới thiệu thành viên nhóm
-|       Họ tên       |     MSSV     |    Địa chỉ Facebook    |     Số điện thoại     |       Nhiệm vụ                                     |Hoàn thành|
-|--------------------|--------------|------------------------|-----------------------|----------------------------------------------------|----------|  
-| Lê Mai Duy Khánh   |   19521679   |[Link](https://www.facebook.com/bii.nhok.1)| 0914630145 |Phụ trách trang chủ,trang admin, giỏ hàng, bài viết, đăng ký, đăng nhập, thiết kế cơ sở dữ liệu| 100% |                                       |          |
+|       Họ tên          |     MSSV     |    Địa chỉ Facebook    |     Số điện thoại     |       Nhiệm vụ                                     |Hoàn thành|
+|-----------------------|--------------|------------------------|-----------------------|----------------------------------------------------|----------|  
+|  Lê Mai Duy Khánh      |   19521679   |[Link](https://www.facebook.com/bii.nhok.1)| 0914630145 |Phụ trách trang chủ,trang admin, giỏ hàng, bài viết, đăng ký, đăng nhập, thiết kế cơ sở dữ liệu| 100% | 
+|  Nguyễn Ngọc Châu  Pha    |   19521986  |[Link](https://www.facebook.com/chaupha.nguyen1808)| 0385276400 |Phụ trách trang admin, thiết kế và chỉnh sửa giao diện, thiết kế cơ sở dữ liệu, nhập dữ liệu| 100% |
+|  Ngô Tường Vy      |   19522545   |[Link](https://www.facebook.com/tuongvy.ngo.52012)| 0902538763 |Phụ trách trang admin, thiết kế và chỉnh sửa giao diện, thiết kế cơ sở dữ liệu, nhập dữ liệu| 100% |
+|  Nguyễn Lê Nguyên Khang     |      |[Link](https://www.facebook.com/nguyenkhang1531)|  |Phụ trách trang quản lý tài khoản khách hàng, trang admin, chỉnh sửa giao diện, thiết kế cơ sở dữ liệu, nhập dữ liệu| 100% |
 
 
-## Hình ảnh demo về dự án
-![Ảnh demo](https://cdn.tgdd.vn/hoi-dap/651567/y-nghia-logo-cua-the-gioi-di-dong-la-gi2-800x450.jpg)
+## Hình ảnh trang chủ của Website
+![Ảnh trang chủ](https://drive.google.com/file/d/1ekEDYjFB6Qhq8506Plvg36bYrywri0fX/view?usp=sharing)
 
-## Link demo online của dự án
-[Click vào đây để xem online](https://www.youtube.com/watch?v=Zzn9-ATB9aU)
+## Link Deloy website của dự án
+[Click vào đây để đến với website](https://lavender-uit-webshop.web.app/)
 
-### Hướng dẫn tải và cài đặt
+## Hướng dẫn cài đặt chương trình Web
 
-> Đây là một đoạn note
-# Lavender
-# Hướng dẫn cài đặt 
-## **Bước 1: Chạy file Database Lavender.sql bằng MySQL** 
+### **Bước 1: Chạy file Database Lavender.sql bằng MySQL** 
 
-## **Bước 2: Chạy Backend Asp.net core**
+### **Bước 2: Chạy Backend Asp.net core**
 
 - Thay đổi AppMvcConnectionString phù hợp với MySQL
 
@@ -38,7 +38,7 @@ Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT
 
 - Truy cập vào đường dẫn tới server (mặc định <https://localhost:5001>) xuất hiện màn hình báo lỗi truy cập, chọn nâng cao, và chấp thuận.
 
-## **Bước 3: Chạy Frontend React** 
+### **Bước 3: Chạy Frontend React** 
 - Thay đổi API\_ENDPOINT đến Url của backend trong thư mục lavender/lavender/src/Common/constants/index.js
 
 - Cài đặt NodeJs bản 17 (mới nhất):  <https://nodejs.org/en/>
@@ -52,38 +52,6 @@ Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT
 - Cài đặt các thư viện có trong project: yarn
 
 - Khởi động server: yarn start
-
-
-### Cấu hình kết nối database
-```php
-<div className="_1cxKtp">
-                    <div>
-                      <div className="_1xHDVY">
-                        <span className="_30COVM text-info">
-                          {item.tensanpham}
-                        </span>
-                        <span className="_30COVM text-info imei" style={{paddingLeft:"40px"}}>
-                          Imei: {props.product.imei}
-                        </span>
-                      </div>
-                      <div className="_1kvNGb text-warning">
-                        <div>
-                          Đơn giá:{" "}
-                          <span >{numberWithCommas(item.dongia)}₫</span>
-                        </div>
-                      </div>
-                      <div className="_1kvNGb text-secondary">
-                        <div>
-                          <span className="">{props.product.mausac} - {props.product.dungluong}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </span>
-            </div>
-<div className="_3tEHtP" />
-```
 
 ### Các ưu điểm của dự án
 - Sang 

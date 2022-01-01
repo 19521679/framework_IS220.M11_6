@@ -11,7 +11,7 @@ Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT
 |  Lê Mai Duy Khánh      |   19521679   |[Link](https://www.facebook.com/bii.nhok.1)| 0914630145 |Phụ trách trang chủ,trang admin, giỏ hàng, bài viết, đăng ký, đăng nhập, thiết kế cơ sở dữ liệu| 100% | 
 |  Nguyễn Ngọc Châu  Pha    |   19521986  |[Link](https://www.facebook.com/chaupha.nguyen1808)| 0385276400 |Phụ trách trang admin, thiết kế và chỉnh sửa giao diện, thiết kế cơ sở dữ liệu, nhập dữ liệu| 100% |
 |  Ngô Tường Vy      |   19522545   |[Link](https://www.facebook.com/tuongvy.ngo.52012)| 0902538763 |Phụ trách trang admin, thiết kế và chỉnh sửa giao diện, thiết kế cơ sở dữ liệu, nhập dữ liệu| 100% |
-|  Nguyễn Lê Nguyên Khang     |      |[Link](https://www.facebook.com/nguyenkhang1531)|  |Phụ trách trang quản lý tài khoản khách hàng, trang admin, chỉnh sửa giao diện, thiết kế cơ sở dữ liệu, nhập dữ liệu| 100% |
+|  Nguyễn Lê Nguyên Khang     |   19521666   |[Link](https://www.facebook.com/nguyenkhang1531)| 0327403627 |Phụ trách trang quản lý tài khoản khách hàng, trang admin, chỉnh sửa giao diện, thiết kế cơ sở dữ liệu, nhập dữ liệu| 100% |
 
 
 ## Hình ảnh trang chủ của Website
@@ -25,7 +25,9 @@ Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT
 ### **Bước 1: Chạy file Database Lavender.sql bằng MySQL** 
 
 ### **Bước 2: Chạy Backend Asp.net core**
-
+- Cài đặt các thư viện sau (đã tải lên git, không cần cài lại)
+![Ảnh thư viện](https://scontent.fdad1-1.fna.fbcdn.net/v/t39.30808-6/270241963_3044294972511734_9140383735054285317_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=dbeb18&_nc_ohc=FaY4cdPNn7EAX-j0lQY&_nc_ht=scontent.fdad1-1.fna&oh=00_AT8VxyB2Qvcx9b2xbqrqZ4ii_oAU9ZVa_ipGFntVeH7Dyg&oe=61D58194)
+![Ảnh thư viện](https://scontent.fdad1-3.fna.fbcdn.net/v/t39.30808-6/270252352_3044294785845086_5709618262599065895_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=dbeb18&_nc_ohc=OXHRLAm17ncAX_-3L8Z&tn=NHrAlX3B9vpysKo6&_nc_ht=scontent.fdad1-3.fna&oh=00_AT_5Bd7vlSe60m6shR94PlcJ2ZG63gBefT-kzSVJSrN93w&oe=61D5118B)
 - Thay đổi AppMvcConnectionString phù hợp với MySQL
 
 - Thay đổi launchUrl phù hợp với địa chỉ IP và Port của máy.
@@ -53,26 +55,10 @@ Có nhiều công nghệ mới sử dụng trong đồ án như là Reactjs, JWT
 
 - Khởi động server: yarn start
 
-### Các ưu điểm của dự án
-- Sang 
-- Xịn 
-- Mịn
-
-| words              | transform to | keepUpperCase is false | keepUpperCase is true |  
-|--------------------|--------------|------------------------|-----------------------|  
-| "XML HTTP request" | pascalCase   | `XmlHttpRequest`       | `XMLHTTPRequest`      |  
-| "new customer ID"  | camelCase    | `newCustomerId`        | `newCustomerID`       |  
+### Lời kết luận
+ Cảm ơn anh Nguyễn Minh Nhựt đã tận tình hướng dẫn chúng em, tuy dự án web vẫn chưa hoàn thiện nhưng đó cũng là thành quả sau hơn ba tháng nổ lực. Trong thời gian tới, nhóm sẽ tiếp tục hoàn thiện trang web cũng như mong nhận được góp ý từ mọi người để có những điều chỉnh tốt hơn. Xin cảm ơn! 
 
 
-<!-- TABLE_GENERATE_START -->
-
-
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
-<!-- TABLE_GENERATE_END -->
 
 
 

@@ -13,6 +13,7 @@ namespace Back.Models
         public string mota { get; set; }
         public string noidung { get; set; }
         public int xacnhan { get; set; }
+        public DateTime thoigian { get; set; }
 
     }
 }

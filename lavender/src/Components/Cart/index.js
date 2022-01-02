@@ -35,7 +35,7 @@ class index extends Component {
     tongcong: 0,
     checkall: false,
     showModal: false,
-    loading: true,
+    loading: false,
     khachhang: undefined,
     fire: false,
     reset: false,
@@ -124,9 +124,10 @@ class index extends Component {
   }
 
   async deleteAllProduct() {
+    this.setState({ loading: true });
     var token = cookie.get("token");
     var refreshtoken = cookie.get("refreshtoken");
-    detailCartApi
+    await detailCartApi
       .deleteAllDetailCart(this.state.cart.magiohang, token, refreshtoken)
       .then((success) => {
         if (success.status === 200) this.loadCart();
@@ -134,6 +135,7 @@ class index extends Component {
       .catch((error) => {
         console.error(error);
       });
+    this.setState({ loading: false });
   }
 
   showModal() {
@@ -207,6 +209,7 @@ class index extends Component {
 
     if (detailCarts === undefined) {
       this.setState({ detailCarts: [] });
+      this.setState({ loading: false });
       return;
     }
 
@@ -296,7 +299,7 @@ class index extends Component {
   async loadCustomer() {
     var token = cookie.get("token");
     var refreshtoken = cookie.get("refreshtoken");
-
+    this.setState({ loading: true });
     customerApi
       .findCustomerByCustomerId(this.props.makhachhang, token, refreshtoken)
       .then((success) => {
@@ -307,14 +310,14 @@ class index extends Component {
       .catch((error) => {
         console.error(error);
       });
+    this.setState({ loading: false });
   }
 
   async componentDidMount() {
     if (this.props.makhachhang === undefined) {
       return;
     }
-    this.loadCustomer();
-    this.loadCart();
+    Promise.allSettled(this.loadCustomer(), this.loadCart());
   }
 
   selectAll() {
@@ -343,7 +346,6 @@ class index extends Component {
     this.tinhTien();
   }
   render() {
-
     return (
       <>
         <LoadingContainer loading={this.state.loading}></LoadingContainer>
@@ -352,8 +354,8 @@ class index extends Component {
           closeModal={this.closeModal.bind(this)}
           deleteAllProduct={this.deleteAllProduct.bind(this)}
         ></DeleteAllModal>
-  
-          <ReactCanvasConfetti
+
+        <ReactCanvasConfetti
           // set the styles as for a usual react component
           style={style}
           // set the class name as for a usual react component
@@ -369,64 +371,64 @@ class index extends Component {
           // set the callback on reset canvas
           onReset={this.onReset}
         />
-      
+
         <Success fire={this.state.fire}></Success>
         <section>
           {this.props.makhachhang === undefined && (
             <Redirect to="/login"></Redirect>
           )}
 
-
-          {!this.state.fire?(
+          {!this.state.fire ? (
             <div className="cart">
-            <div className="container">
-              <div className="row">
-                <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                  <div className="cart-inner">
-                    <div className="styles__StyledProductsV2-sc-rkft9e-0 dioUnE">
-                      <h4 className="productsV2__title">Giỏ hàng</h4>
-                      <div className="productsV2-heading box-shadow">
-                        <div className="row">
-                          <div className="col-1">
-                            <label className="">
-                              <input
-                                className="round"
-                                type="checkbox"
-                                id="checkall"
-                                onChange={(e) =>
-                                  this.changeCheck(e.target.checked)
-                                }
-                                checked={this.state.checkall}
-                              />
-                            </label>
-                          </div>
-                          <div className="col-2">
-                            <strong>Đơn giá</strong>
-                          </div>
-                          <div className="col-3">
-                            <strong>Số lượng</strong>
-                          </div>
-                          <div className="col-5">
-                            <span className="productsV2__remove-all">
-                              <img
-                                src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/trash.svg"
-                                alt="deleted"
-                                onClick={this.showModal.bind(this)}
-                              />
-                            </span>
+              <div className="container">
+                <div className="row">
+                  <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <div className="cart-inner">
+                      <div className="styles__StyledProductsV2-sc-rkft9e-0 dioUnE">
+                        <h4 className="productsV2__title">Giỏ hàng</h4>
+                        <div className="productsV2-heading box-shadow">
+                          <div className="row">
+                            <div className="col-1">
+                              <label className="">
+                                <input
+                                  className="round"
+                                  type="checkbox"
+                                  id="checkall"
+                                  onChange={(e) =>
+                                    this.changeCheck(e.target.checked)
+                                  }
+                                  checked={this.state.checkall}
+                                />
+                              </label>
+                            </div>
+                            <div className="col-2">
+                              <strong>Đơn giá</strong>
+                            </div>
+                            <div className="col-3">
+                              <strong>Số lượng</strong>
+                            </div>
+                            <div className="col-5">
+                              <span className="productsV2__remove-all">
+                                <img
+                                  src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/trash.svg"
+                                  alt="deleted"
+                                  onClick={this.showModal.bind(this)}
+                                />
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="productsV2-content pink-shadow">
-                        <div>
-                          <div
-                            className="infinite-scroll-component "
-                            style={{ height: "auto", overflow: "auto" }}
-                          >
-                            <div className="styles__StyledIntendedSeller-sc-1dwh2vk-0 kTsjPS">
-                              <div className="sellers">
-                                <div className="pustProduct">
-                                  {this.pushProduct()}
+                        <div className="productsV2-content pink-shadow">
+                          <div>
+                            <div
+                              className="infinite-scroll-component "
+                              style={{ height: "auto", overflow: "auto" }}
+                            >
+                              <div className="styles__StyledIntendedSeller-sc-1dwh2vk-0 kTsjPS">
+                                <div className="sellers">
+                                  <div className="pustProduct">
+                                    {this.pushProduct()}
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -435,145 +437,153 @@ class index extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                  <div className="cart-total-prices">
-                    <div className="cart-total-prices__inner">
-                      <div className="styles__StyledShippingAddress-sc-1sjj51k-0 juqUnC box-shadow">
-                        <p className="heading">
-                          <span className="text">Giao tới</span>
-                        </p>
-                        <p className="title">
-                          <b className="name">
+                  <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div className="cart-total-prices">
+                      <div className="cart-total-prices__inner">
+                        <div className="styles__StyledShippingAddress-sc-1sjj51k-0 juqUnC box-shadow">
+                          <p className="heading">
+                            <span className="text">Giao tới</span>
+                          </p>
+                          <p className="title">
+                            <b className="name">
+                              {this.state.khachhang !== undefined &&
+                                this.state.tenkhachhang}
+                            </b>
+                            <b className="phone">
+                              {this.state.khachhang !== undefined &&
+                                this.state.khachhang.sodienthoai}
+                            </b>
+                          </p>
+                          <p className="address">
                             {this.state.khachhang !== undefined &&
-                              this.state.tenkhachhang}
-                          </b>
-                          <b className="phone">
-                            {this.state.khachhang !== undefined &&
-                              this.state.khachhang.sodienthoai}
-                          </b>
-                        </p>
-                        <p className="address">
-                          {this.state.khachhang !== undefined &&
-                            this.state.khachhang.diachi}
-                        </p>
-                      </div>
-                      <div className="styles__StyledWrapCoupons-sc-1d6idyr-0 ekRzNN box-shadow">
-                        <AddVoucherModal
-                          modalIsOpen={this.state.voucherModalIsOpen}
-                          customer={this.props}
-                          closeModal={this.closeVoucherModal.bind(this)}
-                          chonKhuyenmai={this.chonKhuyenmai.bind(this)}
-                        ></AddVoucherModal>
-                        <div className="styles__StyledCouponBox-sc-1ibe03g-0 jmylnB">
-                          <div className="title-usage">
-                            <p className="coupon-title">
-                              <strong>Khuyến mãi</strong>
-                            </p>
-                            <p className="max-usage">
-                              Có thể chọn 1
-                              <img
-                                className="max-usage__info"
-                                src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/icons-info-gray.svg"
-                                alt="info"
-                              />
-                            </p>
-                          </div>
-                          <div
-                            className="eligible_coupon_list"
-                            data-view-id="platform_coupon"
-                          />
-                          <div
-                            data-view-id="platform_coupon.cart_coupon_view.all"
-                            className="show-more"
-                            onClick={this.openVoucherModal.bind(this)}
-                          >
-                            <img
-                              alt=""
-                              src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_icon.svg"
-                            />
-                            <span>
-                              {this.state.khuyenmai === undefined
-                                ? "Chọn hoặc nhập Khuyến mãi"
-                                : "Giảm " +
-                                  (
-                                    this.state.khuyenmai.tilekhuyenmai * 100
-                                  ).toFixed(0) +
-                                  "%"}{" "}
-                            </span>
-                          </div>
+                              this.state.khachhang.diachi}
+                          </p>
                         </div>
-                      </div>
-                      <div className="styles__StyledCartPrices-sc-1op1gws-0 cdzcxd box-shadow">
-                        <div className="prices">
-                          <ul className="prices__items">
-                            <li className="prices__item">
-                              <span className="prices__text">
-                                <strong>Tạm tính</strong>
-                              </span>
-                              <span className="prices__value">
-                                {numberHelper.numberWithCommas(
-                                  this.state.tongtien
-                                )}
-                                đ
-                              </span>
-                            </li>
-                            <li className="prices__item">
-                              <span className="prices__text">
-                                <strong>Giảm giá</strong>
-                              </span>
-                              <span className="prices__value">
+                        <div className="styles__StyledWrapCoupons-sc-1d6idyr-0 ekRzNN box-shadow">
+                          <AddVoucherModal
+                            modalIsOpen={this.state.voucherModalIsOpen}
+                            customer={this.props}
+                            closeModal={this.closeVoucherModal.bind(this)}
+                            chonKhuyenmai={this.chonKhuyenmai.bind(this)}
+                          ></AddVoucherModal>
+                          <div className="styles__StyledCouponBox-sc-1ibe03g-0 jmylnB">
+                            <div className="title-usage">
+                              <p className="coupon-title">
+                                <strong>Khuyến mãi</strong>
+                              </p>
+                              <p className="max-usage">
+                                Có thể chọn 1
+                                <img
+                                  className="max-usage__info"
+                                  src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/icons-info-gray.svg"
+                                  alt="info"
+                                />
+                              </p>
+                            </div>
+                            <div
+                              className="eligible_coupon_list"
+                              data-view-id="platform_coupon"
+                            />
+                            <div
+                              data-view-id="platform_coupon.cart_coupon_view.all"
+                              className="show-more"
+                              onClick={this.openVoucherModal.bind(this)}
+                            >
+                              <img
+                                alt=""
+                                src="https://frontend.tikicdn.com/_desktop-next/static/img/mycoupon/coupon_icon.svg"
+                              />
+                              <span>
                                 {this.state.khuyenmai === undefined
-                                  ? "0"
-                                  : numberHelper.numberWithCommas(
-                                      this.state.khuyenmai.tilekhuyenmai *
-                                        this.state.tongtien
-                                    )}
-                                đ
-                              </span>
-                            </li>
-                          </ul>
-                          <div className="prices__total">
-                            <span className="prices__text">
-                              <strong>Tổng cộng</strong>
-                            </span>
-                            <div className="prices__content">
-                              <div className="prices__value prices__value--empty">
-                                <strong>
-                                  {this.state.tongcong === 0
-                                    ? "Vui lòng chọn sản phẩm"
-                                    : this.state.tongcong + "đ"}
-                                </strong>
-                              </div>
-                              <span className="prices__value--noted">
-                                (Đã bao gồm VAT nếu có)
+                                  ? "Chọn hoặc nhập Khuyến mãi"
+                                  : "Giảm " +
+                                    (
+                                      this.state.khuyenmai.tilekhuyenmai * 100
+                                    ).toFixed(0) +
+                                    "%"}{" "}
                               </span>
                             </div>
                           </div>
                         </div>
+                        <div className="styles__StyledCartPrices-sc-1op1gws-0 cdzcxd box-shadow">
+                          <div className="prices">
+                            <ul className="prices__items">
+                              <li className="prices__item">
+                                <span className="prices__text">
+                                  <strong>Tạm tính</strong>
+                                </span>
+                                <span className="prices__value">
+                                  {numberHelper.numberWithCommas(
+                                    this.state.tongtien
+                                  )}
+                                  đ
+                                </span>
+                              </li>
+                              <li className="prices__item">
+                                <span className="prices__text">
+                                  <strong>Giảm giá</strong>
+                                </span>
+                                <span className="prices__value">
+                                  {this.state.khuyenmai === undefined
+                                    ? "0"
+                                    : numberHelper.numberWithCommas(
+                                        (
+                                          this.state.khuyenmai.tilekhuyenmai *
+                                          this.state.tongtien
+                                        ).toFixed(0)
+                                      )}
+                                  đ
+                                </span>
+                              </li>
+                            </ul>
+                            <div className="prices__total">
+                              <span className="prices__text">
+                                <strong>Tổng cộng</strong>
+                              </span>
+                              <div className="prices__content">
+                                <div className="prices__value prices__value--empty">
+                                  <strong>
+                                    {this.state.tongcong === 0
+                                      ? "Vui lòng chọn sản phẩm"
+                                      : numberHelper.numberWithCommas(
+                                          this.state.tongcong.toFixed(0)
+                                        ) + "đ"}
+                                  </strong>
+                                </div>
+                                <span className="prices__value--noted">
+                                  (Đã bao gồm VAT nếu có)
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          data-view-id="cart_navigation_proceed box-shadow"
+                          data-view-label='{"shipping_salerules":[]}'
+                          type="button"
+                          className="cart__submit"
+                          onClick={this.muaHang.bind(this)}
+                        >
+                          Mua Hàng
+                        </button>
                       </div>
-                      <button
-                        data-view-id="cart_navigation_proceed box-shadow"
-                        data-view-label='{"shipping_salerules":[]}'
-                        type="button"
-                        className="cart__submit"
-                        onClick={this.muaHang.bind(this)}
-                      >
-                        Mua Hàng
-                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          ):(<div className="" style={{height:"2000px"}}>
-            <button className="btn btn-success"onClick={()=>this.setState({fire:false})}>
-            <i class="fad fa-angle-left"></i>
-              {"  "}Quay lại mua hàng
-            </button>
-          </div>)}
+          ) : (
+            <div className="" style={{ height: "2000px" }}>
+              <button
+                className="btn btn-success"
+                onClick={() => this.setState({ fire: false })}
+              >
+                <i class="fad fa-angle-left"></i>
+                {"  "}Quay lại mua hàng
+              </button>
+            </div>
+          )}
         </section>
       </>
     );

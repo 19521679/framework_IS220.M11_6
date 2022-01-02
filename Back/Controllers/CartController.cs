@@ -45,6 +45,7 @@ namespace Back.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(JsonElement json)
         {
+            Console.WriteLine(json);
             Giohang giohang = await (from g in lavenderContext.Giohang
                            where g.Makhachhang == int.Parse(json.GetString("makhachhang"))
                            select g).FirstOrDefaultAsync();
@@ -61,8 +62,8 @@ namespace Back.Controllers
                 giohang = await (from g in lavenderContext.Giohang
                                  where g.Makhachhang == int.Parse(json.GetString("makhachhang"))
                                  select g).FirstOrDefaultAsync();
+                
             }
-
             Chitietgiohang chitietgiohang = await (from c in lavenderContext.Chitietgiohang
                                                     where c.Magiohang == giohang.Magiohang
                                                     && c.Masanpham == int.Parse(json.GetString("masanpham"))

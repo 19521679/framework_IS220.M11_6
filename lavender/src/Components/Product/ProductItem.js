@@ -4,7 +4,7 @@ import * as imageApi from "../apis/image.js";
 import * as detailProductapi from "../apis/detailProduct";
 import * as evalueteApi from "../apis/evaluete";
 import * as productApi from "../apis/product";
-// import { CLIENT_ENDPOINT } from "../../Common/constants";
+import { CLIENT_ENDPOINT } from "../../Common/constants";
 import * as trademarkApi from "../apis/trademark";
 import * as numberHelper from "../../Common/helper/numberHelper";
 import { Link } from "react-router-dom";
@@ -61,7 +61,7 @@ export default function ProductItem (props) {
             }()}
 
             <Link
-              // href={() => false}
+              href={() => false}
               // onClick={() => {
               //   var url = CLIENT_ENDPOINT + props.product.image;
               //   window.location.href = `${url}`;
@@ -143,7 +143,7 @@ export default function ProductItem (props) {
             <p className="">
               {(() => {
                 var x = thongsokithuat.find((obj) => {
-                  return obj.ten === "cpu" || obj.ten === "chip";
+                  return obj.ten.toLowerCase() === "cpu" || obj.ten.toLowerCase() === "chip"|| obj.ten.toLowerCase() === "chip:";
                 });
                 if (x !== undefined) {
                   return "Cpu : " + x.noidung;
@@ -153,7 +153,21 @@ export default function ProductItem (props) {
             <p>
               {(() => {
                 var x = thongsokithuat.find((obj) => {
-                  return obj.ten === "ram" || obj.ten === "dung lượng";
+                  return obj.ten.toLowerCase() === "ram" || obj.ten.toLowerCase() === "dung lượng" || obj.ten.toLowerCase() === "dung lượng:";
+                });
+                if (x !== undefined) {
+                  return "Dung lượng : " + x.noidung;
+                }
+              })()}
+            </p>
+            <p>
+              {(() => {
+                var x = thongsokithuat.find((obj) => {
+                  return (
+                    obj.ten.toLowerCase() === "ssd:" ||
+                    obj.ten.toLowerCase() === "bộ nhớ:" ||
+                    obj.ten.toLowerCase() === "hdd:"
+                  );
                 });
                 if (x !== undefined) {
                   return "Bộ nhớ : " + x.noidung;
@@ -164,13 +178,11 @@ export default function ProductItem (props) {
               {(() => {
                 var x = thongsokithuat.find((obj) => {
                   return (
-                    obj.ten === "ssd" ||
-                    obj.ten === "bộ nhớ" ||
-                    obj.ten === "hdd"
+                    obj.ten.toLowerCase() === "màn hình:" 
                   );
                 });
                 if (x !== undefined) {
-                  return "Dung lượng : " + x.noidung;
+                  return "Màn hình : " + x.noidung;
                 }
               })()}
             </p>

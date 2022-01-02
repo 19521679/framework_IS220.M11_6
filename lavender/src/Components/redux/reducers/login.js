@@ -82,6 +82,7 @@ const reducer = (state = initialState, action) => {
         // secure: true,
         // sameSite: true,
       });
+      myToast.toastSucces("Đăng nhập thành công");
       return {
         ...state,
         makhachhang: action.payload.data.value.makhachhang,
@@ -91,6 +92,7 @@ const reducer = (state = initialState, action) => {
     case loginConst.POST_REFRESH_FAILED: {
       cookie.remove("token");
       cookie.remove("refreshtoken");
+      myToast.toastError("Đăng nhập thất bại");
       return {
         ...state,
       };

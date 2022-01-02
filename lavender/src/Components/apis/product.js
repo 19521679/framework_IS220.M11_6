@@ -122,6 +122,10 @@ export const deleteProduct = async (masanpham, token, refreshtoken) => {
   return connect;
 };
 
+export const productInfo=(query)=>{
+  return axiosServices.get(API_ENDPOINT+query);
+};
+
 export const findProduct = (timkiem) => {
   return axiosServices.get(`${API_ENDPOINT}/tim-sanpham?timkiem=${timkiem}`);
 };

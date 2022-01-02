@@ -119,7 +119,6 @@ namespace Back.Controllers
                                      where x.Maloai == maloai && x.Tensanpham.Contains(dong) && x.Tensanpham.Contains(sanpham) && x.Mathuonghieu == thuonghieuid
                                      select x).FirstOrDefaultAsync();
             if (sanphamtemp == null) return StatusCode(404);
-            Console.WriteLine(sanphamtemp);
             var chitietsanphams = await (from c in lavenderContext.Chitietsanpham
                                          where c.Masanpham == sanphamtemp.Masanpham
                                          && (dungluong == null || dungluong.Equals("-1") || c.Dungluong.Equals(dungluong))
@@ -130,7 +129,6 @@ namespace Back.Controllers
             List<dynamic> mausac = new List<dynamic>();
             foreach (var i in chitietsanphams)
             {
-                Console.WriteLine(i);
                 bool timduoccaimoinaodo = true;
                 foreach (var j in listsanphamtheomausac)
                 {
@@ -376,9 +374,9 @@ namespace Back.Controllers
             s.Image = path;
             await lavenderContext.SaveChangesAsync();
 
-            if (image != null && image.Length != 0 && OldDir!= NewDir)
+            if (image != null && image.Length != 0 )
             {
-                MyDataHandler.MoveDir(OldDir, NewDir);
+               if (OldDir != NewDir) MyDataHandler.MoveDir(OldDir, NewDir);
             }
             else
             {

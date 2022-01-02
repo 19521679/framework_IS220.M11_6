@@ -68,6 +68,9 @@ namespace Back.Models
 
                 entity.Property(e => e.mabaiviet).HasColumnName("MABAIVIET");
 
+                entity.Property(e => e.thoigian)
+                 .HasColumnType("datetime")
+                 .HasColumnName("THOIGIAN");
 
                 entity.Property(e => e.tieude)
                     .HasColumnType("text")

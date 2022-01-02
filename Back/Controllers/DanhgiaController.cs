@@ -73,7 +73,7 @@ namespace Back.Controllers
                 using (var img = Image.FromStream(memoryStream))
                 {
                     // TODO: ResizeImage(img, 100, 100);
-                    img.Save(_env.ContentRootPath+ "/wwwroot" +temp.Image+ ".Jpeg", ImageFormat.Jpeg);
+                    img.Save(_env.ContentRootPath+ "/wwwroot" +temp.Image+"/"+temp.Madanhgia+".Jpeg", ImageFormat.Jpeg);
                 }
             }
             return StatusCode(200, Json(s));

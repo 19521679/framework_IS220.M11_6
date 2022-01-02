@@ -117,6 +117,7 @@ export default function EditModal(props) {
     fd.append("dungluong", dungluong === "Khác" ? dungluongkhac : dungluong);
     fd.append("giamoi", giamoi);
     if (image !== undefined) fd.append("image", image);
+    console.log(image);
 
     var token = cookie.get("token");
     var refreshtoken = cookie.get("refreshtoken");

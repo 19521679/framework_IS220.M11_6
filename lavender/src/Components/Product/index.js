@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./style.css";
 import SlideShow from "../SlideShow";
-import * as laptopApi from "../apis/laptop";
 import * as detailProductApi from "../apis/detailProduct";
 import * as imageApi from "../apis/image";
 import { bindActionCreators } from "redux";
@@ -16,7 +15,7 @@ import Evaluete from "../Evaluete";
 import * as evalueteApi from "../apis/evaluete";
 import Specifications from "./Specifications";
 import * as myToast from "../../Common/helper/toastHelper";
-
+import * as productApi from "../apis/product";
 import Cookies from "universal-cookie";
 import * as numberHelper from "../../Common/helper/numberHelper";
 
@@ -106,7 +105,7 @@ class index extends Component {
       });
     return;
   }
-  xemGia() {
+  async xemGia() {
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
@@ -123,7 +122,7 @@ class index extends Component {
       };
       this.loadDungluong();
       this.loadMausac();
-      detailProductApi
+      await detailProductApi
         .xemgiatheodungluongvamausac(request1)
         .then((success) => {
           if (success.status === 200) {
@@ -180,14 +179,14 @@ class index extends Component {
       });
   }
 
-  loadDungluong() {
+  async loadDungluong() {
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
     var { sanpham } = this.props.match.params;
     var query;
     query = `/${loai}/${hang}/${dong}/${sanpham}/dungluong?mausac=${this.state.chonmausac}`;
-    detailProductApi
+    await detailProductApi
       .dungluong(query)
       .then((success) => {
         if (success.status === 200) {
@@ -199,14 +198,14 @@ class index extends Component {
       });
   }
 
-  loadMausac() {
+  async loadMausac() {
     var { loai } = this.props.match.params;
     var { hang } = this.props.match.params;
     var { dong } = this.props.match.params;
     var { sanpham } = this.props.match.params;
     var query;
     query = `/${loai}/${hang}/${dong}/${sanpham}/mausac?dungluong=${this.state.chondungluong}`;
-    detailProductApi
+    await detailProductApi
       .mausac(query)
       .then((success) => {
         if (success.status === 200) {
@@ -223,7 +222,7 @@ class index extends Component {
     if (this.props.makhachhang === undefined) {
       return;
     }
-    favoriteApi
+    await favoriteApi
       .checklike(this.props.makhachhang, this.state.product.masanpham)
       .then((success) => {
         if (success.status === 200 && success.data.value.liked) {
@@ -237,15 +236,15 @@ class index extends Component {
 
   async componentDidMount() {
     this.setState({loading:true});
-    var task1 = () => {
+    var task1 = async () => {
       var { loai } = this.props.match.params;
       var { hang } = this.props.match.params;
       var { dong } = this.props.match.params;
       var { sanpham } = this.props.match.params;
 
       var query = `/${loai}/${hang}/${dong}/${sanpham}`;
-      laptopApi
-        .laptopInfo(query)
+      await productApi
+        .productInfo(query)
         .then((success) => {
           if (success.status === 200) {
             this.setState({
@@ -297,8 +296,8 @@ class index extends Component {
       refreshtoken
     );
   };
-  xemdanhgia = async () => {
-    evalueteApi
+   xemdanhgia = async () => {
+    await evalueteApi
       .evalueteByProductId(this.state.product.masanpham)
       .then((success) => {
         if (success.status === 200) {

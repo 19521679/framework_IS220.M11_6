@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "F:\\test_new\\lavender\\Back\\Back.csproj": {}
+    "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj": {}
   },
   "projects": {
-    "F:\\test_new\\lavender\\Back\\Back.csproj": {
+    "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\test_new\\lavender\\Back\\Back.csproj",
+        "projectUniqueName": "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj",
         "projectName": "Back",
-        "projectPath": "F:\\test_new\\lavender\\Back\\Back.csproj",
-        "packagesPath": "C:\\Users\\NLNK\\.nuget\\packages\\",
-        "outputPath": "F:\\test_new\\lavender\\Back\\obj\\",
+        "projectPath": "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj",
+        "packagesPath": "/Users/khanhle/.nuget/packages/",
+        "outputPath": "/Users/khanhle/Documents/GitHub/lavender/Back/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\NLNK\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/khanhle/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -47,6 +45,10 @@
             "EPPlus": {
               "target": "Package",
               "version": "[5.0.3, )"
+            },
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
             },
             "ExcelNumberFormat": {
               "target": "Package",
@@ -175,7 +177,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.101/RuntimeIdentifierGraph.json"
         }
       }
     }

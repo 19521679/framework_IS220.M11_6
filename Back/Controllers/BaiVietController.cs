@@ -33,6 +33,7 @@ namespace Back.Controllers
         {
             var baivietlist = await (from bv in lavenderContext.Baiviets
                                      where bv.xacnhan == 1
+                                     orderby bv.thoigian descending
                                      select bv).ToListAsync();
             return StatusCode(200, JsonConvert.SerializeObject(baivietlist));
         }
@@ -93,6 +94,7 @@ namespace Back.Controllers
             Baiviet.noidung = baivietsubmit.noidung;
             Baiviet.thumnail = baivietsubmit.thumnail;
             Baiviet.xacnhan = 0;
+            Baiviet.thoigian = new DateTime().ToLocalTime();
             await lavenderContext.AddAsync(Baiviet);
             await lavenderContext.SaveChangesAsync();
             return StatusCode(200, JsonConvert.SerializeObject(Baiviet));

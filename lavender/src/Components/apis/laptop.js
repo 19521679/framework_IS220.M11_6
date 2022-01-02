@@ -11,6 +11,3 @@ export const laptopWithNewPrice=()=>{
     const url="/laptop-with-new-price";
     return axiosServices.get(API_ENDPOINT+url);
 };
-export const laptopInfo=(query)=>{
-    return axiosServices.get(API_ENDPOINT+query);
-};

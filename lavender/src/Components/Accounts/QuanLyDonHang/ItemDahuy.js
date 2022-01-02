@@ -5,7 +5,7 @@ import Chitietsanpham from "./Chitietsanpham";
 import * as billingApi from "../../apis/billing";
 import Cookies from "universal-cookie";
 import * as myToast from "../../../Common/helper/toastHelper";
-import { numberWithCommas } from '../../../Common/helper/numberHelper';
+import { numberWithCommas } from "../../../Common/helper/numberHelper";
 const cookie = new Cookies();
 
 const customStyles = {
@@ -23,23 +23,23 @@ export default function ItemDahuy(props) {
   const [showModal, setShowModal] = useState(false);
   const [list, setList] = useState([]);
 
-//   const xoaHoahoadon = async () => {
-//     var token = cookie.get("token");
-//     var refreshtoken = cookie.get("refreshtoken");
-//     await billingApi
-//       .deleteBill(props.bill.sohoadon, token, refreshtoken)
-//       .then((success) => {
-//         if (success.status === 200) {
-//           myToast.toastSucces("Xoá hoá đơn thành công");
-//           props.deleteFunction(props.bill.sohoadon)
-//         }
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//         myToast.toastError("Xoá hoá đơn thất bại");
-//       });
-//     setShowModal(false);
-//   };
+  //   const xoaHoahoadon = async () => {
+  //     var token = cookie.get("token");
+  //     var refreshtoken = cookie.get("refreshtoken");
+  //     await billingApi
+  //       .deleteBill(props.bill.sohoadon, token, refreshtoken)
+  //       .then((success) => {
+  //         if (success.status === 200) {
+  //           myToast.toastSucces("Xoá hoá đơn thành công");
+  //           props.deleteFunction(props.bill.sohoadon)
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //         myToast.toastError("Xoá hoá đơn thất bại");
+  //       });
+  //     setShowModal(false);
+  //   };
   useEffect(() => {
     detailProductApi
       .timCacchitietsanphamBangSohoadon(props.bill.sohoadon)
@@ -73,7 +73,12 @@ export default function ItemDahuy(props) {
           <td> Số HD: {props.bill.sohoadon}</td>
           <td>Ngày HD: {props.bill.ngayhoadon}</td>
           <td>Mã KM: {props.bill.makhuyenmai}</td>
-          <td> <strong>Thành tiền: {numberWithCommas(props.bill.tongtien)} đ</strong> </td>
+          <td>
+            {" "}
+            <strong>
+              Thành tiền: {numberWithCommas(props.bill.tongtien)} đ
+            </strong>{" "}
+          </td>
         </tr>
       </div>
       <div className="_1J7vLy">

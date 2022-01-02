@@ -399,6 +399,7 @@ namespace Back.Controllers
             {
                 MyDataHandler.MoveDir(OldDir, NewDir);
             }
+            
             if (image != null && image.Length != 0  )
             {
                 if (!Directory.Exists(NewDir))

@@ -602,17 +602,17 @@ export default function Index(props) {
                                               HÃNG do đó thời gian bảo hành của
                                               laptop có thể “bằng hoặc thấp hơn”
                                               thời gian bảo hành&nbsp; của
-                                              Thegioididong.com ghi trên hóa đơn
+                                              Lavender ghi trên hóa đơn
                                               xuất bán cho Khách Hàng.
-                                              <br />– Lavender.com cam kết bảo
+                                              <br />– Lavender cam kết bảo
                                               hành chính hãng theo thời gian
                                               ĐƯỢC ghi trên hóa đơn khi xuất bán
                                               cho Khách Hàng. Trường hợp có sự
                                               chênh lệch thời gian bảo hành của
                                               HÃNG thấp hơn thời gian bảo hành
-                                              của Thegioididong.com thì Khách
+                                              của Lavender thì Khách
                                               Hàng vui lòng mang sản phẩm đến
-                                              Thegioididong.com để được bảo hành
+                                              Lavender để được bảo hành
                                               chính hãng.
                                             </p>
                                           </div>
@@ -744,7 +744,7 @@ export default function Index(props) {
                                               =&gt;&nbsp;
                                               <strong>
                                                 Không áp dụng bảo hành, đổi trả.
-                                                Thegioididong.com hỗ trợ chuyển
+                                                Lavender hỗ trợ chuyển
                                                 bảo hành, khách hàng chịu chi
                                                 phí sửa chữa.
                                               </strong>
@@ -1057,7 +1057,7 @@ export default function Index(props) {
                                           <p>
                                             Gửi máy bảo hành theo đúng qui định
                                             của hãng hoặc bảo hành của&nbsp;
-                                            <em>Thegioididong.com</em>
+                                            <em>Lavender</em>
                                             &nbsp;(*)&nbsp;
                                           </p>
                                           <p>&nbsp;</p>
@@ -1085,7 +1085,7 @@ export default function Index(props) {
                                   </p>
                                   <p>
                                     – Laptop đã qua sử dụng tại
-                                    Thegioididong.com/DienmayXanh.com được bán
+                                    Lavender/DienmayXanh.com được bán
                                     ra tuỳ theo hiện trạng máy tại từng siêu
                                     thị, bao gồm phần mềm và phần cứng.
                                   </p>
@@ -1095,7 +1095,7 @@ export default function Index(props) {
                                     thường, ngoài ra các phần mềm theo hãng như
                                     ứng dụng văn phòng như Office 365, Office
                                     Home &amp; Student 2019,…
-                                    Thegioididong.com/DienmayXanh.com không cam
+                                    Lavender/DienmayXanh.com không cam
                                     kết còn sử dụng được hay không.
                                   </p>
                                   <p>
@@ -1103,16 +1103,16 @@ export default function Index(props) {
                                   </p>
                                   <p>
                                     – Khách hàng đem máy lên hệ thống
-                                    Thegioididong.com/DienmayXanh.com hoặc đem
+                                    Lavender/DienmayXanh.com hoặc đem
                                     trực tiếp lên hãng để được bảo hành.
                                   </p>
                                   <p>
                                     – Tuỳ vào thời hạn bảo hành còn lại của sản
-                                    phẩm,&nbsp;Thegioididong.com sẽ gởi máy đến
+                                    phẩm,&nbsp;Lavender sẽ gởi máy đến
                                     trung tâm bảo hành hãng hoặc bảo hành trực
                                     tiếp tại trung tâm bảo hành đối tác. Chính
                                     sách, quy trình &amp; các nghiệp vụ sửa chữa
-                                    bảo hành tại Thegioididong.com sẽ hoàn toàn
+                                    bảo hành tại Lavender sẽ hoàn toàn
                                     giống với bảo hành tại hãng.
                                   </p>
                                   <table
@@ -1234,8 +1234,7 @@ export default function Index(props) {
                                       triển khai sử dụng&nbsp;
                                       <a
                                         title="hóa đơn điện tử tại Thegioididong"
-                                        href="https://hddt.thegioididong.com/gioi-thieu"
-                                        target="_blank"
+                                        href={()=>false}
                                         rel="noopener"
                                       >
                                         <strong>hóa đơn điện tử</strong>

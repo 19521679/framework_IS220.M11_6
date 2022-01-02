@@ -32,7 +32,7 @@ export const xemgiamoitheomasanpham = (masanpham) => {
 };
 
 export const timkiemChitietsanphamImei = (imei)=>{
-  return axiosServices.get(`${API_ENDPOINT}/tim-chitietsanfpham-bang-imei?imei=${imei}`);
+  return axiosServices.get(`${API_ENDPOINT}/tim-chitietsanpham-bang-imei?imei=${imei}`);
 }
 
 export const timCacchitietsanphamBangSohoadon=(sohoadon)=>{

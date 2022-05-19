@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "G1uJElnLBICvbts4o8U+LItsit8niNlPU7kkGzU7PAsQIZXeRML/vp6l6il6i6MtHf2OMbGjQfCANKg7+AH54g==",
+  "dgSpecHash": "+hm89ND8PxepkGyYFC2rV7NDASfxpjPX+/PJt80V2ouEpyDpRrSZJAbKxV9pqTnI6CM1Ous+WZtAWvdnflV5Dw==",
   "success": true,
-  "projectFilePath": "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj",
+  "projectFilePath": "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj",
   "expectedPackageFiles": [
     "/Users/khanhle/.nuget/packages/aspnetcore.email/2.1.403/aspnetcore.email.2.1.403.nupkg.sha512",
+    "/Users/khanhle/.nuget/packages/awssdk.core/3.7.10.8/awssdk.core.3.7.10.8.nupkg.sha512",
     "/Users/khanhle/.nuget/packages/bouncycastle.netcore/1.8.5/bouncycastle.netcore.1.8.5.nupkg.sha512",
     "/Users/khanhle/.nuget/packages/entityframework/6.4.4/entityframework.6.4.4.nupkg.sha512",
     "/Users/khanhle/.nuget/packages/epplus/5.0.3/epplus.5.0.3.nupkg.sha512",

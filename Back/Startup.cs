@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Back.Services;
 using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Back
 {
@@ -98,11 +99,19 @@ namespace Back
                 x.Cookie.Name = "khanhzum";
                 x.IdleTimeout = new TimeSpan(0, 30, 0);
             });
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ICorsService corsService, ICorsPolicyProvider corsPolicyProvider)
         {
+
+            app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
                 //app.UseSwagger();
@@ -113,6 +122,7 @@ namespace Back
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -125,7 +135,7 @@ namespace Back
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseDefaultFiles();
+            //app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
                 ServeUnknownFileTypes = true,
@@ -166,6 +176,8 @@ namespace Back
                     pattern: "{controller=Home}/{action=Index}/{id?}")
                     .RequireCors("MyPolicy");
             });
+
+
         }
     }
 }

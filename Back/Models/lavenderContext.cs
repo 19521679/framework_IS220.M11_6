@@ -45,8 +45,8 @@ namespace Back.Models
         public virtual DbSet<Thongsokithuat> Thongsokithuat { get; set; }
         public virtual DbSet<Truycapandanh> Truycapandanh { get; set; }
 
-        private const string connectionString = @"Server=lavender-uit-webshop-database.mysql.database.azure.com; Port=3306; Database=lavender; Uid=bongdungyeuem27; Pwd=0914630145kK@; SslMode=Preferred;";
-
+        private const string connectionString = @"Server=localhost; Port=3306; Database=lavender; Uid=root; Pwd=0914630145kK@; SslMode=Preferred;";
+        
         // Phương thức OnConfiguring gọi mỗi khi một đối tượng DbContext được tạo
         // Nạp chồng nó để thiết lập các cấu hình, như thiết lập chuỗi kết nối
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

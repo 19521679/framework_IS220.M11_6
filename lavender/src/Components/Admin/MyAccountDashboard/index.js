@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import Cookies from "universal-cookie/es6";
+import Cookies from "universal-cookie";
 import * as loginAct from "../../redux/actions/loginAct";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";

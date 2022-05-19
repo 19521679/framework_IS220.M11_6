@@ -30,8 +30,9 @@ namespace Back.Controllers
         }
 
         [Route("/mobile")]
-        public async Task<IActionResult> GetAllMobile()
+        public async Task<IActionResult> GetAllMobile(int data)
         {
+            Console.WriteLine("data" + data);
             var sanphams = await (from x in lavenderContext.Sanpham
                                   join y in lavenderContext.Thuonghieu
                                   on x.Mathuonghieu equals y.Mathuonghieu

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj": {}
+    "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj": {}
   },
   "projects": {
-    "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj": {
+    "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj",
+        "projectUniqueName": "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj",
         "projectName": "Back",
-        "projectPath": "/Users/khanhle/Documents/GitHub/lavender/Back/Back.csproj",
+        "projectPath": "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/Back.csproj",
         "packagesPath": "/Users/khanhle/.nuget/packages/",
-        "outputPath": "/Users/khanhle/Documents/GitHub/lavender/Back/obj/",
+        "outputPath": "/Users/khanhle/Documents/GitHub/framework_IS220.M11_6/Back/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/khanhle/.config/NuGet/NuGet.Config"
@@ -38,6 +38,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AWSSDK.Core": {
+              "target": "Package",
+              "version": "[3.7.10.8, )"
+            },
             "AspNetCore.Email": {
               "target": "Package",
               "version": "[2.1.403, )"
@@ -177,7 +181,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.101/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/6.0.104/RuntimeIdentifierGraph.json"
         }
       }
     }

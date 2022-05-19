@@ -45,7 +45,7 @@ namespace Back.Models
         public virtual DbSet<Thongsokithuat> Thongsokithuat { get; set; }
         public virtual DbSet<Truycapandanh> Truycapandanh { get; set; }
 
-        private const string connectionString = @"Server=localhost; Port=3306; Database=lavender; Uid=root; Pwd=0914630145kK@; SslMode=Preferred;";
+        private const string connectionString = @"Server=112.78.4.41; Port=3306; Database=lavender; Uid=bongdungyeuem27; Pwd=0914630145kK@;";
         
         // Phương thức OnConfiguring gọi mỗi khi một đối tượng DbContext được tạo
         // Nạp chồng nó để thiết lập các cấu hình, như thiết lập chuỗi kết nối
